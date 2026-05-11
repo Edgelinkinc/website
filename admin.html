@@ -241,6 +241,8 @@ h2.section-title {
     <button class="tab" data-panel="careers-testimonials">Careers: Testimonials</button>
     <button class="tab" data-panel="careers-states">Careers: Hiring States</button>
     <button class="tab" data-panel="careers-apply">Careers: Apply CTA</button>
+    <button class="tab" data-panel="social">Social Media</button>
+    <button class="tab" data-panel="settings">⚙ Settings</button>
   </div>
 
   <div class="content">
@@ -371,6 +373,8 @@ h2.section-title {
       case 'careers-testimonials': html = renderCareersTestimonialsPanel(); break;
       case 'careers-states':       html = renderCareersStatesPanel(); break;
       case 'careers-apply':        html = renderCareersApplyPanel(); break;
+      case 'social':               html = renderSocialPanel(); break;
+      case 'settings':             html = renderSettingsPanel(); break;
     }
 
     panels.innerHTML = html;
@@ -401,6 +405,22 @@ h2.section-title {
       html += '<option value="' + escAttr(options[i]) + '"' + sel + '>' + esc(options[i]) + '</option>';
     }
     html += '</select>' + (hint ? '<div class="field-hint">' + esc(hint) + '</div>' : '') + '</div>';
+    return html;
+  }
+
+  function imageField(path, label, hint) {
+    var val = getPath(state.content, path) || '';
+    var hasImg = val && val.length > 0;
+    var html = '<div class="field"><label>' + esc(label) + '</label>';
+    html += '<div style="display: flex; gap: 8px; align-items: stretch;">';
+    html += '<input type="text" data-path="' + path + '" value="' + escAttr(val) + '" placeholder="Click Upload, or paste an image URL" style="flex: 1;">';
+    html += '<button class="btn btn-magenta btn-sm" data-upload-target="' + path + '" style="flex-shrink: 0;">📷 Upload</button>';
+    html += '</div>';
+    if (hasImg) {
+      html += '<div style="margin-top: 8px;"><img src="' + escAttr(val) + '" alt="" style="max-width: 200px; max-height: 120px; border-radius: 8px; border: 1px solid var(--border);"></div>';
+    }
+    if (hint) html += '<div class="field-hint">' + esc(hint) + '</div>';
+    html += '</div>';
     return html;
   }
 
@@ -454,7 +474,7 @@ h2.section-title {
       textField('home.hero.eyebrow', 'Eyebrow (small text above headline)') +
       textareaField('home.hero.headline', 'Headline', 'Use <em>...</em> for the italic purple highlight') +
       textareaField('home.hero.subhead', 'Subheadline') +
-      textField('home.hero.heroImageUrl', 'Hero Image URL (optional)', 'Paste an image URL. Leave blank to use the default phone mockup.') +
+      imageField('home.hero.heroImageUrl', 'Hero Image (optional)', 'Upload a photo or paste a URL. Leave blank to use the default phone mockup.') +
       '</div>';
 
     html += renderListPanel('home.hero.stats', 'Hero Stat Pills', function(stat, idx) {
@@ -496,7 +516,7 @@ h2.section-title {
       textField('home.about.eyebrow', 'Eyebrow') +
       textareaField('home.about.headline', 'Headline (use <em>...</em> for italic)') +
       textareaField('home.about.quote', 'Quote (shown if no image)') +
-      textField('home.about.imageUrl', 'Image URL (optional)', 'Replaces the purple quote panel') +
+      imageField('home.about.imageUrl', 'About Image (optional)', 'Replaces the purple quote panel when set') +
       '</div>';
 
     html += renderListPanel('home.about.paragraphs', 'Paragraphs', function(para, idx) {
@@ -546,7 +566,7 @@ h2.section-title {
 
   function renderHomeLocationsPanel() {
     var html = '<h2 class="section-title">Home: Locations</h2>' +
-      '<p class="section-help">States where Edgelink operates.</p>' +
+      '<p class="section-help">States where Edgelink operates. Add individual stores under each state.</p>' +
       '<div class="field-group">' +
       textField('home.locations.eyebrow', 'Eyebrow') +
       textareaField('home.locations.headline', 'Headline') +
@@ -554,11 +574,19 @@ h2.section-title {
       '</div>';
 
     html += renderListPanel('home.locations.states', 'States', function(state, idx) {
-      return '<div class="field-row">' +
+      var inner = '<div class="field-row">' +
         textField('home.locations.states[' + idx + '].abbr', 'Abbreviation (e.g. RI)') +
         textField('home.locations.states[' + idx + '].name', 'Full Name') +
         '</div>';
-    }, function() { return { abbr: 'XX', name: 'New State' }; });
+      // Nested stores list for this state
+      inner += renderNestedList('home.locations.states[' + idx + '].stores', '🏬 Stores in ' + (state.name || 'this state'), function(store, sIdx) {
+        return '<div class="field-row">' +
+          textField('home.locations.states[' + idx + '].stores[' + sIdx + '].name', 'Store Name') +
+          textField('home.locations.states[' + idx + '].stores[' + sIdx + '].address', 'Address (optional)') +
+          '</div>';
+      }, function() { return { name: 'New Store', address: '' }; });
+      return inner;
+    }, function() { return { abbr: 'XX', name: 'New State', stores: [] }; });
 
     return html;
   }
@@ -583,7 +611,7 @@ h2.section-title {
       textField('careers.hero.eyebrow', 'Eyebrow') +
       textareaField('careers.hero.headline', 'Headline (use <em>...</em> for italic)') +
       textareaField('careers.hero.subhead', 'Subheadline') +
-      textField('careers.hero.heroImageUrl', 'Hero Image URL (optional)') +
+      imageField('careers.hero.heroImageUrl', 'Hero Image (optional)') +
       '</div>' +
       '<div class="field-group"><h3>Buttons</h3>' +
       '<div class="field-row">' +
@@ -715,6 +743,178 @@ h2.section-title {
       '</div>';
   }
 
+  function renderSocialPanel() {
+    return '<h2 class="section-title">Social Media</h2>' +
+      '<p class="section-help">Add your social media URLs. Leave blank to hide an icon. Icons appear in the footer.</p>' +
+      '<div class="field-group">' +
+      textField('footer.social.facebook', 'Facebook URL', 'e.g. https://www.facebook.com/edgelinkinc') +
+      textField('footer.social.instagram', 'Instagram URL', 'e.g. https://www.instagram.com/edgelinkinc') +
+      textField('footer.social.linkedin', 'LinkedIn URL', 'e.g. https://www.linkedin.com/company/edgelink-inc') +
+      textField('footer.social.tiktok', 'TikTok URL') +
+      textField('footer.social.youtube', 'YouTube URL') +
+      '</div>';
+  }
+
+  function renderSettingsPanel() {
+    var token = localStorage.getItem('edgelink_github_token') || '';
+    var repo = localStorage.getItem('edgelink_github_repo') || 'Edgelinkinc/website';
+    var branch = localStorage.getItem('edgelink_github_branch') || 'main';
+
+    return '<h2 class="section-title">GitHub Settings</h2>' +
+      '<p class="section-help">Set up direct image upload. One-time setup. Token is stored only in your browser.</p>' +
+      '<div class="help-card" style="margin-bottom: 20px;">' +
+      '<strong>How to get a Personal Access Token:</strong><br>' +
+      '1. Go to <a href="https://github.com/settings/tokens?type=beta" target="_blank" style="color:#FFB4D9; text-decoration:underline;">github.com/settings/tokens</a> (fine-grained tokens)<br>' +
+      '2. Click <strong>"Generate new token"</strong><br>' +
+      '3. Token name: "Edgelink Admin Upload"<br>' +
+      '4. Expiration: pick something (90 days, 1 year, etc.)<br>' +
+      '5. Repository access: select <strong>"Only select repositories"</strong> → choose <code>Edgelinkinc/website</code><br>' +
+      '6. Repository permissions → <strong>Contents</strong>: set to <strong>"Read and write"</strong><br>' +
+      '7. Click <strong>"Generate token"</strong> → copy the token (you only see it once!)<br>' +
+      '8. Paste it below and click Save' +
+      '</div>' +
+      '<div class="field-group">' +
+      '<h3>GitHub Connection</h3>' +
+      '<div class="field"><label>Repository (owner/name)</label>' +
+      '<input type="text" id="gh-repo" value="' + escAttr(repo) + '">' +
+      '<div class="field-hint">Format: <code style="background:rgba(95,36,159,0.1);padding:2px 6px;border-radius:4px;">Edgelinkinc/website</code></div></div>' +
+      '<div class="field"><label>Branch</label>' +
+      '<input type="text" id="gh-branch" value="' + escAttr(branch) + '"></div>' +
+      '<div class="field"><label>Personal Access Token</label>' +
+      '<input type="password" id="gh-token" value="' + escAttr(token) + '" placeholder="github_pat_...">' +
+      '<div class="field-hint">Token is stored only in your browser. Never share or commit it.</div></div>' +
+      '<div style="display: flex; gap: 10px;">' +
+      '<button class="btn btn-purple" id="btn-save-gh">Save Settings</button>' +
+      '<button class="btn btn-ghost" id="btn-test-gh">Test Connection</button>' +
+      '<button class="btn btn-danger" id="btn-clear-gh">Clear Token</button>' +
+      '</div>' +
+      '<div id="gh-test-result" style="margin-top: 12px; font-size: 13px;"></div>' +
+      '</div>' +
+      '<div class="field-group">' +
+      '<h3>Test Image Upload</h3>' +
+      '<p style="color: var(--muted); font-size: 13px; margin-bottom: 16px;">Try uploading a test image to verify everything works:</p>' +
+      '<input type="file" id="gh-test-file" accept="image/*" style="margin-bottom: 12px;">' +
+      '<button class="btn btn-magenta" id="btn-test-upload">Upload Test Image</button>' +
+      '<div id="gh-upload-result" style="margin-top: 12px; font-size: 13px;"></div>' +
+      '</div>';
+  }
+
+  // ===== GITHUB SETTINGS HANDLERS =====
+  function bindSettingsHandlers() {
+    var saveBtn = document.getElementById('btn-save-gh');
+    if (saveBtn) {
+      saveBtn.addEventListener('click', function() {
+        var token = document.getElementById('gh-token').value.trim();
+        var repo = document.getElementById('gh-repo').value.trim();
+        var branch = document.getElementById('gh-branch').value.trim();
+        if (token) localStorage.setItem('edgelink_github_token', token);
+        if (repo) localStorage.setItem('edgelink_github_repo', repo);
+        if (branch) localStorage.setItem('edgelink_github_branch', branch);
+        showStatus('GitHub settings saved', 'success');
+      });
+    }
+    var testBtn = document.getElementById('btn-test-gh');
+    if (testBtn) {
+      testBtn.addEventListener('click', function() {
+        testGitHubConnection();
+      });
+    }
+    var clearBtn = document.getElementById('btn-clear-gh');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function() {
+        if (confirm('Clear stored GitHub token from this browser?')) {
+          localStorage.removeItem('edgelink_github_token');
+          document.getElementById('gh-token').value = '';
+          showStatus('Token cleared', 'success');
+        }
+      });
+    }
+    var uploadBtn = document.getElementById('btn-test-upload');
+    if (uploadBtn) {
+      uploadBtn.addEventListener('click', function() {
+        var file = document.getElementById('gh-test-file').files[0];
+        if (!file) { alert('Pick an image file first.'); return; }
+        var resultEl = document.getElementById('gh-upload-result');
+        resultEl.innerHTML = '<span style="color: var(--muted);">Uploading...</span>';
+        uploadImageToGitHub(file, function(err, url) {
+          if (err) {
+            resultEl.innerHTML = '<span style="color: var(--red);">Failed: ' + esc(err.message || err) + '</span>';
+          } else {
+            resultEl.innerHTML = '<span style="color: var(--green);">✓ Uploaded: ' + esc(url) + '</span><br><img src="' + esc(url) + '" style="max-width: 200px; margin-top: 8px; border-radius: 8px;">';
+          }
+        });
+      });
+    }
+  }
+
+  function testGitHubConnection() {
+    var token = localStorage.getItem('edgelink_github_token');
+    var repo = localStorage.getItem('edgelink_github_repo') || 'Edgelinkinc/website';
+    var resultEl = document.getElementById('gh-test-result');
+    if (!token) { resultEl.innerHTML = '<span style="color: var(--red);">No token saved.</span>'; return; }
+    resultEl.innerHTML = '<span style="color: var(--muted);">Testing...</span>';
+    fetch('https://api.github.com/repos/' + repo, {
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' }
+    })
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function(data) {
+      resultEl.innerHTML = '<span style="color: var(--green);">✓ Connected to ' + esc(data.full_name) + '</span>';
+    })
+    .catch(function(err) {
+      resultEl.innerHTML = '<span style="color: var(--red);">Connection failed: ' + esc(err.message) + '. Check token and repo name.</span>';
+    });
+  }
+
+  function uploadImageToGitHub(file, callback) {
+    var token = localStorage.getItem('edgelink_github_token');
+    var repo = localStorage.getItem('edgelink_github_repo') || 'Edgelinkinc/website';
+    var branch = localStorage.getItem('edgelink_github_branch') || 'main';
+    if (!token) { callback(new Error('No GitHub token set. Go to Settings tab to add one.')); return; }
+
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      // base64 encode (strip the data URL prefix)
+      var base64 = e.target.result.split(',')[1];
+      // Generate a safe filename
+      var origName = file.name.toLowerCase().replace(/[^a-z0-9._-]/g, '-');
+      var timestamp = new Date().getTime();
+      var filename = timestamp + '-' + origName;
+      var path = 'images/' + filename;
+
+      fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
+        method: 'PUT',
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Accept': 'application/vnd.github+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: 'Upload ' + filename + ' via admin',
+          content: base64,
+          branch: branch
+        })
+      })
+      .then(function(r) {
+        return r.json().then(function(data) {
+          if (!r.ok) throw new Error(data.message || ('HTTP ' + r.status));
+          return data;
+        });
+      })
+      .then(function(data) {
+        // Return the relative path that works in the live site
+        callback(null, path);
+      })
+      .catch(function(err) {
+        callback(err);
+      });
+    };
+    reader.onerror = function() { callback(new Error('Could not read file')); };
+    reader.readAsDataURL(file);
+  }
+
   // ===== LIST HELPERS =====
   function renderListPanel(path, title, itemRenderer, newItemFactory) {
     var items = getPath(state.content, path) || [];
@@ -762,7 +962,6 @@ h2.section-title {
         if (!list) return;
 
         if (action === 'add') {
-          // Determine new item shape based on current list contents
           var sample = list.length > 0 ? list[list.length - 1] : null;
           list.push(buildNewItem(sample));
         } else if (action === 'delete') {
@@ -785,6 +984,39 @@ h2.section-title {
         renderCurrentPanel();
       });
     }
+
+    // Image upload buttons (added next to image URL fields)
+    var uploadBtns = document.querySelectorAll('[data-upload-target]');
+    for (var u = 0; u < uploadBtns.length; u++) {
+      uploadBtns[u].addEventListener('click', function(e) {
+        var targetPath = e.target.getAttribute('data-upload-target');
+        triggerImageUpload(targetPath);
+      });
+    }
+
+    // Settings panel handlers
+    bindSettingsHandlers();
+  }
+
+  function triggerImageUpload(targetPath) {
+    var hiddenInput = document.createElement('input');
+    hiddenInput.type = 'file';
+    hiddenInput.accept = 'image/*';
+    hiddenInput.onchange = function(e) {
+      var file = e.target.files[0];
+      if (!file) return;
+      showStatus('Uploading image to GitHub...', '');
+      uploadImageToGitHub(file, function(err, url) {
+        if (err) {
+          showStatus('Upload failed: ' + (err.message || err) + ' — check Settings tab', 'error');
+          return;
+        }
+        setPath(state.content, targetPath, url);
+        showStatus('Image uploaded: ' + url, 'success');
+        renderCurrentPanel(); // refresh to show new URL in field
+      });
+    };
+    hiddenInput.click();
   }
 
   function buildNewItem(sample) {

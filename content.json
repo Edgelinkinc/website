@@ -1,31 +1,16 @@
 {
   "branding": {
-    "companyName": "Edgelink Inc. ",
+    "companyName": "Edgelink",
     "tagline": "Authorized Metro by T-Mobile Retailer",
     "logoColor": "#5F249F"
   },
   "nav": {
     "links": [
-      {
-        "label": "About",
-        "href": "index.html#about"
-      },
-      {
-        "label": "What We Do",
-        "href": "index.html#services"
-      },
-      {
-        "label": "Our Values",
-        "href": "index.html#values"
-      },
-      {
-        "label": "Locations",
-        "href": "index.html#locations"
-      },
-      {
-        "label": "Careers",
-        "href": "careers.html"
-      }
+      { "label": "About", "href": "index.html#about" },
+      { "label": "What We Do", "href": "index.html#services" },
+      { "label": "Our Values", "href": "index.html#values" },
+      { "label": "Locations", "href": "index.html#locations" },
+      { "label": "Careers", "href": "careers.html" }
     ],
     "ctaLabel": "Get in Touch",
     "ctaHref": "index.html#contact"
@@ -36,18 +21,9 @@
       "headline": "Connecting communities to <em>what matters</em> most.",
       "subhead": "From New England to the South, Edgelink Inc. is a team-first retail family bringing reliable wireless service and real careers to every neighborhood we serve.",
       "stats": [
-        {
-          "value": "35+",
-          "label": "Locations"
-        },
-        {
-          "value": "5",
-          "label": "States"
-        },
-        {
-          "value": "200+",
-          "label": "Team Members"
-        }
+        { "value": "35+", "label": "Locations" },
+        { "value": "5", "label": "States" },
+        { "value": "200+", "label": "Team Members" }
       ],
       "primaryCtaLabel": "Find a Store",
       "primaryCtaHref": "#locations",
@@ -56,22 +32,10 @@
       "heroImageUrl": ""
     },
     "stats": [
-      {
-        "value": "35",
-        "label": "Retail Locations"
-      },
-      {
-        "value": "5",
-        "label": "States Served"
-      },
-      {
-        "value": "200+",
-        "label": "Team Members"
-      },
-      {
-        "value": "100%",
-        "label": "Promote From Within"
-      }
+      { "value": "35", "label": "Retail Locations" },
+      { "value": "5", "label": "States Served" },
+      { "value": "200+", "label": "Team Members" },
+      { "value": "100%", "label": "Promote From Within" }
     ],
     "about": {
       "eyebrow": "About Edgelink",
@@ -139,23 +103,31 @@
       "states": [
         {
           "abbr": "AR",
-          "name": "Arkansas"
+          "name": "Arkansas",
+          "stores": [
+            { "name": "Colonel Glenn", "address": "" },
+            { "name": "Radio Geyer", "address": "" }
+          ]
         },
         {
           "abbr": "CT",
-          "name": "Connecticut"
+          "name": "Connecticut",
+          "stores": []
         },
         {
           "abbr": "MA",
-          "name": "Massachusetts"
+          "name": "Massachusetts",
+          "stores": []
         },
         {
           "abbr": "RI",
-          "name": "Rhode Island"
+          "name": "Rhode Island",
+          "stores": []
         },
         {
           "abbr": "TN",
-          "name": "Tennessee"
+          "name": "Tennessee",
+          "stores": []
         }
       ]
     },
@@ -173,7 +145,7 @@
       "headline": "Where your <em>next chapter</em> starts.",
       "subhead": "Real training, real growth, real people. Whether you're new to retail or coming in with experience, Edgelink is built to help you go further.",
       "primaryCtaLabel": "View Open Positions",
-      "primaryCtaHref": "https://www2.appone.com/Search/Search.aspx?ServerVar=edgelinkinc.appone.com",
+      "primaryCtaHref": "#apply",
       "secondaryCtaLabel": "Why Edgelink",
       "secondaryCtaHref": "#why",
       "heroImageUrl": ""
@@ -300,26 +272,11 @@
       "headline": "Now hiring in <em>all five states</em>.",
       "lead": "Find a position near you.",
       "states": [
-        {
-          "abbr": "AR",
-          "name": "Arkansas"
-        },
-        {
-          "abbr": "CT",
-          "name": "Connecticut"
-        },
-        {
-          "abbr": "MA",
-          "name": "Massachusetts"
-        },
-        {
-          "abbr": "RI",
-          "name": "Rhode Island"
-        },
-        {
-          "abbr": "TN",
-          "name": "Tennessee"
-        }
+        { "abbr": "AR", "name": "Arkansas" },
+        { "abbr": "CT", "name": "Connecticut" },
+        { "abbr": "MA", "name": "Massachusetts" },
+        { "abbr": "RI", "name": "Rhode Island" },
+        { "abbr": "TN", "name": "Tennessee" }
       ]
     },
     "applyCta": {
@@ -332,60 +289,40 @@
   },
   "footer": {
     "tagline": "An authorized Metro by T-Mobile retailer connecting communities across Arkansas, Connecticut, Massachusetts, Rhode Island, and Tennessee.",
+    "social": {
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "youtube": ""
+    },
     "columns": [
       {
         "heading": "Company",
         "links": [
-          {
-            "label": "About Us",
-            "href": "index.html#about"
-          },
-          {
-            "label": "What We Do",
-            "href": "index.html#services"
-          },
-          {
-            "label": "Our Values",
-            "href": "index.html#values"
-          },
-          {
-            "label": "Careers",
-            "href": "careers.html"
-          }
+          { "label": "About Us", "href": "index.html#about" },
+          { "label": "What We Do", "href": "index.html#services" },
+          { "label": "Our Values", "href": "index.html#values" },
+          { "label": "Careers", "href": "careers.html" }
         ]
       },
       {
         "heading": "Resources",
         "links": [
-          {
-            "label": "Find a Store",
-            "href": "index.html#locations"
-          },
-          {
-            "label": "Contact HR",
-            "href": "mailto:hr@edgelinkinc.com"
-          }
+          { "label": "Find a Store", "href": "index.html#locations" },
+          { "label": "Contact HR", "href": "mailto:hr@edgelinkinc.com" }
         ]
       },
       {
         "heading": "Headquarters",
         "links": [
-          {
-            "label": "719 Bald Hill Rd.",
-            "href": "#"
-          },
-          {
-            "label": "Warwick, RI 02886",
-            "href": "#"
-          },
-          {
-            "label": "hr@edgelinkinc.com",
-            "href": "mailto:hr@edgelinkinc.com"
-          }
+          { "label": "719 Bald Hill Rd.", "href": "#" },
+          { "label": "Warwick, RI 02886", "href": "#" },
+          { "label": "hr@edgelinkinc.com", "href": "mailto:hr@edgelinkinc.com" }
         ]
       }
     ],
-    "copyright": "© 2026 Edgelink Inc. All rights reserved.",
-    "legal": "Privacy · Terms · Accessibility"
+    "copyright": "\u00a9 2026 Edgelink Inc. All rights reserved.",
+    "legal": "Privacy \u00b7 Terms \u00b7 Accessibility"
   }
 }
