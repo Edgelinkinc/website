@@ -4,7 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Edgelink Inc. — Connecting Communities to What Matters</title>
-<meta name="description" content="Edgelink Inc. is a team-first retail family bringing reliable wireless service and real careers to neighborhoods across five states.">
+<meta name="description" content="Edgelink Inc. is a team-first wireless retail family bringing reliable Metro by T-Mobile service and real careers to neighborhoods across five states.">
+
+<!-- OpenGraph (Facebook, LinkedIn) -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Edgelink Inc. — Connecting Communities">
+<meta property="og:description" content="A team-first wireless retail family across Arkansas, Connecticut, Massachusetts, Rhode Island, and Tennessee.">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 L28 16 L16 30 L4 16 Z' fill='%235F249F'/%3E%3C/svg%3E">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -24,10 +36,7 @@
 <script>
 (function() {
   'use strict';
-
-  // Allow ?preview=1 to load draft from localStorage (used by admin preview)
   var useDraft = window.location.search.indexOf('preview=1') !== -1;
-
   EDGELINK.loadContent(useDraft, function(err, content) {
     if (err) {
       document.getElementById('page-content').innerHTML =
@@ -41,38 +50,34 @@
   });
 
   function renderPage(content) {
-    // Update page title from branding
-    if (content.branding && content.branding.companyName) {
-      document.title = content.branding.companyName + ' Inc. — Connecting Communities';
-    }
+    EDGELINK.injectSeoTags(content, {
+      title: (content.branding && content.branding.companyName ? content.branding.companyName : 'Edgelink') + ' Inc. — Connecting Communities',
+      description: content.seo && content.seo.defaultDescription ? content.seo.defaultDescription : '',
+      url: (content.seo && content.seo.siteUrl) || '',
+      type: 'website'
+    });
 
-    // Nav
     document.getElementById('site-nav').innerHTML = EDGELINK.renderNav(content);
 
-    // Build all sections
     var home = content.home || {};
     var html = '';
 
-    // Hero
     html += '<section class="hero" id="top">';
     html += EDGELINK.renderHomeHero(home.hero);
     html += '</section>';
 
-    // Stats strip
     if (home.stats && home.stats.length) {
       html += '<section class="stats-strip">';
       html += EDGELINK.renderStatsStrip(home.stats);
       html += '</section>';
     }
 
-    // About
     if (home.about) {
       html += '<section class="about" id="about">';
       html += EDGELINK.renderAbout(home.about);
       html += '</section>';
     }
 
-    // Services
     if (home.services && home.services.items && home.services.items.length) {
       html += '<section id="services"><div class="section-inner">';
       html += EDGELINK.renderSectionHeader(home.services.eyebrow, home.services.headline, home.services.lead);
@@ -80,7 +85,6 @@
       html += '</div></section>';
     }
 
-    // Values
     if (home.values && home.values.items && home.values.items.length) {
       html += '<section class="about" id="values"><div class="section-inner">';
       html += EDGELINK.renderSectionHeader(home.values.eyebrow, home.values.headline, home.values.lead);
@@ -88,7 +92,12 @@
       html += '</div></section>';
     }
 
-    // Locations
+    if (home.news && home.news.enabled !== false && home.news.items && home.news.items.length) {
+      html += '<section class="news-section" id="news">';
+      html += EDGELINK.renderNews(home.news);
+      html += '</section>';
+    }
+
     if (home.locations && home.locations.states && home.locations.states.length) {
       html += '<section class="locations-bg" id="locations"><div class="section-inner">';
       html += EDGELINK.renderSectionHeader(home.locations.eyebrow, home.locations.headline, home.locations.lead);
@@ -96,17 +105,22 @@
       html += '</div></section>';
     }
 
-    // Careers callout
     if (home.careersCallout) {
       html += '<section class="callout-section" id="careers-cta">';
       html += EDGELINK.renderCallout(home.careersCallout);
       html += '</section>';
     }
 
-    document.getElementById('page-content').innerHTML = html;
+    if (home.contactForm && home.contactForm.enabled !== false) {
+      html += '<section class="contact-section" id="contact">';
+      html += EDGELINK.renderContactForm(home.contactForm);
+      html += '</section>';
+    }
 
-    // Footer
+    document.getElementById('page-content').innerHTML = html;
     document.getElementById('site-footer').innerHTML = EDGELINK.renderFooter(content);
+    EDGELINK.attachContactFormHandler();
+    EDGELINK.attachScrollReveal();
   }
 })();
 </script>

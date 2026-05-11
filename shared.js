@@ -338,14 +338,154 @@ var EDGELINK = (function() {
     if (!items || !items.length) return '';
     var html = '<div class="testimonials-grid">';
     for (var i = 0; i < items.length; i++) {
+      var item = items[i];
       html += '<div class="testimonial">';
-      html += '<p class="testimonial-quote">' + escapeHtml(items[i].quote) + '</p>';
-      html += '<div class="testimonial-name">' + escapeHtml(items[i].name) + '</div>';
-      if (items[i].role) html += '<div class="testimonial-role">' + escapeHtml(items[i].role) + '</div>';
+      if (item.imageUrl && item.imageUrl.length > 0) {
+        html += '<img src="' + escapeAttr(item.imageUrl) + '" alt="' + escapeAttr(item.name) + '" class="testimonial-photo">';
+      } else {
+        // Use initial as placeholder
+        var initial = (item.name || '?').charAt(0).toUpperCase();
+        html += '<div class="testimonial-photo-placeholder">' + escapeHtml(initial) + '</div>';
+      }
+      html += '<p class="testimonial-quote">' + escapeHtml(item.quote) + '</p>';
+      html += '<div class="testimonial-name">' + escapeHtml(item.name) + '</div>';
+      if (item.role) html += '<div class="testimonial-role">' + escapeHtml(item.role) + '</div>';
       html += '</div>';
     }
     html += '</div>';
     return html;
+  }
+
+  // ===== CONTACT FORM =====
+  function renderContactForm(form) {
+    if (!form || form.enabled === false) return '';
+    var info = form.contactInfo || {};
+    var subjects = form.subjects || ['General Question'];
+    var hasEndpoint = form.formspreeEndpoint && form.formspreeEndpoint.length > 0;
+
+    var html = '<div class="section-inner">';
+    html += renderSectionHeader(form.eyebrow, form.headline, form.lead);
+    html += '<div class="contact-grid">';
+
+    // LEFT: Contact info
+    html += '<div class="contact-info">';
+    if (info.email) {
+      html += '<a class="contact-info-item" href="mailto:' + escapeAttr(info.email) + '" style="text-decoration:none;">';
+      html += '<div class="contact-info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>';
+      html += '<div><div class="contact-info-label">Email</div>';
+      html += '<span class="contact-info-value">' + escapeHtml(info.email) + '</span></div>';
+      html += '</a>';
+    }
+    if (info.phoneLabel && info.phoneLabel.length > 0) {
+      html += '<div class="contact-info-item">';
+      html += '<div class="contact-info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>';
+      html += '<div><div class="contact-info-label">Phone</div>';
+      html += '<span class="contact-info-value">' + escapeHtml(info.phoneLabel) + '</span></div>';
+      html += '</div>';
+    }
+    if (info.addressLabel && info.addressLabel.length > 0) {
+      html += '<div class="contact-info-item">';
+      html += '<div class="contact-info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>';
+      html += '<div><div class="contact-info-label">Headquarters</div>';
+      html += '<span class="contact-info-value">' + escapeHtml(info.addressLabel) + '</span></div>';
+      html += '</div>';
+    }
+    html += '</div>';
+
+    // RIGHT: Form
+    html += '<div class="contact-form" id="contact-form-wrap">';
+    if (!hasEndpoint) {
+      html += '<div class="contact-notice">⚠️ Contact form not yet configured. Admin: add a Formspree endpoint in the Contact Form admin tab.</div>';
+    }
+    html += '<form id="contact-form-el" data-endpoint="' + escapeAttr(form.formspreeEndpoint || '') + '" data-success-msg="' + escapeAttr(form.successMessage || 'Thanks!') + '" novalidate>';
+
+    html += '<div class="contact-form-row">';
+    html += '<div class="contact-form-field"><label>Name <span class="req">*</span></label>';
+    html += '<input type="text" name="name" required></div>';
+    html += '<div class="contact-form-field"><label>Email <span class="req">*</span></label>';
+    html += '<input type="email" name="email" required></div>';
+    html += '</div>';
+
+    html += '<div class="contact-form-row">';
+    html += '<div class="contact-form-field"><label>Phone (optional)</label>';
+    html += '<input type="tel" name="phone"></div>';
+    html += '<div class="contact-form-field"><label>Subject <span class="req">*</span></label>';
+    html += '<select name="subject" required>';
+    for (var s = 0; s < subjects.length; s++) {
+      html += '<option value="' + escapeAttr(subjects[s]) + '">' + escapeHtml(subjects[s]) + '</option>';
+    }
+    html += '</select></div>';
+    html += '</div>';
+
+    html += '<div class="contact-form-field"><label>Message <span class="req">*</span></label>';
+    html += '<textarea name="message" required placeholder="How can we help?"></textarea></div>';
+
+    // Honeypot for spam
+    html += '<input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">';
+
+    html += '<button type="submit" class="contact-submit">' + escapeHtml(form.submitButtonLabel || 'Send Message') + '</button>';
+
+    html += '<div class="contact-status" id="contact-status"></div>';
+    html += '</form>';
+    html += '</div>'; // form wrap
+
+    html += '</div></div>';
+
+    return html;
+  }
+
+  // ===== ATTACH CONTACT FORM HANDLER =====
+  // Called by index.html after content is rendered
+  function attachContactFormHandler() {
+    var form = document.getElementById('contact-form-el');
+    if (!form) return;
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var endpoint = form.getAttribute('data-endpoint');
+      var successMsg = form.getAttribute('data-success-msg');
+      var statusEl = document.getElementById('contact-status');
+      var submitBtn = form.querySelector('button[type="submit"]');
+
+      if (!endpoint || endpoint.length === 0) {
+        statusEl.className = 'contact-status show error';
+        statusEl.textContent = 'Form not configured yet. Admin needs to add a Formspree endpoint.';
+        return;
+      }
+
+      // Honeypot check
+      var honeypot = form.querySelector('input[name="_gotcha"]');
+      if (honeypot && honeypot.value) return; // silently ignore bot
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+      statusEl.className = 'contact-status';
+
+      var formData = new FormData(form);
+      fetch(endpoint, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      })
+      .then(function(response) {
+        if (response.ok) {
+          statusEl.className = 'contact-status show success';
+          statusEl.textContent = successMsg;
+          form.reset();
+        } else {
+          return response.json().then(function(data) {
+            throw new Error((data.errors && data.errors[0] && data.errors[0].message) || 'Submission failed');
+          });
+        }
+      })
+      .catch(function(err) {
+        statusEl.className = 'contact-status show error';
+        statusEl.textContent = 'Could not send: ' + err.message + '. Try again or email us directly.';
+      })
+      .then(function() {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Message';
+      });
+    });
   }
 
   // ===== FOOTER =====
@@ -417,6 +557,205 @@ var EDGELINK = (function() {
     return html;
   }
 
+  // ===== NEWS / ANNOUNCEMENTS =====
+  function renderNews(news) {
+    if (!news || news.enabled === false) return '';
+    var items = news.items || [];
+    if (!items.length) return '';
+
+    var html = '<div class="section-inner">';
+    html += renderSectionHeader(news.eyebrow, news.headline, news.lead);
+    html += '<div class="news-grid">';
+
+    // Sort by date desc, take top 3
+    var sorted = items.slice().sort(function(a, b) {
+      return (b.date || '').localeCompare(a.date || '');
+    }).slice(0, 3);
+
+    for (var i = 0; i < sorted.length; i++) {
+      var item = sorted[i];
+      var dateStr = formatNewsDate(item.date);
+      var href = item.link || '#';
+      var tag = (href === '#' || !href) ? 'div' : 'a';
+      html += '<' + tag + ' class="news-card"' + (tag === 'a' ? ' href="' + escapeAttr(href) + '"' : '') + '>';
+      html += '<div class="news-img">';
+      if (item.imageUrl && item.imageUrl.length > 0) {
+        html += '<img src="' + escapeAttr(item.imageUrl) + '" alt="' + escapeAttr(item.title) + '">';
+      } else {
+        html += '<div class="news-img-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6z"/></svg></div>';
+      }
+      html += '</div>';
+      html += '<div class="news-body">';
+      html += '<div class="news-meta">';
+      if (item.category) html += '<span class="news-category">' + escapeHtml(item.category) + '</span>';
+      if (dateStr) html += '<span class="news-date">' + escapeHtml(dateStr) + '</span>';
+      html += '</div>';
+      html += '<div class="news-title">' + escapeHtml(item.title) + '</div>';
+      html += '<p class="news-summary">' + escapeHtml(item.summary || '') + '</p>';
+      if (tag === 'a') {
+        html += '<span class="news-read-more">Read more →</span>';
+      }
+      html += '</div>';
+      html += '</' + tag + '>';
+    }
+
+    html += '</div></div>';
+    return html;
+  }
+
+  function formatNewsDate(dateStr) {
+    if (!dateStr) return '';
+    // dateStr expected as YYYY-MM-DD
+    var parts = dateStr.split('-');
+    if (parts.length !== 3) return dateStr;
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var monthIdx = parseInt(parts[1], 10) - 1;
+    if (monthIdx < 0 || monthIdx > 11) return dateStr;
+    return months[monthIdx] + ' ' + parseInt(parts[2], 10) + ', ' + parts[0];
+  }
+
+  // ===== FAQ =====
+  function renderFAQ(faq) {
+    if (!faq || faq.enabled === false) return '';
+    var items = faq.items || [];
+    if (!items.length) return '';
+
+    var html = '<div class="section-inner">';
+    html += renderSectionHeader(faq.eyebrow, faq.headline, faq.lead);
+    html += '<div class="faq-list">';
+    for (var i = 0; i < items.length; i++) {
+      html += '<details class="faq-item">';
+      html += '<summary>' + escapeHtml(items[i].question) + '</summary>';
+      html += '<div class="faq-answer">' + escapeHtml(items[i].answer) + '</div>';
+      html += '</details>';
+    }
+    html += '</div></div>';
+    return html;
+  }
+
+  // ===== SCROLL REVEAL =====
+  function attachScrollReveal() {
+    // Skip if no IntersectionObserver (older browsers)
+    if (!('IntersectionObserver' in window)) {
+      var revealEls = document.querySelectorAll('.reveal');
+      for (var i = 0; i < revealEls.length; i++) {
+        revealEls[i].classList.add('visible');
+      }
+      return;
+    }
+    // Add .reveal to all main sections after nav
+    var sections = document.querySelectorAll('main section');
+    for (var j = 0; j < sections.length; j++) {
+      sections[j].classList.add('reveal');
+    }
+    var observer = new IntersectionObserver(function(entries) {
+      for (var k = 0; k < entries.length; k++) {
+        if (entries[k].isIntersecting) {
+          entries[k].target.classList.add('visible');
+          observer.unobserve(entries[k].target);
+        }
+      }
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    var els = document.querySelectorAll('.reveal');
+    for (var m = 0; m < els.length; m++) {
+      observer.observe(els[m]);
+    }
+  }
+
+  // ===== SEO HEAD INJECTION =====
+  function injectSeoTags(content, pageInfo) {
+    var seo = content.seo || {};
+    var brand = content.branding || {};
+    var siteUrl = seo.siteUrl || '';
+    var title = pageInfo.title || (brand.companyName || 'Edgelink') + ' Inc.';
+    var desc = pageInfo.description || seo.defaultDescription || '';
+    var imageUrl = pageInfo.imageUrl || seo.defaultImageUrl || '';
+    var pageUrl = pageInfo.url || siteUrl;
+
+    document.title = title;
+
+    setMeta('name', 'description', desc);
+    setMeta('property', 'og:title', title);
+    setMeta('property', 'og:description', desc);
+    setMeta('property', 'og:type', pageInfo.type || 'website');
+    setMeta('property', 'og:url', pageUrl);
+    if (imageUrl && imageUrl.length > 0) {
+      // Make absolute if relative
+      var absImg = imageUrl.indexOf('http') === 0 ? imageUrl : siteUrl + (siteUrl.slice(-1) === '/' ? '' : '/') + imageUrl;
+      setMeta('property', 'og:image', absImg);
+      setMeta('name', 'twitter:image', absImg);
+    }
+    setMeta('name', 'twitter:card', 'summary_large_image');
+    setMeta('name', 'twitter:title', title);
+    setMeta('name', 'twitter:description', desc);
+    if (seo.twitterHandle) setMeta('name', 'twitter:site', seo.twitterHandle);
+
+    // Organization structured data
+    injectOrgSchema(content);
+  }
+
+  function setMeta(attr, name, value) {
+    if (!value) return;
+    var selector = 'meta[' + attr + '="' + name + '"]';
+    var existing = document.querySelector(selector);
+    if (existing) {
+      existing.setAttribute('content', value);
+    } else {
+      var el = document.createElement('meta');
+      el.setAttribute(attr, name);
+      el.setAttribute('content', value);
+      document.head.appendChild(el);
+    }
+  }
+
+  function injectOrgSchema(content) {
+    var brand = content.branding || {};
+    var seo = content.seo || {};
+    var footer = content.footer || {};
+    var social = (footer.social || {});
+
+    var sameAs = [];
+    var socialKeys = ['facebook', 'instagram', 'linkedin', 'tiktok', 'youtube'];
+    for (var i = 0; i < socialKeys.length; i++) {
+      if (social[socialKeys[i]] && social[socialKeys[i]].length > 0) sameAs.push(social[socialKeys[i]]);
+    }
+
+    var schema = {
+      '@context': 'https://schema.org',
+      '@type': seo.organizationType || 'Organization',
+      'name': (brand.companyName || 'Edgelink') + ' Inc.',
+      'url': seo.siteUrl || '',
+      'description': seo.defaultDescription || '',
+      'address': {
+        '@type': 'PostalAddress',
+        'streetAddress': '719 Bald Hill Rd.',
+        'addressLocality': 'Warwick',
+        'addressRegion': 'RI',
+        'postalCode': '02886',
+        'addressCountry': 'US'
+      }
+    };
+    if (sameAs.length > 0) schema.sameAs = sameAs;
+    if (seo.defaultImageUrl && seo.defaultImageUrl.length > 0) {
+      var imgUrl = seo.defaultImageUrl;
+      if (imgUrl.indexOf('http') !== 0 && seo.siteUrl) {
+        imgUrl = seo.siteUrl + (seo.siteUrl.slice(-1) === '/' ? '' : '/') + imgUrl;
+      }
+      schema.logo = imgUrl;
+    }
+
+    // Remove existing schema if present
+    var existing = document.querySelector('script[type="application/ld+json"][data-edgelink-schema]');
+    if (existing) existing.remove();
+
+    var script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.setAttribute('data-edgelink-schema', 'org');
+    script.textContent = JSON.stringify(schema);
+    document.head.appendChild(script);
+  }
+
   // ===== PUBLIC API =====
   return {
     loadContent: loadContent,
@@ -432,6 +771,12 @@ var EDGELINK = (function() {
     renderBenefits: renderBenefits,
     renderAppProcess: renderAppProcess,
     renderTestimonials: renderTestimonials,
+    renderContactForm: renderContactForm,
+    attachContactFormHandler: attachContactFormHandler,
+    renderNews: renderNews,
+    renderFAQ: renderFAQ,
+    attachScrollReveal: attachScrollReveal,
+    injectSeoTags: injectSeoTags,
     renderFooter: renderFooter,
     escapeHtml: escapeHtml,
     LOCAL_DRAFT_KEY: LOCAL_DRAFT_KEY

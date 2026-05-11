@@ -233,6 +233,8 @@ h2.section-title {
     <button class="tab" data-panel="home-values">Home: Values</button>
     <button class="tab" data-panel="home-locations">Home: Locations</button>
     <button class="tab" data-panel="home-callout">Home: Careers Callout</button>
+    <button class="tab" data-panel="home-contact">Home: Contact Form</button>
+    <button class="tab" data-panel="home-news">Home: News</button>
     <button class="tab" data-panel="careers-hero">Careers: Hero</button>
     <button class="tab" data-panel="careers-why">Careers: Why Edgelink</button>
     <button class="tab" data-panel="careers-growth">Careers: Growth Path</button>
@@ -240,8 +242,10 @@ h2.section-title {
     <button class="tab" data-panel="careers-process">Careers: Application Process</button>
     <button class="tab" data-panel="careers-testimonials">Careers: Testimonials</button>
     <button class="tab" data-panel="careers-states">Careers: Hiring States</button>
+    <button class="tab" data-panel="careers-faq">Careers: FAQ</button>
     <button class="tab" data-panel="careers-apply">Careers: Apply CTA</button>
     <button class="tab" data-panel="social">Social Media</button>
+    <button class="tab" data-panel="seo">SEO</button>
     <button class="tab" data-panel="settings">⚙ Settings</button>
   </div>
 
@@ -365,6 +369,8 @@ h2.section-title {
       case 'home-values':    html = renderHomeValuesPanel(); break;
       case 'home-locations': html = renderHomeLocationsPanel(); break;
       case 'home-callout':   html = renderHomeCalloutPanel(); break;
+      case 'home-contact':   html = renderHomeContactPanel(); break;
+      case 'home-news':      html = renderHomeNewsPanel(); break;
       case 'careers-hero':         html = renderCareersHeroPanel(); break;
       case 'careers-why':          html = renderCareersWhyPanel(); break;
       case 'careers-growth':       html = renderCareersGrowthPanel(); break;
@@ -372,8 +378,10 @@ h2.section-title {
       case 'careers-process':      html = renderCareersProcessPanel(); break;
       case 'careers-testimonials': html = renderCareersTestimonialsPanel(); break;
       case 'careers-states':       html = renderCareersStatesPanel(); break;
+      case 'careers-faq':          html = renderCareersFaqPanel(); break;
       case 'careers-apply':        html = renderCareersApplyPanel(); break;
       case 'social':               html = renderSocialPanel(); break;
+      case 'seo':                  html = renderSeoPanel(); break;
       case 'settings':             html = renderSettingsPanel(); break;
     }
 
@@ -603,6 +611,50 @@ h2.section-title {
       '</div>';
   }
 
+  function renderHomeContactPanel() {
+    var html = '<h2 class="section-title">Home: Contact Form</h2>' +
+      '<p class="section-help">The contact form section near the bottom of the home page.</p>';
+
+    html += '<div class="help-card">' +
+      '<strong>Setting up form submissions (one-time, 5 minutes):</strong><br>' +
+      '1. Go to <a href="https://formspree.io" target="_blank" style="color:#FFB4D9; text-decoration:underline;">formspree.io</a> and sign up (free tier: 50 submissions/month)<br>' +
+      '2. Create a new form, name it "Edgelink Contact"<br>' +
+      '3. Set the recipient email to <code>hr@edgelinkinc.com</code> (or wherever you want submissions to go)<br>' +
+      '4. Copy your form endpoint URL — looks like <code>https://formspree.io/f/xxxxxxxx</code><br>' +
+      '5. Paste it in the "Formspree Endpoint" field below<br>' +
+      '6. Save Draft → Export JSON → upload to GitHub<br>' +
+      '7. Test by submitting the form on your live site' +
+      '</div>';
+
+    html += '<div class="field-group">' +
+      '<h3>Section Header</h3>' +
+      textField('home.contactForm.eyebrow', 'Eyebrow') +
+      textareaField('home.contactForm.headline', 'Headline (use <em>...</em> for italic)') +
+      textareaField('home.contactForm.lead', 'Lead paragraph') +
+      '</div>';
+
+    html += '<div class="field-group">' +
+      '<h3>Form Settings</h3>' +
+      textField('home.contactForm.formspreeEndpoint', 'Formspree Endpoint URL', 'https://formspree.io/f/your-form-id') +
+      textField('home.contactForm.submitButtonLabel', 'Submit Button Label') +
+      textareaField('home.contactForm.successMessage', 'Message shown after successful submit') +
+      '</div>';
+
+    html += renderListPanel('home.contactForm.subjects', 'Subject Dropdown Options', function(subj, idx) {
+      return '<div class="field"><label>Subject</label>' +
+        '<input type="text" data-path="home.contactForm.subjects[' + idx + ']" value="' + escAttr(subj) + '"></div>';
+    }, function() { return 'New Subject'; });
+
+    html += '<div class="field-group">' +
+      '<h3>Contact Info (shown next to form)</h3>' +
+      textField('home.contactForm.contactInfo.email', 'Display Email') +
+      textField('home.contactForm.contactInfo.phoneLabel', 'Phone Display (leave blank to hide)') +
+      textField('home.contactForm.contactInfo.addressLabel', 'Address Display (leave blank to hide)') +
+      '</div>';
+
+    return html;
+  }
+
   // ===== CAREERS PANELS =====
   function renderCareersHeroPanel() {
     return '<h2 class="section-title">Careers: Hero</h2>' +
@@ -704,10 +756,11 @@ h2.section-title {
       '</div>';
 
     html += renderListPanel('careers.testimonials.items', 'Testimonials', function(item, idx) {
-      return textareaField('careers.testimonials.items[' + idx + '].quote', 'Quote') +
+      return imageField('careers.testimonials.items[' + idx + '].imageUrl', 'Photo (optional)', 'Upload a headshot. If empty, shows initial in a colored circle.') +
+        textareaField('careers.testimonials.items[' + idx + '].quote', 'Quote') +
         textField('careers.testimonials.items[' + idx + '].name', 'Name') +
         textField('careers.testimonials.items[' + idx + '].role', 'Role / Title');
-    }, function() { return { quote: '', name: 'Team Member', role: 'RSR' }; });
+    }, function() { return { quote: '', name: 'Team Member', role: 'RSR', imageUrl: '' }; });
 
     return html;
   }
@@ -752,6 +805,76 @@ h2.section-title {
       textField('footer.social.linkedin', 'LinkedIn URL', 'e.g. https://www.linkedin.com/company/edgelink-inc') +
       textField('footer.social.tiktok', 'TikTok URL') +
       textField('footer.social.youtube', 'YouTube URL') +
+      '</div>';
+  }
+
+  function renderHomeNewsPanel() {
+    var html = '<h2 class="section-title">Home: News & Announcements</h2>' +
+      '<p class="section-help">Shows the 3 most recent items on the home page. Items are sorted by date automatically.</p>' +
+      '<div class="field-group">' +
+      textField('home.news.eyebrow', 'Eyebrow') +
+      textareaField('home.news.headline', 'Headline') +
+      textareaField('home.news.lead', 'Lead paragraph') +
+      '</div>';
+
+    html += renderListPanel('home.news.items', 'News Items (most recent shown first)', function(item, idx) {
+      return '<div class="field-row">' +
+        textField('home.news.items[' + idx + '].date', 'Date', 'Format: YYYY-MM-DD (e.g. 2026-05-15)') +
+        textField('home.news.items[' + idx + '].category', 'Category', 'e.g. Hiring, Event, Update') +
+        '</div>' +
+        textField('home.news.items[' + idx + '].title', 'Title') +
+        textareaField('home.news.items[' + idx + '].summary', 'Summary') +
+        imageField('home.news.items[' + idx + '].imageUrl', 'Image (optional)') +
+        textField('home.news.items[' + idx + '].link', 'Link URL (optional)', 'Where the card links to when clicked');
+    }, function() {
+      var today = new Date().toISOString().slice(0, 10);
+      return { date: today, category: 'Update', title: 'New Announcement', summary: '', imageUrl: '', link: '' };
+    });
+
+    return html;
+  }
+
+  function renderCareersFaqPanel() {
+    var html = '<h2 class="section-title">Careers: FAQ</h2>' +
+      '<p class="section-help">Common questions from job applicants. Shows as an expandable Q&A list on the careers page.</p>' +
+      '<div class="field-group">' +
+      textField('careers.faq.eyebrow', 'Eyebrow') +
+      textareaField('careers.faq.headline', 'Headline') +
+      textareaField('careers.faq.lead', 'Lead paragraph') +
+      '</div>';
+
+    html += renderListPanel('careers.faq.items', 'Q&A Items', function(item, idx) {
+      return textareaField('careers.faq.items[' + idx + '].question', 'Question') +
+        textareaField('careers.faq.items[' + idx + '].answer', 'Answer');
+    }, function() { return { question: 'New Question?', answer: '' }; });
+
+    return html;
+  }
+
+  function renderSeoPanel() {
+    return '<h2 class="section-title">SEO Settings</h2>' +
+      '<p class="section-help">Search engine and social sharing settings. These control how your site appears in Google results and when shared on Facebook, LinkedIn, etc.</p>' +
+      '<div class="field-group">' +
+      '<h3>Site Info</h3>' +
+      textField('seo.siteUrl', 'Site URL', 'e.g. https://edgelinkinc.com — used for canonical URLs and social shares') +
+      textareaField('seo.defaultDescription', 'Default Page Description', 'Shown in Google results. Aim for 140-160 characters.') +
+      imageField('seo.defaultImageUrl', 'Default Social Share Image', 'Shows when your site is shared on Facebook/LinkedIn/Twitter. Recommended size: 1200x630px.') +
+      textField('seo.twitterHandle', 'Twitter/X Handle (optional)', 'e.g. @edgelinkinc') +
+      '</div>' +
+      '<div class="field-group">' +
+      '<h3>Schema / Structured Data</h3>' +
+      selectField('seo.organizationType', 'Organization Type', ['Organization', 'Corporation', 'LocalBusiness', 'Store'], 'Used by Google to understand your business type') +
+      '</div>' +
+      '<div class="help-card" style="margin-top: 20px;">' +
+      '<strong>Already included automatically:</strong><br>' +
+      '✓ Sitemap.xml at <code>edgelinkinc.com/sitemap.xml</code><br>' +
+      '✓ Robots.txt at <code>edgelinkinc.com/robots.txt</code> (admin panel hidden from crawlers)<br>' +
+      '✓ OpenGraph + Twitter Card meta tags on all pages<br>' +
+      '✓ Schema.org JSON-LD structured data<br>' +
+      '✓ Privacy Policy + Terms of Use pages<br><br>' +
+      '<strong>Recommended next steps:</strong><br>' +
+      '• <a href="https://search.google.com/search-console" target="_blank" style="color:#FFB4D9;text-decoration:underline;">Submit your site to Google Search Console</a><br>' +
+      '• <a href="https://www.bing.com/webmasters" target="_blank" style="color:#FFB4D9;text-decoration:underline;">Submit your site to Bing Webmaster Tools</a>' +
       '</div>';
   }
 

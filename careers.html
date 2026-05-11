@@ -4,7 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Careers at Edgelink — Build Your Future With Us</title>
-<meta name="description" content="Join Edgelink Inc. — a team-first wireless retail company hiring across Arkansas, Connecticut, Massachusetts, Rhode Island, and Tennessee.">
+<meta name="description" content="Join Edgelink Inc. — a team-first wireless retail company hiring across Arkansas, Connecticut, Massachusetts, Rhode Island, and Tennessee. 100% promote from within.">
+
+<!-- OpenGraph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Careers at Edgelink — Build Your Future">
+<meta property="og:description" content="Hiring across 5 states. Bilingual welcome. No experience required — we'll teach you everything.">
+
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 L28 16 L16 30 L4 16 Z' fill='%235F249F'/%3E%3C/svg%3E">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -24,9 +34,7 @@
 <script>
 (function() {
   'use strict';
-
   var useDraft = window.location.search.indexOf('preview=1') !== -1;
-
   EDGELINK.loadContent(useDraft, function(err, content) {
     if (err) {
       document.getElementById('page-content').innerHTML =
@@ -40,23 +48,24 @@
   });
 
   function renderPage(content) {
-    if (content.branding && content.branding.companyName) {
-      document.title = 'Careers at ' + content.branding.companyName + ' — Build Your Future';
-    }
+    EDGELINK.injectSeoTags(content, {
+      title: 'Careers at ' + (content.branding && content.branding.companyName ? content.branding.companyName : 'Edgelink') + ' — Build Your Future',
+      description: 'Join our team-first wireless retail family. Hiring across 5 states. Bilingual welcome. We promote from within.',
+      url: ((content.seo && content.seo.siteUrl) || '') + '/careers.html',
+      type: 'website'
+    });
 
     document.getElementById('site-nav').innerHTML = EDGELINK.renderNav(content);
 
     var careers = content.careers || {};
     var html = '';
 
-    // Hero
     if (careers.hero) {
       html += '<section class="hero" id="top">';
       html += renderCareersHero(careers.hero);
       html += '</section>';
     }
 
-    // Why Edgelink
     if (careers.whyEdgelink && careers.whyEdgelink.items && careers.whyEdgelink.items.length) {
       html += '<section id="why"><div class="section-inner">';
       html += EDGELINK.renderSectionHeader(careers.whyEdgelink.eyebrow, careers.whyEdgelink.headline, careers.whyEdgelink.lead);
@@ -64,7 +73,6 @@
       html += '</div></section>';
     }
 
-    // Growth Path
     if (careers.growthPath && careers.growthPath.steps && careers.growthPath.steps.length) {
       html += '<section class="about" id="growth"><div class="section-inner">';
       html += EDGELINK.renderSectionHeader(careers.growthPath.eyebrow, careers.growthPath.headline, careers.growthPath.lead);
@@ -72,7 +80,6 @@
       html += '</div></section>';
     }
 
-    // Benefits
     if (careers.benefits && careers.benefits.items && careers.benefits.items.length) {
       html += '<section id="benefits"><div class="section-inner">';
       html += EDGELINK.renderSectionHeader(careers.benefits.eyebrow, careers.benefits.headline, careers.benefits.lead);
@@ -80,7 +87,6 @@
       html += '</div></section>';
     }
 
-    // Application Process
     if (careers.applicationProcess && careers.applicationProcess.steps && careers.applicationProcess.steps.length) {
       html += '<section class="locations-bg" id="process"><div class="section-inner">';
       html += EDGELINK.renderSectionHeader(careers.applicationProcess.eyebrow, careers.applicationProcess.headline, careers.applicationProcess.lead);
@@ -88,7 +94,6 @@
       html += '</div></section>';
     }
 
-    // Testimonials
     if (careers.testimonials && careers.testimonials.items && careers.testimonials.items.length) {
       html += '<section class="testimonials-section" id="testimonials"><div class="section-inner">';
       html += EDGELINK.renderSectionHeader(careers.testimonials.eyebrow, careers.testimonials.headline, '');
@@ -96,7 +101,6 @@
       html += '</div></section>';
     }
 
-    // Hiring States
     if (careers.hiringStates && careers.hiringStates.states && careers.hiringStates.states.length) {
       html += '<section id="states"><div class="section-inner">';
       html += EDGELINK.renderSectionHeader(careers.hiringStates.eyebrow, careers.hiringStates.headline, careers.hiringStates.lead);
@@ -104,7 +108,12 @@
       html += '</div></section>';
     }
 
-    // Apply CTA (final callout)
+    if (careers.faq && careers.faq.enabled !== false && careers.faq.items && careers.faq.items.length) {
+      html += '<section class="faq-section about" id="faq">';
+      html += EDGELINK.renderFAQ(careers.faq);
+      html += '</section>';
+    }
+
     if (careers.applyCta) {
       html += '<section class="callout-section" id="apply">';
       html += EDGELINK.renderCallout(careers.applyCta);
@@ -113,6 +122,7 @@
 
     document.getElementById('page-content').innerHTML = html;
     document.getElementById('site-footer').innerHTML = EDGELINK.renderFooter(content);
+    EDGELINK.attachScrollReveal();
   }
 
   function renderCareersHero(hero) {
@@ -132,11 +142,9 @@
     }
     html += '</div></div>';
 
-    // Hero visual
     if (hero.heroImageUrl && hero.heroImageUrl.length > 0) {
       html += '<div class="hero-image-wrap"><img src="' + hero.heroImageUrl + '" alt="Careers at Edgelink"></div>';
     } else {
-      // Careers-themed phone mockup
       html += renderCareersPhoneMockup();
     }
 

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Edgelink Inc.</title>
+<meta name="description" content="Edgelink Inc. privacy policy. How we collect, use, and protect your information.">
+<meta name="robots" content="index,follow">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 L28 16 L16 30 L4 16 Z' fill='%235F249F'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .legal-page {
+    padding: 160px 40px 80px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .legal-page h1 {
+    font-family: 'Fraunces', serif; font-size: clamp(36px, 5vw, 52px);
+    font-weight: 500; line-height: 1.1; margin-bottom: 8px;
+    color: var(--plum);
+    background: var(--gradient-warm);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .legal-updated {
+    color: var(--gray-text); font-size: 14px; margin-bottom: 48px;
+  }
+  .legal-page h2 {
+    font-family: 'Fraunces', serif; font-size: 24px;
+    color: var(--plum); margin-top: 40px; margin-bottom: 16px;
+  }
+  .legal-page p, .legal-page ul {
+    color: var(--ink); font-size: 16px; line-height: 1.7;
+    margin-bottom: 16px;
+  }
+  .legal-page ul { padding-left: 24px; }
+  .legal-page li { margin-bottom: 8px; }
+  .legal-page a {
+    color: var(--magenta); text-decoration: underline; text-underline-offset: 2px;
+  }
+  @media (max-width: 900px) {
+    .legal-page { padding: 120px 24px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav" id="site-nav"></nav>
+
+<main class="legal-page">
+  <h1>Privacy Policy</h1>
+  <div class="legal-updated">Last updated: May 11, 2026</div>
+
+  <p>Edgelink Inc. ("we," "us," or "our") respects your privacy. This Privacy Policy explains how we collect, use, and protect information when you visit edgelinkinc.com or interact with us.</p>
+
+  <h2>Information We Collect</h2>
+  <p>We may collect the following types of information:</p>
+  <ul>
+    <li><strong>Information you provide directly:</strong> Name, email address, phone number, and any messages you send through our contact form or job application.</li>
+    <li><strong>Automatically collected information:</strong> Basic browser type, device type, and pages visited (via privacy-friendly analytics).</li>
+    <li><strong>Cookies:</strong> Our website does not use tracking cookies. Standard browser session storage is used for site functionality only.</li>
+  </ul>
+
+  <h2>How We Use Your Information</h2>
+  <ul>
+    <li>To respond to your inquiries and provide customer support</li>
+    <li>To process job applications and communicate about employment opportunities</li>
+    <li>To improve our website and services</li>
+    <li>To comply with legal obligations</li>
+  </ul>
+
+  <h2>Information Sharing</h2>
+  <p>We do not sell your personal information. We may share information with:</p>
+  <ul>
+    <li><strong>Service providers</strong> who help us operate (e.g., Paychex Flex for HR/applicant tracking, Formspree for contact form delivery)</li>
+    <li><strong>Legal authorities</strong> when required by law</li>
+    <li><strong>Successors</strong> in the event of a business sale or merger</li>
+  </ul>
+
+  <h2>Third-Party Services</h2>
+  <p>Our website may link to third-party websites or services (such as Paychex Flex for job applications, or Metro by T-Mobile). We are not responsible for the privacy practices of these third parties.</p>
+
+  <h2>Data Security</h2>
+  <p>We take reasonable measures to protect your information from unauthorized access, alteration, or disclosure. However, no method of transmission over the Internet is 100% secure.</p>
+
+  <h2>Your Rights</h2>
+  <p>You have the right to request access to, correction of, or deletion of your personal information. To make a request, contact us at <a href="mailto:hr@edgelinkinc.com">hr@edgelinkinc.com</a>.</p>
+
+  <h2>Children's Privacy</h2>
+  <p>Our website is not directed at children under 13, and we do not knowingly collect personal information from children under 13.</p>
+
+  <h2>Changes to This Policy</h2>
+  <p>We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated "last updated" date.</p>
+
+  <h2>Contact Us</h2>
+  <p>For questions about this Privacy Policy, contact us at:</p>
+  <p>
+    Edgelink Inc.<br>
+    719 Bald Hill Rd.<br>
+    Warwick, RI 02886<br>
+    Email: <a href="mailto:hr@edgelinkinc.com">hr@edgelinkinc.com</a>
+  </p>
+</main>
+
+<footer id="site-footer"></footer>
+
+<script src="shared.js"></script>
+<script>
+(function() {
+  EDGELINK.loadContent(false, function(err, content) {
+    if (err || !content) return;
+    document.getElementById('site-nav').innerHTML = EDGELINK.renderNav(content);
+    document.getElementById('site-footer').innerHTML = EDGELINK.renderFooter(content);
+  });
+})();
+</script>
+
+</body>
+</html>
