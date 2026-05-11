@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edgelink Site Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --purple: #5F249F;
+  --purple-deep: #4A1B5C;
+  --plum: #2D0047;
+  --magenta: #E20074;
+  --bg: #F8F4FB;
+  --white: #fff;
+  --border: #E5D4F0;
+  --text: #1A0A2E;
+  --muted: #6B5B7B;
+  --green: #16a34a;
+  --red: #dc2626;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); }
+
+/* PIN GATE */
+.gate { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.gate-box {
+  background: white; padding: 48px; border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(74,27,92,0.15);
+  max-width: 420px; width: 100%; text-align: center;
+}
+.gate-box h1 {
+  font-family: 'Fraunces', serif; font-size: 28px; color: var(--plum);
+  margin-bottom: 8px;
+}
+.gate-box p { color: var(--muted); margin-bottom: 28px; font-size: 14px; }
+.pin-input {
+  width: 100%; padding: 16px; font-size: 20px; text-align: center;
+  border: 2px solid var(--border); border-radius: 12px;
+  letter-spacing: 0.4em; font-weight: 600;
+  background: var(--bg);
+}
+.pin-input:focus { outline: none; border-color: var(--purple); }
+.pin-error { color: var(--red); margin-top: 12px; font-size: 13px; }
+
+/* APP LAYOUT */
+.app { display: none; min-height: 100vh; }
+.app.active { display: flex; flex-direction: column; }
+
+header.topbar {
+  background: white; border-bottom: 1px solid var(--border);
+  padding: 16px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 50;
+  flex-wrap: wrap; gap: 12px;
+}
+.brand {
+  font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600;
+  color: var(--plum); display: flex; align-items: center; gap: 8px;
+}
+.brand-dot {
+  width: 10px; height: 10px; background: var(--magenta); border-radius: 50%;
+}
+.toolbar { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn {
+  border: none; padding: 10px 18px; border-radius: 999px;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  font-family: inherit; transition: all 0.2s; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-primary { background: var(--plum); color: white; }
+.btn-primary:hover { background: var(--purple-deep); }
+.btn-purple { background: var(--purple); color: white; }
+.btn-purple:hover { background: var(--purple-deep); }
+.btn-magenta { background: var(--magenta); color: white; }
+.btn-ghost { background: white; color: var(--plum); border: 1px solid var(--border); }
+.btn-ghost:hover { border-color: var(--purple); }
+.btn-danger { background: white; color: var(--red); border: 1px solid #fecaca; }
+.btn-danger:hover { background: #fee; }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+
+.tabs {
+  background: white; padding: 0 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex; gap: 4px; overflow-x: auto;
+}
+.tab {
+  padding: 14px 18px; border: none; background: none;
+  font-size: 14px; font-weight: 500; cursor: pointer;
+  color: var(--muted); border-bottom: 3px solid transparent;
+  font-family: inherit; white-space: nowrap;
+}
+.tab.active { color: var(--purple); border-bottom-color: var(--purple); }
+.tab:hover { color: var(--purple); }
+
+.content { padding: 32px 24px; max-width: 1000px; margin: 0 auto; width: 100%; }
+.panel { display: none; }
+.panel.active { display: block; }
+
+h2.section-title {
+  font-family: 'Fraunces', serif; font-size: 24px; color: var(--plum);
+  margin-bottom: 6px;
+}
+.section-help { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
+
+.field-group {
+  background: white; padding: 24px; border-radius: 16px;
+  margin-bottom: 16px; border: 1px solid var(--border);
+}
+.field-group h3 {
+  font-family: 'Fraunces', serif; font-size: 17px;
+  color: var(--plum); margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px;
+}
+.field {
+  margin-bottom: 16px;
+}
+.field:last-child { margin-bottom: 0; }
+.field label {
+  display: block; font-size: 12px; font-weight: 600;
+  color: var(--purple); margin-bottom: 6px;
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+.field input, .field textarea, .field select {
+  width: 100%; padding: 10px 14px;
+  border: 1px solid var(--border); border-radius: 8px;
+  font-size: 14px; font-family: inherit;
+  background: var(--bg); color: var(--text);
+}
+.field input:focus, .field textarea:focus {
+  outline: none; border-color: var(--purple); background: white;
+}
+.field textarea { min-height: 80px; resize: vertical; line-height: 1.5; }
+.field-hint { font-size: 11px; color: var(--muted); margin-top: 4px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+.list-item {
+  background: var(--bg); padding: 16px; border-radius: 12px;
+  margin-bottom: 12px; border: 1px solid var(--border);
+  position: relative;
+}
+.list-item-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 12px;
+}
+.list-item-label {
+  font-size: 11px; font-weight: 700; color: var(--purple);
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+.list-actions { display: flex; gap: 6px; }
+.icon-btn {
+  background: white; border: 1px solid var(--border);
+  width: 26px; height: 26px; border-radius: 6px;
+  cursor: pointer; font-size: 12px; color: var(--muted);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.icon-btn:hover { color: var(--purple); border-color: var(--purple); }
+.icon-btn.danger:hover { color: var(--red); border-color: #fecaca; }
+.add-btn {
+  background: white; border: 2px dashed var(--border);
+  padding: 14px; border-radius: 12px; cursor: pointer;
+  font-size: 13px; font-weight: 600; color: var(--purple);
+  width: 100%; transition: all 0.2s; font-family: inherit;
+}
+.add-btn:hover { border-color: var(--purple); background: var(--bg); }
+
+.status-banner {
+  position: fixed; bottom: 24px; right: 24px;
+  padding: 14px 20px; border-radius: 12px;
+  background: var(--plum); color: white;
+  font-size: 13px; font-weight: 600;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  z-index: 100; display: none;
+}
+.status-banner.show { display: block; animation: slideIn 0.3s; }
+.status-banner.success { background: var(--green); }
+.status-banner.error { background: var(--red); }
+@keyframes slideIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.help-card {
+  background: linear-gradient(135deg, var(--purple), var(--purple-deep));
+  color: white; padding: 20px; border-radius: 14px;
+  margin-bottom: 24px; font-size: 14px; line-height: 1.6;
+}
+.help-card strong { color: #E5D4F0; }
+.help-card code {
+  background: rgba(255,255,255,0.15); padding: 2px 6px;
+  border-radius: 4px; font-size: 12px;
+}
+
+@media (max-width: 700px) {
+  .field-row, .field-row-3 { grid-template-columns: 1fr; }
+  .content { padding: 20px 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- PIN GATE -->
+<div class="gate" id="gate">
+  <div class="gate-box">
+    <h1>Edgelink Admin</h1>
+    <p>Enter your PIN to edit the website</p>
+    <input type="password" class="pin-input" id="pin-input" maxlength="4" inputmode="numeric" autofocus>
+    <div class="pin-error" id="pin-error"></div>
+  </div>
+</div>
+
+<!-- ADMIN APP -->
+<div class="app" id="app">
+  <header class="topbar">
+    <div class="brand"><span class="brand-dot"></span> Edgelink Site Admin <span id="user-label" style="font-size:12px; font-weight:500; color: var(--muted); margin-left: 8px;"></span></div>
+    <div class="toolbar">
+      <button class="btn btn-ghost" id="btn-reload">Reload from Live</button>
+      <button class="btn btn-ghost" id="btn-preview">Preview Draft ↗</button>
+      <button class="btn btn-purple" id="btn-save-draft">Save Draft</button>
+      <button class="btn btn-magenta" id="btn-export">⬇ Export JSON</button>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" data-panel="branding">Branding</button>
+    <button class="tab" data-panel="nav">Nav / Footer</button>
+    <button class="tab" data-panel="home-hero">Home: Hero</button>
+    <button class="tab" data-panel="home-stats">Home: Stats</button>
+    <button class="tab" data-panel="home-about">Home: About</button>
+    <button class="tab" data-panel="home-services">Home: Services</button>
+    <button class="tab" data-panel="home-values">Home: Values</button>
+    <button class="tab" data-panel="home-locations">Home: Locations</button>
+    <button class="tab" data-panel="home-callout">Home: Careers Callout</button>
+    <button class="tab" data-panel="careers-hero">Careers: Hero</button>
+    <button class="tab" data-panel="careers-why">Careers: Why Edgelink</button>
+    <button class="tab" data-panel="careers-growth">Careers: Growth Path</button>
+    <button class="tab" data-panel="careers-benefits">Careers: Benefits</button>
+    <button class="tab" data-panel="careers-process">Careers: Application Process</button>
+    <button class="tab" data-panel="careers-testimonials">Careers: Testimonials</button>
+    <button class="tab" data-panel="careers-states">Careers: Hiring States</button>
+    <button class="tab" data-panel="careers-apply">Careers: Apply CTA</button>
+  </div>
+
+  <div class="content">
+    <div class="help-card" id="help-card">
+      <strong>How this works:</strong> Edit any field, then click <strong>Save Draft</strong>. Use <strong>Preview Draft</strong> to see changes before publishing. When ready, click <strong>Export JSON</strong>, then upload the file as <code>content.json</code> to your GitHub repo to publish to the live site.
+    </div>
+
+    <div id="panels"></div>
+  </div>
+</div>
+
+<div class="status-banner" id="status"></div>
+
+<script>
+(function() {
+  'use strict';
+
+  var PINS = {
+    '3833': 'Cheryl',
+    '5635': 'Joel',
+    '6866': 'Sasha'
+  };
+  var LOCAL_DRAFT_KEY = 'edgelink_content_draft';
+  var DEFAULT_CONTENT_URL = 'content.json';
+
+  var state = {
+    content: null,
+    currentPanel: 'branding',
+    user: null
+  };
+
+  // ===== PIN GATE =====
+  var pinInput = document.getElementById('pin-input');
+  var pinError = document.getElementById('pin-error');
+
+  pinInput.addEventListener('input', function() {
+    if (pinInput.value.length === 4) {
+      var name = PINS[pinInput.value];
+      if (name) {
+        state.user = name;
+        document.getElementById('user-label').textContent = '· ' + name;
+        document.getElementById('gate').style.display = 'none';
+        document.getElementById('app').classList.add('active');
+        loadContent();
+      } else {
+        pinError.textContent = 'Invalid PIN';
+        pinInput.value = '';
+      }
+    }
+  });
+
+  // ===== LOAD CONTENT =====
+  function loadContent() {
+    // Try draft first
+    var draft = localStorage.getItem(LOCAL_DRAFT_KEY);
+    if (draft) {
+      try {
+        state.content = JSON.parse(draft);
+        showStatus('Loaded draft from local storage', 'success');
+        renderCurrentPanel();
+        return;
+      } catch (e) {}
+    }
+    // Fetch live
+    fetchLive();
+  }
+
+  function fetchLive() {
+    fetch(DEFAULT_CONTENT_URL + '?t=' + Date.now())
+      .then(function(r) {
+        if (!r.ok) throw new Error('content.json not found');
+        return r.json();
+      })
+      .then(function(data) {
+        state.content = data;
+        showStatus('Loaded live content', 'success');
+        renderCurrentPanel();
+      })
+      .catch(function(err) {
+        showStatus('Failed to load content.json: ' + err.message, 'error');
+      });
+  }
+
+  // ===== TABS =====
+  var tabs = document.querySelectorAll('.tab');
+  for (var i = 0; i < tabs.length; i++) {
+    tabs[i].addEventListener('click', function(e) {
+      var panelKey = e.target.getAttribute('data-panel');
+      switchTab(panelKey);
+    });
+  }
+
+  function switchTab(panelKey) {
+    state.currentPanel = panelKey;
+    var allTabs = document.querySelectorAll('.tab');
+    for (var i = 0; i < allTabs.length; i++) {
+      if (allTabs[i].getAttribute('data-panel') === panelKey) {
+        allTabs[i].classList.add('active');
+      } else {
+        allTabs[i].classList.remove('active');
+      }
+    }
+    renderCurrentPanel();
+  }
+
+  // ===== RENDER PANEL =====
+  function renderCurrentPanel() {
+    if (!state.content) return;
+    var panels = document.getElementById('panels');
+    var panelKey = state.currentPanel;
+    var html = '';
+
+    switch (panelKey) {
+      case 'branding':       html = renderBranding(); break;
+      case 'nav':            html = renderNavFooter(); break;
+      case 'home-hero':      html = renderHomeHeroPanel(); break;
+      case 'home-stats':     html = renderHomeStatsPanel(); break;
+      case 'home-about':     html = renderHomeAboutPanel(); break;
+      case 'home-services':  html = renderHomeServicesPanel(); break;
+      case 'home-values':    html = renderHomeValuesPanel(); break;
+      case 'home-locations': html = renderHomeLocationsPanel(); break;
+      case 'home-callout':   html = renderHomeCalloutPanel(); break;
+      case 'careers-hero':         html = renderCareersHeroPanel(); break;
+      case 'careers-why':          html = renderCareersWhyPanel(); break;
+      case 'careers-growth':       html = renderCareersGrowthPanel(); break;
+      case 'careers-benefits':     html = renderCareersBenefitsPanel(); break;
+      case 'careers-process':      html = renderCareersProcessPanel(); break;
+      case 'careers-testimonials': html = renderCareersTestimonialsPanel(); break;
+      case 'careers-states':       html = renderCareersStatesPanel(); break;
+      case 'careers-apply':        html = renderCareersApplyPanel(); break;
+    }
+
+    panels.innerHTML = html;
+    bindFieldEvents();
+  }
+
+  // ===== FIELD HELPERS =====
+  function textField(path, label, hint) {
+    var val = getPath(state.content, path) || '';
+    return '<div class="field"><label>' + esc(label) + '</label>' +
+      '<input type="text" data-path="' + path + '" value="' + escAttr(val) + '">' +
+      (hint ? '<div class="field-hint">' + esc(hint) + '</div>' : '') + '</div>';
+  }
+
+  function textareaField(path, label, hint) {
+    var val = getPath(state.content, path) || '';
+    return '<div class="field"><label>' + esc(label) + '</label>' +
+      '<textarea data-path="' + path + '">' + esc(val) + '</textarea>' +
+      (hint ? '<div class="field-hint">' + esc(hint) + '</div>' : '') + '</div>';
+  }
+
+  function selectField(path, label, options, hint) {
+    var val = getPath(state.content, path) || '';
+    var html = '<div class="field"><label>' + esc(label) + '</label>' +
+      '<select data-path="' + path + '">';
+    for (var i = 0; i < options.length; i++) {
+      var sel = options[i] === val ? ' selected' : '';
+      html += '<option value="' + escAttr(options[i]) + '"' + sel + '>' + esc(options[i]) + '</option>';
+    }
+    html += '</select>' + (hint ? '<div class="field-hint">' + esc(hint) + '</div>' : '') + '</div>';
+    return html;
+  }
+
+  // ===== PANELS =====
+  function renderBranding() {
+    return '<h2 class="section-title">Branding</h2>' +
+      '<p class="section-help">Company-wide identity settings.</p>' +
+      '<div class="field-group">' +
+      textField('branding.companyName', 'Company Name', 'Shown in logo and titles') +
+      textField('branding.tagline', 'Tagline', 'Used as the hero eyebrow on home page') +
+      '</div>';
+  }
+
+  function renderNavFooter() {
+    var html = '<h2 class="section-title">Navigation</h2>' +
+      '<p class="section-help">Top menu links and the "Get in Touch" button.</p>';
+    html += renderListPanel('nav.links', 'Nav Links', function(item, idx) {
+      return textField('nav.links[' + idx + '].label', 'Label') +
+        textField('nav.links[' + idx + '].href', 'Link URL', 'e.g. index.html#about or careers.html');
+    }, function() { return { label: 'New Link', href: '#' }; });
+
+    html += '<div class="field-group">' +
+      '<h3>Nav CTA Button</h3>' +
+      textField('nav.ctaLabel', 'Button Label') +
+      textField('nav.ctaHref', 'Button Link URL') +
+      '</div>';
+
+    html += '<h2 class="section-title" style="margin-top: 32px;">Footer</h2>';
+    html += '<div class="field-group">' +
+      textareaField('footer.tagline', 'Footer Tagline') +
+      textField('footer.copyright', 'Copyright Line') +
+      textField('footer.legal', 'Legal Line') +
+      '</div>';
+
+    html += renderListPanel('footer.columns', 'Footer Columns', function(col, idx) {
+      var inner = textField('footer.columns[' + idx + '].heading', 'Column Heading');
+      inner += renderNestedList('footer.columns[' + idx + '].links', 'Links', function(link, j) {
+        return textField('footer.columns[' + idx + '].links[' + j + '].label', 'Label') +
+          textField('footer.columns[' + idx + '].links[' + j + '].href', 'URL');
+      }, function() { return { label: 'New Link', href: '#' }; });
+      return inner;
+    }, function() { return { heading: 'New Column', links: [] }; });
+
+    return html;
+  }
+
+  function renderHomeHeroPanel() {
+    var html = '<h2 class="section-title">Home: Hero</h2>' +
+      '<p class="section-help">The big section at the top of the home page.</p>' +
+      '<div class="field-group">' +
+      textField('home.hero.eyebrow', 'Eyebrow (small text above headline)') +
+      textareaField('home.hero.headline', 'Headline', 'Use <em>...</em> for the italic purple highlight') +
+      textareaField('home.hero.subhead', 'Subheadline') +
+      textField('home.hero.heroImageUrl', 'Hero Image URL (optional)', 'Paste an image URL. Leave blank to use the default phone mockup.') +
+      '</div>';
+
+    html += renderListPanel('home.hero.stats', 'Hero Stat Pills', function(stat, idx) {
+      return '<div class="field-row">' +
+        textField('home.hero.stats[' + idx + '].value', 'Value (e.g. 35+)') +
+        textField('home.hero.stats[' + idx + '].label', 'Label (e.g. Locations)') +
+        '</div>';
+    }, function() { return { value: '0', label: 'New Stat' }; });
+
+    html += '<div class="field-group"><h3>Hero Buttons</h3>' +
+      '<div class="field-row">' +
+      textField('home.hero.primaryCtaLabel', 'Primary Button Label') +
+      textField('home.hero.primaryCtaHref', 'Primary Button URL') +
+      '</div>' +
+      '<div class="field-row">' +
+      textField('home.hero.secondaryCtaLabel', 'Secondary Button Label') +
+      textField('home.hero.secondaryCtaHref', 'Secondary Button URL') +
+      '</div></div>';
+
+    return html;
+  }
+
+  function renderHomeStatsPanel() {
+    var html = '<h2 class="section-title">Home: Stats Strip</h2>' +
+      '<p class="section-help">The 4 large stats shown right under the hero.</p>';
+    html += renderListPanel('home.stats', 'Stats', function(stat, idx) {
+      return '<div class="field-row">' +
+        textField('home.stats[' + idx + '].value', 'Value') +
+        textField('home.stats[' + idx + '].label', 'Label') +
+        '</div>';
+    }, function() { return { value: '0', label: 'New Stat' }; });
+    return html;
+  }
+
+  function renderHomeAboutPanel() {
+    var html = '<h2 class="section-title">Home: About Section</h2>' +
+      '<p class="section-help">The "About Edgelink" section with image and paragraphs.</p>' +
+      '<div class="field-group">' +
+      textField('home.about.eyebrow', 'Eyebrow') +
+      textareaField('home.about.headline', 'Headline (use <em>...</em> for italic)') +
+      textareaField('home.about.quote', 'Quote (shown if no image)') +
+      textField('home.about.imageUrl', 'Image URL (optional)', 'Replaces the purple quote panel') +
+      '</div>';
+
+    html += renderListPanel('home.about.paragraphs', 'Paragraphs', function(para, idx) {
+      // Paragraphs is an array of strings, so we use a special path syntax
+      return '<div class="field"><label>Paragraph</label>' +
+        '<textarea data-path="home.about.paragraphs[' + idx + ']">' + esc(para) + '</textarea></div>';
+    }, function() { return ''; });
+
+    return html;
+  }
+
+  function renderHomeServicesPanel() {
+    var html = '<h2 class="section-title">Home: What We Do</h2>' +
+      '<p class="section-help">The 3-card section about what Edgelink does.</p>' +
+      '<div class="field-group">' +
+      textField('home.services.eyebrow', 'Eyebrow') +
+      textareaField('home.services.headline', 'Headline') +
+      textareaField('home.services.lead', 'Lead paragraph') +
+      '</div>';
+
+    html += renderListPanel('home.services.items', 'Service Cards', function(item, idx) {
+      return selectField('home.services.items[' + idx + '].icon', 'Icon', ['store','people','growth','training','bilingual']) +
+        textField('home.services.items[' + idx + '].title', 'Title') +
+        textareaField('home.services.items[' + idx + '].description', 'Description');
+    }, function() { return { icon: 'store', title: 'New Service', description: '' }; });
+
+    return html;
+  }
+
+  function renderHomeValuesPanel() {
+    var html = '<h2 class="section-title">Home: Our Values</h2>' +
+      '<p class="section-help">The 4-card values section.</p>' +
+      '<div class="field-group">' +
+      textField('home.values.eyebrow', 'Eyebrow') +
+      textareaField('home.values.headline', 'Headline') +
+      textareaField('home.values.lead', 'Lead paragraph') +
+      '</div>';
+
+    html += renderListPanel('home.values.items', 'Value Cards', function(item, idx) {
+      return textField('home.values.items[' + idx + '].label', 'Small Label (eyebrow on card)') +
+        textField('home.values.items[' + idx + '].title', 'Title') +
+        textareaField('home.values.items[' + idx + '].description', 'Description');
+    }, function() { return { label: 'New', title: 'New Value', description: '' }; });
+
+    return html;
+  }
+
+  function renderHomeLocationsPanel() {
+    var html = '<h2 class="section-title">Home: Locations</h2>' +
+      '<p class="section-help">States where Edgelink operates.</p>' +
+      '<div class="field-group">' +
+      textField('home.locations.eyebrow', 'Eyebrow') +
+      textareaField('home.locations.headline', 'Headline') +
+      textareaField('home.locations.lead', 'Lead paragraph') +
+      '</div>';
+
+    html += renderListPanel('home.locations.states', 'States', function(state, idx) {
+      return '<div class="field-row">' +
+        textField('home.locations.states[' + idx + '].abbr', 'Abbreviation (e.g. RI)') +
+        textField('home.locations.states[' + idx + '].name', 'Full Name') +
+        '</div>';
+    }, function() { return { abbr: 'XX', name: 'New State' }; });
+
+    return html;
+  }
+
+  function renderHomeCalloutPanel() {
+    return '<h2 class="section-title">Home: Careers Callout</h2>' +
+      '<p class="section-help">The dark purple "Now Hiring" callout near the bottom of home.</p>' +
+      '<div class="field-group">' +
+      textField('home.careersCallout.eyebrow', 'Eyebrow') +
+      textareaField('home.careersCallout.headline', 'Headline') +
+      textareaField('home.careersCallout.description', 'Description') +
+      textField('home.careersCallout.ctaLabel', 'Button Label') +
+      textField('home.careersCallout.ctaHref', 'Button URL') +
+      '</div>';
+  }
+
+  // ===== CAREERS PANELS =====
+  function renderCareersHeroPanel() {
+    return '<h2 class="section-title">Careers: Hero</h2>' +
+      '<p class="section-help">The top section candidates see after clicking your Paychex ad.</p>' +
+      '<div class="field-group">' +
+      textField('careers.hero.eyebrow', 'Eyebrow') +
+      textareaField('careers.hero.headline', 'Headline (use <em>...</em> for italic)') +
+      textareaField('careers.hero.subhead', 'Subheadline') +
+      textField('careers.hero.heroImageUrl', 'Hero Image URL (optional)') +
+      '</div>' +
+      '<div class="field-group"><h3>Buttons</h3>' +
+      '<div class="field-row">' +
+      textField('careers.hero.primaryCtaLabel', 'Primary Button Label') +
+      textField('careers.hero.primaryCtaHref', 'Primary Button URL') +
+      '</div>' +
+      '<div class="field-row">' +
+      textField('careers.hero.secondaryCtaLabel', 'Secondary Button Label') +
+      textField('careers.hero.secondaryCtaHref', 'Secondary Button URL') +
+      '</div></div>';
+  }
+
+  function renderCareersWhyPanel() {
+    var html = '<h2 class="section-title">Careers: Why Edgelink</h2>' +
+      '<p class="section-help">The 4 cards explaining what makes Edgelink different.</p>' +
+      '<div class="field-group">' +
+      textField('careers.whyEdgelink.eyebrow', 'Eyebrow') +
+      textareaField('careers.whyEdgelink.headline', 'Headline') +
+      textareaField('careers.whyEdgelink.lead', 'Lead paragraph') +
+      '</div>';
+
+    html += renderListPanel('careers.whyEdgelink.items', 'Why Cards', function(item, idx) {
+      return selectField('careers.whyEdgelink.items[' + idx + '].icon', 'Icon', ['store','people','growth','training','bilingual']) +
+        textField('careers.whyEdgelink.items[' + idx + '].title', 'Title') +
+        textareaField('careers.whyEdgelink.items[' + idx + '].description', 'Description');
+    }, function() { return { icon: 'people', title: 'New Reason', description: '' }; });
+
+    return html;
+  }
+
+  function renderCareersGrowthPanel() {
+    var html = '<h2 class="section-title">Careers: Growth Path</h2>' +
+      '<p class="section-help">The career progression steps (RSR → Manager).</p>' +
+      '<div class="field-group">' +
+      textField('careers.growthPath.eyebrow', 'Eyebrow') +
+      textareaField('careers.growthPath.headline', 'Headline') +
+      textareaField('careers.growthPath.lead', 'Lead paragraph') +
+      '</div>';
+
+    html += renderListPanel('careers.growthPath.steps', 'Growth Steps', function(step, idx) {
+      return textField('careers.growthPath.steps[' + idx + '].title', 'Title') +
+        textField('careers.growthPath.steps[' + idx + '].subtitle', 'Subtitle') +
+        textareaField('careers.growthPath.steps[' + idx + '].description', 'Description');
+    }, function() { return { title: 'New Step', subtitle: '', description: '' }; });
+
+    return html;
+  }
+
+  function renderCareersBenefitsPanel() {
+    var html = '<h2 class="section-title">Careers: Benefits</h2>' +
+      '<p class="section-help">List of benefits/perks.</p>' +
+      '<div class="field-group">' +
+      textField('careers.benefits.eyebrow', 'Eyebrow') +
+      textareaField('careers.benefits.headline', 'Headline') +
+      textareaField('careers.benefits.lead', 'Lead paragraph') +
+      '</div>';
+
+    html += renderListPanel('careers.benefits.items', 'Benefit Items', function(item, idx) {
+      return '<div class="field"><label>Benefit</label>' +
+        '<input type="text" data-path="careers.benefits.items[' + idx + ']" value="' + escAttr(item) + '"></div>';
+    }, function() { return 'New benefit'; });
+
+    return html;
+  }
+
+  function renderCareersProcessPanel() {
+    var html = '<h2 class="section-title">Careers: Application Process</h2>' +
+      '<p class="section-help">The 4 steps from application to onboarding.</p>' +
+      '<div class="field-group">' +
+      textField('careers.applicationProcess.eyebrow', 'Eyebrow') +
+      textareaField('careers.applicationProcess.headline', 'Headline') +
+      textareaField('careers.applicationProcess.lead', 'Lead paragraph') +
+      '</div>';
+
+    html += renderListPanel('careers.applicationProcess.steps', 'Steps', function(step, idx) {
+      return textField('careers.applicationProcess.steps[' + idx + '].number', 'Step Number') +
+        textField('careers.applicationProcess.steps[' + idx + '].title', 'Title') +
+        textareaField('careers.applicationProcess.steps[' + idx + '].description', 'Description');
+    }, function() { return { number: '1', title: 'New Step', description: '' }; });
+
+    return html;
+  }
+
+  function renderCareersTestimonialsPanel() {
+    var html = '<h2 class="section-title">Careers: Testimonials</h2>' +
+      '<p class="section-help">Quotes from team members.</p>' +
+      '<div class="field-group">' +
+      textField('careers.testimonials.eyebrow', 'Eyebrow') +
+      textareaField('careers.testimonials.headline', 'Headline') +
+      '</div>';
+
+    html += renderListPanel('careers.testimonials.items', 'Testimonials', function(item, idx) {
+      return textareaField('careers.testimonials.items[' + idx + '].quote', 'Quote') +
+        textField('careers.testimonials.items[' + idx + '].name', 'Name') +
+        textField('careers.testimonials.items[' + idx + '].role', 'Role / Title');
+    }, function() { return { quote: '', name: 'Team Member', role: 'RSR' }; });
+
+    return html;
+  }
+
+  function renderCareersStatesPanel() {
+    var html = '<h2 class="section-title">Careers: Hiring States</h2>' +
+      '<p class="section-help">States where Edgelink is currently hiring.</p>' +
+      '<div class="field-group">' +
+      textField('careers.hiringStates.eyebrow', 'Eyebrow') +
+      textareaField('careers.hiringStates.headline', 'Headline') +
+      textareaField('careers.hiringStates.lead', 'Lead paragraph') +
+      '</div>';
+
+    html += renderListPanel('careers.hiringStates.states', 'States', function(state, idx) {
+      return '<div class="field-row">' +
+        textField('careers.hiringStates.states[' + idx + '].abbr', 'Abbreviation') +
+        textField('careers.hiringStates.states[' + idx + '].name', 'Full Name') +
+        '</div>';
+    }, function() { return { abbr: 'XX', name: 'New State' }; });
+
+    return html;
+  }
+
+  function renderCareersApplyPanel() {
+    return '<h2 class="section-title">Careers: Apply CTA</h2>' +
+      '<p class="section-help">The final "Apply Now" callout. URL should point to your Paychex Flex careers page.</p>' +
+      '<div class="field-group">' +
+      textField('careers.applyCta.eyebrow', 'Eyebrow') +
+      textareaField('careers.applyCta.headline', 'Headline') +
+      textareaField('careers.applyCta.description', 'Description') +
+      textField('careers.applyCta.ctaLabel', 'Button Label') +
+      textField('careers.applyCta.ctaHref', 'Paychex Apply URL', 'Paste your Paychex Flex careers portal URL here') +
+      '</div>';
+  }
+
+  // ===== LIST HELPERS =====
+  function renderListPanel(path, title, itemRenderer, newItemFactory) {
+    var items = getPath(state.content, path) || [];
+    var html = '<div class="field-group"><h3>' + esc(title) + '</h3>';
+    for (var i = 0; i < items.length; i++) {
+      html += '<div class="list-item">';
+      html += '<div class="list-item-header">';
+      html += '<span class="list-item-label">#' + (i + 1) + '</span>';
+      html += '<div class="list-actions">';
+      if (i > 0) html += '<button class="icon-btn" data-action="move-up" data-list="' + path + '" data-idx="' + i + '" title="Move up">↑</button>';
+      if (i < items.length - 1) html += '<button class="icon-btn" data-action="move-down" data-list="' + path + '" data-idx="' + i + '" title="Move down">↓</button>';
+      html += '<button class="icon-btn danger" data-action="delete" data-list="' + path + '" data-idx="' + i + '" title="Delete">✕</button>';
+      html += '</div></div>';
+      html += itemRenderer(items[i], i);
+      html += '</div>';
+    }
+    html += '<button class="add-btn" data-action="add" data-list="' + path + '">+ Add Item</button>';
+    html += '</div>';
+    return html;
+  }
+
+  function renderNestedList(path, title, itemRenderer, newItemFactory) {
+    return renderListPanel(path, title, itemRenderer, newItemFactory);
+  }
+
+  // ===== BIND EVENTS =====
+  function bindFieldEvents() {
+    var inputs = document.querySelectorAll('[data-path]');
+    for (var i = 0; i < inputs.length; i++) {
+      inputs[i].addEventListener('input', function(e) {
+        var path = e.target.getAttribute('data-path');
+        setPath(state.content, path, e.target.value);
+      });
+    }
+
+    var actionBtns = document.querySelectorAll('[data-action]');
+    for (var j = 0; j < actionBtns.length; j++) {
+      actionBtns[j].addEventListener('click', function(e) {
+        var btn = e.target;
+        var action = btn.getAttribute('data-action');
+        var listPath = btn.getAttribute('data-list');
+        var idx = parseInt(btn.getAttribute('data-idx'), 10);
+
+        var list = getPath(state.content, listPath);
+        if (!list) return;
+
+        if (action === 'add') {
+          // Determine new item shape based on current list contents
+          var sample = list.length > 0 ? list[list.length - 1] : null;
+          list.push(buildNewItem(sample));
+        } else if (action === 'delete') {
+          if (confirm('Delete this item?')) {
+            list.splice(idx, 1);
+          } else { return; }
+        } else if (action === 'move-up') {
+          if (idx > 0) {
+            var tmp = list[idx];
+            list[idx] = list[idx - 1];
+            list[idx - 1] = tmp;
+          }
+        } else if (action === 'move-down') {
+          if (idx < list.length - 1) {
+            var tmp2 = list[idx];
+            list[idx] = list[idx + 1];
+            list[idx + 1] = tmp2;
+          }
+        }
+        renderCurrentPanel();
+      });
+    }
+  }
+
+  function buildNewItem(sample) {
+    if (sample === null || sample === undefined) return '';
+    if (typeof sample === 'string') return 'New item';
+    if (typeof sample === 'object') {
+      var newObj = {};
+      for (var key in sample) {
+        if (sample.hasOwnProperty(key)) {
+          if (Array.isArray(sample[key])) {
+            newObj[key] = [];
+          } else if (typeof sample[key] === 'object') {
+            newObj[key] = {};
+          } else {
+            newObj[key] = '';
+          }
+        }
+      }
+      return newObj;
+    }
+    return '';
+  }
+
+  // ===== PATH HELPERS =====
+  // Parse path like "home.about.paragraphs[2]" or "footer.columns[0].links[1].label"
+  function parsePath(path) {
+    var parts = [];
+    var regex = /([^.\[\]]+)|\[(\d+)\]/g;
+    var match;
+    while ((match = regex.exec(path)) !== null) {
+      if (match[1] !== undefined) parts.push(match[1]);
+      else if (match[2] !== undefined) parts.push(parseInt(match[2], 10));
+    }
+    return parts;
+  }
+
+  function getPath(obj, path) {
+    var parts = parsePath(path);
+    var cur = obj;
+    for (var i = 0; i < parts.length; i++) {
+      if (cur === null || cur === undefined) return undefined;
+      cur = cur[parts[i]];
+    }
+    return cur;
+  }
+
+  function setPath(obj, path, value) {
+    var parts = parsePath(path);
+    var cur = obj;
+    for (var i = 0; i < parts.length - 1; i++) {
+      if (cur[parts[i]] === undefined || cur[parts[i]] === null) {
+        cur[parts[i]] = (typeof parts[i + 1] === 'number') ? [] : {};
+      }
+      cur = cur[parts[i]];
+    }
+    cur[parts[parts.length - 1]] = value;
+  }
+
+  // ===== TOOLBAR ACTIONS =====
+  document.getElementById('btn-save-draft').addEventListener('click', function() {
+    try {
+      localStorage.setItem(LOCAL_DRAFT_KEY, JSON.stringify(state.content));
+      showStatus('Draft saved (' + state.user + ')', 'success');
+    } catch (e) {
+      showStatus('Save failed: ' + e.message, 'error');
+    }
+  });
+
+  document.getElementById('btn-preview').addEventListener('click', function() {
+    // Make sure draft is saved before preview
+    try {
+      localStorage.setItem(LOCAL_DRAFT_KEY, JSON.stringify(state.content));
+    } catch (e) {}
+    window.open('index.html?preview=1', '_blank');
+  });
+
+  document.getElementById('btn-reload').addEventListener('click', function() {
+    if (confirm('This will discard your local draft and reload from the live content.json. Continue?')) {
+      localStorage.removeItem(LOCAL_DRAFT_KEY);
+      fetchLive();
+    }
+  });
+
+  document.getElementById('btn-export').addEventListener('click', function() {
+    var json = JSON.stringify(state.content, null, 2);
+    var blob = new Blob([json], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'content.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    showStatus('content.json downloaded. Upload to your GitHub repo to publish.', 'success');
+  });
+
+  // ===== UTILITIES =====
+  function esc(s) {
+    if (s === null || s === undefined) return '';
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  function escAttr(s) {
+    if (s === null || s === undefined) return '';
+    return String(s).replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  }
+
+  var statusTimeout;
+  function showStatus(msg, type) {
+    var el = document.getElementById('status');
+    el.textContent = msg;
+    el.className = 'status-banner show ' + (type || '');
+    if (statusTimeout) clearTimeout(statusTimeout);
+    statusTimeout = setTimeout(function() {
+      el.classList.remove('show');
+    }, 3500);
+  }
+})();
+</script>
+
+</body>
+</html>

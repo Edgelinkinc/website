@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Careers at Edgelink — Build Your Future With Us</title>
+<meta name="description" content="Join Edgelink Inc. — a team-first wireless retail company hiring across Arkansas, Connecticut, Massachusetts, Rhode Island, and Tennessee.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="site-nav" id="site-nav"></nav>
+
+<main id="page-content">
+  <div class="loading">Loading…</div>
+</main>
+
+<footer id="site-footer"></footer>
+
+<script src="shared.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  var useDraft = window.location.search.indexOf('preview=1') !== -1;
+
+  EDGELINK.loadContent(useDraft, function(err, content) {
+    if (err) {
+      document.getElementById('page-content').innerHTML =
+        '<div class="loading" style="flex-direction: column; gap: 16px;">' +
+        '<div>Could not load content.json</div>' +
+        '<div style="font-size: 13px; color: #999;">' + (err.message || 'Error') + '</div>' +
+        '</div>';
+      return;
+    }
+    renderPage(content);
+  });
+
+  function renderPage(content) {
+    if (content.branding && content.branding.companyName) {
+      document.title = 'Careers at ' + content.branding.companyName + ' — Build Your Future';
+    }
+
+    document.getElementById('site-nav').innerHTML = EDGELINK.renderNav(content);
+
+    var careers = content.careers || {};
+    var html = '';
+
+    // Hero
+    if (careers.hero) {
+      html += '<section class="hero" id="top">';
+      html += renderCareersHero(careers.hero);
+      html += '</section>';
+    }
+
+    // Why Edgelink
+    if (careers.whyEdgelink && careers.whyEdgelink.items && careers.whyEdgelink.items.length) {
+      html += '<section id="why"><div class="section-inner">';
+      html += EDGELINK.renderSectionHeader(careers.whyEdgelink.eyebrow, careers.whyEdgelink.headline, careers.whyEdgelink.lead);
+      html += EDGELINK.renderCards(careers.whyEdgelink.items, { cols: 4 });
+      html += '</div></section>';
+    }
+
+    // Growth Path
+    if (careers.growthPath && careers.growthPath.steps && careers.growthPath.steps.length) {
+      html += '<section class="about" id="growth"><div class="section-inner">';
+      html += EDGELINK.renderSectionHeader(careers.growthPath.eyebrow, careers.growthPath.headline, careers.growthPath.lead);
+      html += EDGELINK.renderGrowthPath(careers.growthPath.steps);
+      html += '</div></section>';
+    }
+
+    // Benefits
+    if (careers.benefits && careers.benefits.items && careers.benefits.items.length) {
+      html += '<section id="benefits"><div class="section-inner">';
+      html += EDGELINK.renderSectionHeader(careers.benefits.eyebrow, careers.benefits.headline, careers.benefits.lead);
+      html += EDGELINK.renderBenefits(careers.benefits.items);
+      html += '</div></section>';
+    }
+
+    // Application Process
+    if (careers.applicationProcess && careers.applicationProcess.steps && careers.applicationProcess.steps.length) {
+      html += '<section class="locations-bg" id="process"><div class="section-inner">';
+      html += EDGELINK.renderSectionHeader(careers.applicationProcess.eyebrow, careers.applicationProcess.headline, careers.applicationProcess.lead);
+      html += EDGELINK.renderAppProcess(careers.applicationProcess.steps);
+      html += '</div></section>';
+    }
+
+    // Testimonials
+    if (careers.testimonials && careers.testimonials.items && careers.testimonials.items.length) {
+      html += '<section class="testimonials-section" id="testimonials"><div class="section-inner">';
+      html += EDGELINK.renderSectionHeader(careers.testimonials.eyebrow, careers.testimonials.headline, '');
+      html += EDGELINK.renderTestimonials(careers.testimonials.items);
+      html += '</div></section>';
+    }
+
+    // Hiring States
+    if (careers.hiringStates && careers.hiringStates.states && careers.hiringStates.states.length) {
+      html += '<section id="states"><div class="section-inner">';
+      html += EDGELINK.renderSectionHeader(careers.hiringStates.eyebrow, careers.hiringStates.headline, careers.hiringStates.lead);
+      html += EDGELINK.renderLocations(careers.hiringStates.states);
+      html += '</div></section>';
+    }
+
+    // Apply CTA (final callout)
+    if (careers.applyCta) {
+      html += '<section class="callout-section" id="apply">';
+      html += EDGELINK.renderCallout(careers.applyCta);
+      html += '</section>';
+    }
+
+    document.getElementById('page-content').innerHTML = html;
+    document.getElementById('site-footer').innerHTML = EDGELINK.renderFooter(content);
+  }
+
+  function renderCareersHero(hero) {
+    var html = '<div class="hero-inner">';
+    html += '<div>';
+    if (hero.eyebrow) {
+      html += '<div class="hero-eyebrow"><span class="dot"></span>' + EDGELINK.escapeHtml(hero.eyebrow) + '</div>';
+    }
+    html += '<h1>' + (hero.headline || '') + '</h1>';
+    if (hero.subhead) html += '<p class="hero-sub">' + EDGELINK.escapeHtml(hero.subhead) + '</p>';
+    html += '<div class="hero-cta">';
+    if (hero.primaryCtaLabel) {
+      html += '<a href="' + (hero.primaryCtaHref || '#') + '" class="btn btn-primary">' + EDGELINK.escapeHtml(hero.primaryCtaLabel) + ' →</a>';
+    }
+    if (hero.secondaryCtaLabel) {
+      html += '<a href="' + (hero.secondaryCtaHref || '#') + '" class="btn btn-ghost">' + EDGELINK.escapeHtml(hero.secondaryCtaLabel) + '</a>';
+    }
+    html += '</div></div>';
+
+    // Hero visual
+    if (hero.heroImageUrl && hero.heroImageUrl.length > 0) {
+      html += '<div class="hero-image-wrap"><img src="' + hero.heroImageUrl + '" alt="Careers at Edgelink"></div>';
+    } else {
+      // Careers-themed phone mockup
+      html += renderCareersPhoneMockup();
+    }
+
+    html += '</div>';
+    return html;
+  }
+
+  function renderCareersPhoneMockup() {
+    var html = '<div class="phone-stage">';
+    html += '<div class="phone phone-back"><div class="phone-screen" style="background: linear-gradient(160deg, #E20074 0%, #5F249F 100%);"><div class="phone-notch"></div></div></div>';
+    html += '<div class="phone phone-front"><div class="phone-screen" style="background: linear-gradient(160deg, #5F249F 0%, #2D0047 100%);">';
+    html += '<div class="phone-notch"></div>';
+    html += '<div class="phone-content">';
+    html += '<div class="phone-eyebrow-mini">Now Hiring</div>';
+    html += '<div class="phone-headline">Your career starts here.</div>';
+    html += '<div class="phone-card"><div class="phone-card-row"><span class="phone-card-label">Open Roles</span><span class="phone-card-value" style="color: #E5D4F0;">Across 5 states</span></div></div>';
+    html += '<div class="phone-card"><div style="color: white; font-size: 11px; opacity: 0.7; margin-bottom: 6px;">Application Status</div><div style="display: flex; gap: 6px; align-items: center;"><div style="width: 8px; height: 8px; border-radius: 50%; background: #B47CD9;"></div><div style="color: white; font-size: 13px; font-weight: 500;">Submitted &middot; Under Review</div></div></div>';
+    html += '<div class="phone-card" style="margin-top: auto;"><div style="color: white; font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px;">Promotion Path</div><div style="color: white; font-family: \'Fraunces\', serif; font-size: 14px; line-height: 1.3;">RSR &rarr; Coach &rarr; Manager</div></div>';
+    html += '</div></div></div>';
+
+    html += '<div class="phone-stat-bubble bubble-top"><div class="bubble-label">Promote</div><div class="bubble-value">From Within</div></div>';
+    html += '<div class="phone-stat-bubble bubble-bottom"><div class="bubble-label">Training</div><div class="bubble-value">Paid From Day 1</div></div>';
+    html += '</div>';
+    return html;
+  }
+})();
+</script>
+
+</body>
+</html>

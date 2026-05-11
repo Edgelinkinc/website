@@ -1,0 +1,298 @@
+{
+  "branding": {
+    "companyName": "Edgelink",
+    "tagline": "Authorized Metro by T-Mobile Retailer",
+    "logoColor": "#5F249F"
+  },
+  "nav": {
+    "links": [
+      { "label": "About", "href": "index.html#about" },
+      { "label": "What We Do", "href": "index.html#services" },
+      { "label": "Our Values", "href": "index.html#values" },
+      { "label": "Locations", "href": "index.html#locations" },
+      { "label": "Careers", "href": "careers.html" }
+    ],
+    "ctaLabel": "Get in Touch",
+    "ctaHref": "index.html#contact"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Authorized Metro by T-Mobile Retailer",
+      "headline": "Connecting communities to <em>what matters</em> most.",
+      "subhead": "From New England to the South, Edgelink Inc. is a team-first retail family bringing reliable wireless service and real careers to every neighborhood we serve.",
+      "stats": [
+        { "value": "35+", "label": "Locations" },
+        { "value": "5", "label": "States" },
+        { "value": "200+", "label": "Team Members" }
+      ],
+      "primaryCtaLabel": "Find a Store",
+      "primaryCtaHref": "#locations",
+      "secondaryCtaLabel": "Join Our Team",
+      "secondaryCtaHref": "careers.html",
+      "heroImageUrl": ""
+    },
+    "stats": [
+      { "value": "35", "label": "Retail Locations" },
+      { "value": "5", "label": "States Served" },
+      { "value": "200+", "label": "Team Members" },
+      { "value": "100%", "label": "Promote From Within" }
+    ],
+    "about": {
+      "eyebrow": "About Edgelink",
+      "headline": "A retail family built on <em>opportunity</em>.",
+      "paragraphs": [
+        "Edgelink Inc. is an authorized Metro by T-Mobile dealer headquartered in Warwick, Rhode Island. What started as a handful of stores has grown into a multi-state team united by one simple idea: take care of your people, and they'll take care of everyone else.",
+        "We're a team-first company that promotes from within, celebrates results, and treats every store like it matters — because every store does."
+      ],
+      "quote": "We don't just sell wireless. We invest in people, communities, and the careers that grow from them.",
+      "imageUrl": ""
+    },
+    "services": {
+      "eyebrow": "What We Do",
+      "headline": "Wireless retail, <em>done right</em>.",
+      "lead": "We operate authorized Metro by T-Mobile retail stores across five states. Our work is community connection, neighborhood-level service, and building careers from the ground up.",
+      "items": [
+        {
+          "icon": "store",
+          "title": "Retail Operations",
+          "description": "We run 35+ neighborhood stores across Arkansas, Connecticut, Massachusetts, Rhode Island, and Tennessee — each one staffed by local team members who know their community."
+        },
+        {
+          "icon": "people",
+          "title": "Customer-First Service",
+          "description": "Bilingual support, transparent guidance, and reps who take the time to understand what each customer actually needs. No scripts, no pressure."
+        },
+        {
+          "icon": "growth",
+          "title": "Career Development",
+          "description": "Every coach and manager started where you'd start. We promote from within because we'd rather build talent than rent it."
+        }
+      ]
+    },
+    "values": {
+      "eyebrow": "What We Stand For",
+      "headline": "Our values, <em>not slogans</em>.",
+      "lead": "Four things shape every decision we make, every store we open, and every person we hire.",
+      "items": [
+        {
+          "label": "People First",
+          "title": "We invest in our team.",
+          "description": "Real training, real mentorship, real paths to grow. Our team is the company."
+        },
+        {
+          "label": "Community Rooted",
+          "title": "We live where we work.",
+          "description": "Our stores aren't outposts. They're neighborhood fixtures staffed by local people."
+        },
+        {
+          "label": "Growth From Within",
+          "title": "We promote our own.",
+          "description": "100% of our coaches and managers came up through the company. That's the path we offer everyone."
+        },
+        {
+          "label": "One Team",
+          "title": "We win together.",
+          "description": "No silos, no politics. Across five states and 35+ stores, we operate as one family."
+        }
+      ]
+    },
+    "locations": {
+      "eyebrow": "Where We Are",
+      "headline": "Five states. <em>One family.</em>",
+      "lead": "From the Smoky Mountains to New England's coast, our stores are where neighbors connect.",
+      "states": [
+        { "abbr": "AR", "name": "Arkansas" },
+        { "abbr": "CT", "name": "Connecticut" },
+        { "abbr": "MA", "name": "Massachusetts" },
+        { "abbr": "RI", "name": "Rhode Island" },
+        { "abbr": "TN", "name": "Tennessee" }
+      ]
+    },
+    "careersCallout": {
+      "eyebrow": "Now Hiring",
+      "headline": "Build a career, <em>not just a job</em>.",
+      "description": "We're hiring Retail Sales Representatives across all five states. Bilingual welcome. No wireless experience required — we'll teach you everything.",
+      "ctaLabel": "View Open Positions",
+      "ctaHref": "careers.html"
+    }
+  },
+  "careers": {
+    "hero": {
+      "eyebrow": "Careers at Edgelink",
+      "headline": "Where your <em>next chapter</em> starts.",
+      "subhead": "Real training, real growth, real people. Whether you're new to retail or coming in with experience, Edgelink is built to help you go further.",
+      "primaryCtaLabel": "View Open Positions",
+      "primaryCtaHref": "#apply",
+      "secondaryCtaLabel": "Why Edgelink",
+      "secondaryCtaHref": "#why",
+      "heroImageUrl": ""
+    },
+    "whyEdgelink": {
+      "eyebrow": "Why Edgelink",
+      "headline": "More than a job. <em>A real career path.</em>",
+      "lead": "We hire for energy and attitude, not resumes. The rest we teach.",
+      "items": [
+        {
+          "icon": "growth",
+          "title": "100% Promote From Within",
+          "description": "Every coach, every manager started where you'd start. The path is real and proven."
+        },
+        {
+          "icon": "training",
+          "title": "Paid Training",
+          "description": "No wireless experience? No problem. We pay you to learn from day one."
+        },
+        {
+          "icon": "people",
+          "title": "Family-Owned",
+          "description": "You're not a number. You're part of a team that knows your name and roots for you."
+        },
+        {
+          "icon": "bilingual",
+          "title": "Bilingual Welcomed",
+          "description": "Spanish-speaking team members thrive here. Our customers reflect our communities."
+        }
+      ]
+    },
+    "growthPath": {
+      "eyebrow": "Your Path Forward",
+      "headline": "Start as an RSR. <em>Lead a region.</em>",
+      "lead": "This isn't theoretical. Every step on this path is held by someone who started as an RSR.",
+      "steps": [
+        {
+          "title": "Retail Sales Rep",
+          "subtitle": "Where everyone starts",
+          "description": "Learn the products, serve customers, and earn from day one with base + commission."
+        },
+        {
+          "title": "Senior RSR",
+          "subtitle": "Trusted leader on the floor",
+          "description": "Take on training duties, mentor new reps, and earn more responsibility and pay."
+        },
+        {
+          "title": "Coach",
+          "subtitle": "Lead a group of reps",
+          "description": "Drive performance across multiple reps. Coaching payouts on top of base."
+        },
+        {
+          "title": "Store Manager",
+          "subtitle": "Run your own store",
+          "description": "Full P&L responsibility, team building, and manager bonus eligibility."
+        }
+      ]
+    },
+    "benefits": {
+      "eyebrow": "What You Get",
+      "headline": "The whole package.",
+      "lead": "Beyond pay, here's what comes with the role.",
+      "items": [
+        "Base pay + commission",
+        "Bonus opportunities (spiffs, accessory, performance)",
+        "Paid training",
+        "Employee discounts",
+        "Flexible scheduling",
+        "Career growth path",
+        "Bilingual-friendly environment",
+        "Recognition programs"
+      ]
+    },
+    "applicationProcess": {
+      "eyebrow": "How to Apply",
+      "headline": "Four steps. <em>That's it.</em>",
+      "lead": "We've made this simple on purpose. From application to first day, here's what happens.",
+      "steps": [
+        {
+          "number": "1",
+          "title": "Apply Online",
+          "description": "Click the Apply button. Fill out a quick application through Paychex Flex — it takes about 10 minutes."
+        },
+        {
+          "number": "2",
+          "title": "Background Check",
+          "description": "Once we review your application, we'll send a Clear Verification background check. Standard step, no surprises."
+        },
+        {
+          "number": "3",
+          "title": "Offer Letter",
+          "description": "Pass the background check and we'll send your official offer letter outlining role, pay, and start date."
+        },
+        {
+          "number": "4",
+          "title": "Onboarding",
+          "description": "Welcome to the team. Paid training begins, and you'll be assigned a coach and home store."
+        }
+      ]
+    },
+    "testimonials": {
+      "eyebrow": "From Our Team",
+      "headline": "Real people. <em>Real careers.</em>",
+      "items": [
+        {
+          "quote": "I started as an RSR two years ago. Today I run my own store. That doesn't happen everywhere.",
+          "name": "Team Member",
+          "role": "Store Manager"
+        },
+        {
+          "quote": "The training is real. My coach checks in every week. I've never worked somewhere that actually invests in me like this.",
+          "name": "Team Member",
+          "role": "Senior RSR"
+        },
+        {
+          "quote": "Bilingual customers feel at home here. So do bilingual employees. The culture is everything.",
+          "name": "Team Member",
+          "role": "Coach"
+        }
+      ]
+    },
+    "hiringStates": {
+      "eyebrow": "Where We're Hiring",
+      "headline": "Now hiring in <em>all five states</em>.",
+      "lead": "Find a position near you.",
+      "states": [
+        { "abbr": "AR", "name": "Arkansas" },
+        { "abbr": "CT", "name": "Connecticut" },
+        { "abbr": "MA", "name": "Massachusetts" },
+        { "abbr": "RI", "name": "Rhode Island" },
+        { "abbr": "TN", "name": "Tennessee" }
+      ]
+    },
+    "applyCta": {
+      "eyebrow": "Ready to Apply?",
+      "headline": "Your future <em>starts here</em>.",
+      "description": "Click below to view current openings on our Paychex Flex careers portal. We're hiring across all five states — find the role that fits and apply today.",
+      "ctaLabel": "View Open Positions",
+      "ctaHref": "https://www.paychex.com/"
+    }
+  },
+  "footer": {
+    "tagline": "An authorized Metro by T-Mobile retailer connecting communities across Arkansas, Connecticut, Massachusetts, Rhode Island, and Tennessee.",
+    "columns": [
+      {
+        "heading": "Company",
+        "links": [
+          { "label": "About Us", "href": "index.html#about" },
+          { "label": "What We Do", "href": "index.html#services" },
+          { "label": "Our Values", "href": "index.html#values" },
+          { "label": "Careers", "href": "careers.html" }
+        ]
+      },
+      {
+        "heading": "Resources",
+        "links": [
+          { "label": "Find a Store", "href": "index.html#locations" },
+          { "label": "Contact HR", "href": "mailto:hr@edgelinkinc.com" }
+        ]
+      },
+      {
+        "heading": "Headquarters",
+        "links": [
+          { "label": "719 Bald Hill Rd.", "href": "#" },
+          { "label": "Warwick, RI 02886", "href": "#" },
+          { "label": "hr@edgelinkinc.com", "href": "mailto:hr@edgelinkinc.com" }
+        ]
+      }
+    ],
+    "copyright": "\u00a9 2026 Edgelink Inc. All rights reserved.",
+    "legal": "Privacy \u00b7 Terms \u00b7 Accessibility"
+  }
+}
