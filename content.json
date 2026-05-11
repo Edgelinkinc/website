@@ -45,7 +45,7 @@
           "label": "States"
         },
         {
-          "value": "200+",
+          "value": "100+",
           "label": "Team Members"
         }
       ],
@@ -65,7 +65,7 @@
         "label": "States Served"
       },
       {
-        "value": "200+",
+        "value": "100+",
         "label": "Team Members"
       },
       {
@@ -410,7 +410,7 @@
         ]
       }
     ],
-    "copyright": "© 2026 Edgelink Inc. All rights reserved.",
+    "copyright": "© 2025 Edgelink Inc. All rights reserved.",
     "legal": "Privacy · Terms · Accessibility"
   }
 }
