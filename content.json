@@ -9,7 +9,7 @@
     "defaultDescription": "Edgelink Inc. is a team-first wireless retail family bringing reliable Metro by T-Mobile service and real careers to neighborhoods across Arkansas, Connecticut, Massachusetts, Rhode Island, and Tennessee.",
     "defaultImageUrl": "",
     "twitterHandle": "",
-    "organizationType": "Organization"
+    "organizationType": "Corporation"
   },
   "nav": {
     "links": [
@@ -415,14 +415,14 @@
           "description": "Take on training duties, mentor new reps, and earn more responsibility and pay."
         },
         {
+          "title": "Store Manager",
+          "subtitle": "Run your own store",
+          "description": "Team building, Drive performance within your location,  and manager bonus eligibility."
+        },
+        {
           "title": "Coach",
           "subtitle": "Lead a group of reps",
           "description": "Drive performance across multiple reps. Coaching payouts on top of base."
-        },
-        {
-          "title": "Store Manager",
-          "subtitle": "Run your own store",
-          "description": "Full P&L responsibility, team building, and manager bonus eligibility."
         }
       ]
     },
@@ -431,8 +431,8 @@
       "headline": "The whole package.",
       "lead": "Beyond pay, here's what comes with the role.",
       "items": [
-        "Base pay + commission",
-        "Bonus opportunities (spiffs, accessory, performance)",
+        "Base pay + Incentives",
+        "Weekly Incentives (spiffs, accessory, performance)",
         "Paid training",
         "Employee discounts",
         "Flexible scheduling",
