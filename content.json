@@ -542,7 +542,7 @@
         },
         {
           "question": "What's the pay structure?",
-          "answer": "Base pay plus commission, with additional bonus opportunities including spiffs, accessory bonuses, and performance bonuses. Coaches and managers have additional earning paths."
+          "answer": "Base pay plus Weekly Incentives, with additional opportunities including spiffs, accessory bonuses, and performance bonuses. Coaches and managers have additional earning paths."
         },
         {
           "question": "What does the application process look like?",
@@ -613,7 +613,7 @@
             "Employee discount on Metro by T-Mobile service",
             "Real career path — 100% promote from within"
           ],
-          "applyUrl": "",
+          "applyUrl": "https://recruiting.myapps.paychex.com/appone/MainInfoReq.asp?R_ID=7106492",
           "imageUrl": ""
         }
       ]
@@ -694,7 +694,7 @@
         ]
       }
     ],
-    "copyright": "© 2025 Edgelink Inc. All rights reserved.",
+    "copyright": "© 2026 Edgelink Inc. All rights reserved.",
     "legal": "Privacy · Terms · Accessibility"
   }
 }
