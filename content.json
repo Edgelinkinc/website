@@ -367,7 +367,7 @@
       "headline": "Where your <em>next chapter</em> starts.",
       "subhead": "Real training, real growth, real people. Whether you're new to retail or coming in with experience, Edgelink is built to help you go further.",
       "primaryCtaLabel": "View Open Positions",
-      "primaryCtaHref": "#apply",
+      "primaryCtaHref": "https://www2.appone.com/Search/Search.aspx?ServerVar=edgelinkinc.appone.com",
       "secondaryCtaLabel": "Why Edgelink",
       "secondaryCtaHref": "#why",
       "heroImageUrl": ""
@@ -524,7 +524,7 @@
       "headline": "Your future <em>starts here</em>.",
       "description": "Click below to view current openings on our Paychex Flex careers portal. We're hiring across all five states — find the role that fits and apply today.",
       "ctaLabel": "View Open Positions",
-      "ctaHref": "https://www.paychex.com/"
+      "ctaHref": "https://www2.appone.com/Search/Search.aspx?ServerVar=edgelinkinc.appone.com"
     },
     "faq": {
       "enabled": true,
