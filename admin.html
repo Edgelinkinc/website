@@ -882,6 +882,25 @@ h2.section-title {
   }
 
   function renderTeamPanel() {
+    // Ensure team object exists in content (for old drafts without team section)
+    if (!state.content.team) {
+      state.content.team = {
+        enabled: true,
+        status: 'under_construction',
+        comingSoonMessage: "We're putting the finishing touches on our team page. Check back soon to meet the family behind Edgelink!",
+        hero: {
+          eyebrow: 'Meet the Family',
+          headline: 'The <em>people</em> behind Edgelink.',
+          lead: 'Real people, real stories. Get to know the team that makes Edgelink, Edgelink.'
+        },
+        categories: ['Leadership', 'Operations', 'Store Managers', 'Coaches', 'Team Members'],
+        members: []
+      };
+    }
+    if (!state.content.team.members) state.content.team.members = [];
+    if (!state.content.team.categories) state.content.team.categories = ['Leadership', 'Operations', 'Store Managers', 'Coaches', 'Team Members'];
+    if (!state.content.team.hero) state.content.team.hero = { eyebrow: 'Meet the Family', headline: 'The <em>people</em> behind Edgelink.', lead: 'Real people, real stories.' };
+
     var html = '<h2 class="section-title">👥 Meet the Team Page</h2>' +
       '<p class="section-help">Manage who appears on your <strong>team.html</strong> page. Add leadership, coaches, store managers, and anyone you want to feature. Upload photos via the camera button or paste a URL.</p>';
 
@@ -1344,13 +1363,24 @@ h2.section-title {
     var actionBtns = document.querySelectorAll('[data-action]');
     for (var j = 0; j < actionBtns.length; j++) {
       actionBtns[j].addEventListener('click', function(e) {
-        var btn = e.target;
+        var btn = e.currentTarget;
         var action = btn.getAttribute('data-action');
         var listPath = btn.getAttribute('data-list');
         var idx = parseInt(btn.getAttribute('data-idx'), 10);
 
+        // Ensure list exists — create it if needed
         var list = getPath(state.content, listPath);
-        if (!list) return;
+        if (!list) {
+          // Build the missing path
+          var parts = listPath.split('.');
+          var cur = state.content;
+          for (var pi = 0; pi < parts.length - 1; pi++) {
+            if (cur[parts[pi]] === undefined) cur[parts[pi]] = {};
+            cur = cur[parts[pi]];
+          }
+          cur[parts[parts.length - 1]] = [];
+          list = cur[parts[parts.length - 1]];
+        }
 
         if (action === 'add') {
           var sample = list.length > 0 ? list[list.length - 1] : null;

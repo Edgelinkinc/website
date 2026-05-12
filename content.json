@@ -503,17 +503,7 @@
       "lead": "Real people, real stories. Get to know the team that makes Edgelink, Edgelink."
     },
     "categories": ["Leadership", "Operations", "Store Managers", "Coaches", "Team Members"],
-    "members": [
-      {
-        "name": "Cheryl Birchfield",
-        "title": "HR Manager",
-        "category": "Leadership",
-        "location": "Warwick, RI",
-        "bio": "Cheryl leads HR across all 34 Edgelink locations and is passionate about helping team members grow their careers from day one.",
-        "photoUrl": "",
-        "email": "hr@edgelinkinc.net"
-      }
-    ]
+    "members": []
   },
   "footer": {
     "tagline": "An authorized Metro by T-Mobile retailer connecting communities across Arkansas, Connecticut, Massachusetts, Rhode Island, and Tennessee.",
