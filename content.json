@@ -4,28 +4,21 @@
     "tagline": "Authorized Metro by T-Mobile Retailer",
     "logoColor": "#5F249F"
   },
+  "seo": {
+    "siteUrl": "https://edgelinkinc.com",
+    "defaultDescription": "Edgelink Inc. is a team-first wireless retail family bringing reliable Metro by T-Mobile service and real careers to neighborhoods across Arkansas, Connecticut, Massachusetts, Rhode Island, and Tennessee.",
+    "defaultImageUrl": "",
+    "twitterHandle": "",
+    "organizationType": "Organization"
+  },
   "nav": {
     "links": [
-      {
-        "label": "About",
-        "href": "index.html#about"
-      },
-      {
-        "label": "What We Do",
-        "href": "index.html#services"
-      },
-      {
-        "label": "Our Values",
-        "href": "index.html#values"
-      },
-      {
-        "label": "Locations",
-        "href": "index.html#locations"
-      },
-      {
-        "label": "Careers",
-        "href": "careers.html"
-      }
+      { "label": "About", "href": "index.html#about" },
+      { "label": "What We Do", "href": "index.html#services" },
+      { "label": "Our Values", "href": "index.html#values" },
+      { "label": "Locations", "href": "index.html#locations" },
+      { "label": "Careers", "href": "careers.html" },
+      { "label": "Contact", "href": "index.html#contact" }
     ],
     "ctaLabel": "Get in Touch",
     "ctaHref": "index.html#contact"
@@ -36,18 +29,9 @@
       "headline": "Connecting communities to <em>what matters</em> most.",
       "subhead": "From New England to the South, Edgelink Inc. is a team-first retail family bringing reliable wireless service and real careers to every neighborhood we serve.",
       "stats": [
-        {
-          "value": "35+",
-          "label": "Locations"
-        },
-        {
-          "value": "5",
-          "label": "States"
-        },
-        {
-          "value": "100+",
-          "label": "Team Members"
-        }
+        { "value": "35+", "label": "Locations" },
+        { "value": "5", "label": "States" },
+        { "value": "200+", "label": "Team Members" }
       ],
       "primaryCtaLabel": "Find a Store",
       "primaryCtaHref": "#locations",
@@ -56,22 +40,10 @@
       "heroImageUrl": ""
     },
     "stats": [
-      {
-        "value": "35",
-        "label": "Retail Locations"
-      },
-      {
-        "value": "5",
-        "label": "States Served"
-      },
-      {
-        "value": "100+",
-        "label": "Team Members"
-      },
-      {
-        "value": "100%",
-        "label": "Promote From Within"
-      }
+      { "value": "35", "label": "Retail Locations" },
+      { "value": "5", "label": "States Served" },
+      { "value": "200+", "label": "Team Members" },
+      { "value": "100%", "label": "Promote From Within" }
     ],
     "about": {
       "eyebrow": "About Edgelink",
@@ -141,71 +113,64 @@
           "abbr": "AR",
           "name": "Arkansas",
           "stores": [
-            {
-              "name": "Colonel Glenn",
-              "address": ""
-            },
-            {
-              "name": "Radio Geyer",
-              "address": " "
-            }
+            { "name": "Colonel Glenn", "address": "6420 Colonel Glenn Rd Ste 3, Little Rock, AR" },
+            { "name": "Radio Geyer", "address": "8717 Geyer Springs Rd Ste 140, Little Rock, AR" }
           ]
         },
         {
           "abbr": "CT",
           "name": "Connecticut",
           "stores": [
-            "",
-            "New item",
-            "New item"
+            { "name": "Buckland Hills Mall", "address": "194 Buckland Hills Dr Ste 1172, Manchester, CT" },
+            { "name": "New London", "address": "252 S Frontage Rd, New London, CT" },
+            { "name": "Norwich", "address": "216 Main St, Norwich, CT" }
           ]
         },
         {
           "abbr": "MA",
           "name": "Massachusetts",
           "stores": [
-            "",
-            "New item",
-            "New item",
-            "New item",
-            "New item",
-            "New item",
-            "New item",
-            "New item",
-            "New item",
-            "New item",
-            "New item"
+            { "name": "Cape Cod Mall", "address": "769 Iyannough Rd, Space E-123B, Hyannis, MA" },
+            { "name": "Coggeshall", "address": "209 Coggeshall St, New Bedford, MA" },
+            { "name": "Exchange St", "address": "203 Exchange St #205, Chicopee, MA" },
+            { "name": "Fall River", "address": "824C William Canning Blvd, Fall River, MA" },
+            { "name": "Holyoke", "address": "50 Holyoke St, Holyoke, MA" },
+            { "name": "Kelley Square", "address": "1 Kelley Sq, Worcester, MA" },
+            { "name": "Locust Street", "address": "15 Locust St, Springfield, MA" },
+            { "name": "Rockdale", "address": "37 Rockdale Ave, New Bedford, MA" },
+            { "name": "South Shore Mall", "address": "250 Granite St, Braintree, MA" },
+            { "name": "State Street", "address": "463 State St, Springfield, MA" },
+            { "name": "Western Ave", "address": "734 Western Ave, Lynn, MA" }
           ]
         },
         {
           "abbr": "RI",
           "name": "Rhode Island",
           "stores": [
-            "",
-            "New item",
-            "New item",
-            "New item",
-            "New item",
-            "New item",
-            "New item",
-            "New item",
-            "New item",
-            "New item",
-            "New item"
+            { "name": "751 Broad", "address": "751 Broad St, Providence, RI" },
+            { "name": "Bald Hill", "address": "699 Bald Hill Rd, Warwick, RI" },
+            { "name": "Broad St", "address": "742 Broad St, Central Falls, RI" },
+            { "name": "Broadway", "address": "70 Broadway, Newport, RI" },
+            { "name": "Coventry", "address": "722 Tiogue Ave, Coventry, RI" },
+            { "name": "Douglas", "address": "112 Douglas Ave 104, Providence, RI" },
+            { "name": "East Providence", "address": "324 Warren Ave, East Providence, RI" },
+            { "name": "Hartford Ave", "address": "28 Hartford Ave, Providence, RI" },
+            { "name": "Newport Ave", "address": "190 Newport Ave, Rumford, RI" },
+            { "name": "Providence Place Mall", "address": "120 Providence Pl Suite 5375, Providence, RI" },
+            { "name": "Reservoir Ave", "address": "589 Reservoir Ave, Cranston, RI" }
           ]
         },
         {
           "abbr": "TN",
           "name": "Tennessee",
           "stores": [
-            "",
-            "New item",
-            "New item",
-            "New item",
-            "New item",
-            "New item",
-            "New item",
-            "New item"
+            { "name": "Keith St", "address": "123 Keith St NW, Cleveland, TN" },
+            { "name": "Magnolia", "address": "2132 E Magnolia Ave, Knoxville, TN" },
+            { "name": "Morristown", "address": "3606 W Andrew Johnson Hwy 21, Morristown, TN" },
+            { "name": "North Broadway", "address": "1919 N Broadway St, Knoxville, TN" },
+            { "name": "Shallowford Rd", "address": "7022 Shallowford Rd Ste 2, Chattanooga, TN" },
+            { "name": "West Market", "address": "601 W Market St Ste 201, Johnson City, TN" },
+            { "name": "Western Ave", "address": "4421 Western Ave Ste 101, Knoxville, TN" }
           ]
         }
       ]
@@ -216,6 +181,43 @@
       "description": "We're hiring Retail Sales Representatives across all five states. Bilingual welcome. No wireless experience required — we'll teach you everything.",
       "ctaLabel": "View Open Positions",
       "ctaHref": "careers.html"
+    },
+    "contactForm": {
+      "enabled": true,
+      "eyebrow": "Get in Touch",
+      "headline": "We'd love to <em>hear from you</em>.",
+      "lead": "Questions, feedback, or career inquiries — drop us a message and we'll get back to you.",
+      "formspreeEndpoint": "",
+      "submitButtonLabel": "Send Message",
+      "successMessage": "Thanks! We got your message and will reply soon.",
+      "subjects": [
+        "General Question",
+        "Career Inquiry",
+        "Customer Support",
+        "Partnership / Business",
+        "Other"
+      ],
+      "contactInfo": {
+        "email": "hr@edgelinkinc.com",
+        "phoneLabel": "",
+        "addressLabel": "719 Bald Hill Rd., Warwick, RI 02886"
+      }
+    },
+    "news": {
+      "enabled": true,
+      "eyebrow": "Latest News",
+      "headline": "What's <em>happening</em> at Edgelink.",
+      "lead": "Company updates, hiring events, team milestones, and more.",
+      "items": [
+        {
+          "date": "2026-05-01",
+          "category": "Hiring",
+          "title": "Now Hiring Across All 5 States",
+          "summary": "We're actively hiring Retail Sales Reps in Arkansas, Connecticut, Massachusetts, Rhode Island, and Tennessee. Bilingual candidates encouraged to apply.",
+          "imageUrl": "",
+          "link": "careers.html"
+        }
+      ]
     }
   },
   "careers": {
@@ -332,17 +334,20 @@
         {
           "quote": "I started as an RSR two years ago. Today I run my own store. That doesn't happen everywhere.",
           "name": "Team Member",
-          "role": "Store Manager"
+          "role": "Store Manager",
+          "imageUrl": ""
         },
         {
           "quote": "The training is real. My coach checks in every week. I've never worked somewhere that actually invests in me like this.",
           "name": "Team Member",
-          "role": "Senior RSR"
+          "role": "Senior RSR",
+          "imageUrl": ""
         },
         {
           "quote": "Bilingual customers feel at home here. So do bilingual employees. The culture is everything.",
           "name": "Team Member",
-          "role": "Coach"
+          "role": "Coach",
+          "imageUrl": ""
         }
       ]
     },
@@ -351,26 +356,11 @@
       "headline": "Now hiring in <em>all five states</em>.",
       "lead": "Find a position near you.",
       "states": [
-        {
-          "abbr": "AR",
-          "name": "Arkansas"
-        },
-        {
-          "abbr": "CT",
-          "name": "Connecticut"
-        },
-        {
-          "abbr": "MA",
-          "name": "Massachusetts"
-        },
-        {
-          "abbr": "RI",
-          "name": "Rhode Island"
-        },
-        {
-          "abbr": "TN",
-          "name": "Tennessee"
-        }
+        { "abbr": "AR", "name": "Arkansas" },
+        { "abbr": "CT", "name": "Connecticut" },
+        { "abbr": "MA", "name": "Massachusetts" },
+        { "abbr": "RI", "name": "Rhode Island" },
+        { "abbr": "TN", "name": "Tennessee" }
       ]
     },
     "applyCta": {
@@ -379,6 +369,46 @@
       "description": "Click below to view current openings on our Paychex Flex careers portal. We're hiring across all five states — find the role that fits and apply today.",
       "ctaLabel": "View Open Positions",
       "ctaHref": "https://www.paychex.com/"
+    },
+    "faq": {
+      "enabled": true,
+      "eyebrow": "Common Questions",
+      "headline": "Got <em>questions</em>? We've got answers.",
+      "lead": "Everything you need to know before applying.",
+      "items": [
+        {
+          "question": "Do I need wireless experience to apply?",
+          "answer": "No. We provide paid training from day one. We hire for energy and attitude, not experience. If you can connect with customers and want to learn, we'll teach you everything else."
+        },
+        {
+          "question": "Is the role bilingual?",
+          "answer": "Bilingual candidates (especially Spanish-speaking) are strongly encouraged to apply. Our customer base reflects the diverse communities we serve, and bilingual team members thrive here. English-only candidates are also welcomed."
+        },
+        {
+          "question": "What's the pay structure?",
+          "answer": "Base pay plus commission, with additional bonus opportunities including spiffs, accessory bonuses, and performance bonuses. Coaches and managers have additional earning paths."
+        },
+        {
+          "question": "What does the application process look like?",
+          "answer": "Four steps: 1) Apply online via our Paychex Flex portal (~10 min), 2) We send a Clear Verification background check, 3) Once cleared, you'll receive an official offer letter, 4) Paid training begins and you'll be assigned a coach and home store."
+        },
+        {
+          "question": "How long does the application process take?",
+          "answer": "Typically 1-2 weeks from application to start date, depending on background check turnaround and your availability."
+        },
+        {
+          "question": "Can I grow into management?",
+          "answer": "Yes — 100% of our coaches and store managers started as Retail Sales Reps. We promote from within. The path is RSR → Senior RSR → Coach → Store Manager."
+        },
+        {
+          "question": "What are the hours like?",
+          "answer": "Retail hours, including some evenings and weekends. Schedules are built around your availability. We aim for a healthy work-life balance."
+        },
+        {
+          "question": "Where are you hiring?",
+          "answer": "We have 35+ stores across Arkansas, Connecticut, Massachusetts, Rhode Island, and Tennessee. The application form lets you select your preferred location."
+        }
+      ]
     }
   },
   "footer": {
@@ -394,56 +424,36 @@
       {
         "heading": "Company",
         "links": [
-          {
-            "label": "About Us",
-            "href": "index.html#about"
-          },
-          {
-            "label": "What We Do",
-            "href": "index.html#services"
-          },
-          {
-            "label": "Our Values",
-            "href": "index.html#values"
-          },
-          {
-            "label": "Careers",
-            "href": "careers.html"
-          }
+          { "label": "About Us", "href": "index.html#about" },
+          { "label": "What We Do", "href": "index.html#services" },
+          { "label": "Our Values", "href": "index.html#values" },
+          { "label": "Careers", "href": "careers.html" }
         ]
       },
       {
         "heading": "Resources",
         "links": [
-          {
-            "label": "Find a Store",
-            "href": "index.html#locations"
-          },
-          {
-            "label": "Contact HR",
-            "href": "mailto:hr@edgelinkinc.com"
-          }
+          { "label": "Find a Store", "href": "index.html#locations" },
+          { "label": "Contact HR", "href": "mailto:hr@edgelinkinc.com" }
         ]
       },
       {
         "heading": "Headquarters",
         "links": [
-          {
-            "label": "719 Bald Hill Rd.",
-            "href": "#"
-          },
-          {
-            "label": "Warwick, RI 02886",
-            "href": "#"
-          },
-          {
-            "label": "hr@edgelinkinc.com",
-            "href": "mailto:hr@edgelinkinc.com"
-          }
+          { "label": "719 Bald Hill Rd.", "href": "#" },
+          { "label": "Warwick, RI 02886", "href": "#" },
+          { "label": "hr@edgelinkinc.com", "href": "mailto:hr@edgelinkinc.com" }
+        ]
+      },
+      {
+        "heading": "Legal",
+        "links": [
+          { "label": "Privacy Policy", "href": "privacy.html" },
+          { "label": "Terms of Use", "href": "terms.html" }
         ]
       }
     ],
-    "copyright": "© 2025 Edgelink Inc. All rights reserved.",
-    "legal": "Privacy · Terms · Accessibility"
+    "copyright": "\u00a9 2026 Edgelink Inc. All rights reserved.",
+    "legal": "Privacy \u00b7 Terms \u00b7 Accessibility"
   }
 }
