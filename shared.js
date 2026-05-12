@@ -165,28 +165,42 @@ var EDGELINK = (function() {
     if (hero.heroImageUrl && hero.heroImageUrl.length > 0) {
       html += '<div class="hero-image-wrap"><img src="' + escapeAttr(hero.heroImageUrl) + '" alt="Edgelink"></div>';
     } else {
-      html += renderHomePhoneMockup();
+      html += renderHomePhoneMockup(hero.phoneMockup);
     }
 
     html += '</div>';
     return html;
   }
 
-  function renderHomePhoneMockup() {
+  function renderHomePhoneMockup(mock) {
+    mock = mock || {};
+    var eyebrow = mock.eyebrow || 'Team Edgelink';
+    var headline = mock.headline || 'One family. Five states.';
+    var c1Label = mock.card1Label || 'Active Stores';
+    var c1Value = mock.card1Value || '35';
+    var c2Label = mock.card2Label || 'Team';
+    var c2Value = mock.card2Value || '200+ Members';
+    var c3Label = mock.card3Label || 'Our Mission';
+    var c3Value = mock.card3Value || 'Connect communities. Build careers. Grow together.';
+    var btLabel = mock.bubbleTopLabel || 'Family Owned';
+    var btValue = mock.bubbleTopValue || 'Team First';
+    var bbLabel = mock.bubbleBottomLabel || 'Hiring In';
+    var bbValue = mock.bubbleBottomValue || '5 States';
+
     var html = '<div class="phone-stage">';
     html += '<div class="phone phone-back"><div class="phone-screen" style="background: linear-gradient(160deg, #B47CD9 0%, #5F249F 100%);"><div class="phone-notch"></div></div></div>';
     html += '<div class="phone phone-front"><div class="phone-screen">';
     html += '<div class="phone-notch"></div>';
     html += '<div class="phone-content">';
-    html += '<div class="phone-eyebrow-mini">Team Edgelink</div>';
-    html += '<div class="phone-headline">One family. Five states.</div>';
-    html += '<div class="phone-card"><div class="phone-card-row"><span class="phone-card-label">Active Stores</span><span class="phone-card-value">35</span></div></div>';
-    html += '<div class="phone-card"><div class="phone-team-row"><div class="phone-avatar-stack"><div class="phone-avatar"></div><div class="phone-avatar"></div><div class="phone-avatar"></div><div class="phone-avatar"></div></div><div style="color: white; font-size: 12px;"><div style="opacity: 0.7;">Team</div><div style="font-weight: 600;">200+ Members</div></div></div></div>';
-    html += '<div class="phone-card" style="margin-top: auto;"><div style="color: white; font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px;">Our Mission</div><div style="color: white; font-family: \'Fraunces\', serif; font-size: 14px; line-height: 1.3;">Connect communities. Build careers. Grow together.</div></div>';
+    html += '<div class="phone-eyebrow-mini">' + escapeHtml(eyebrow) + '</div>';
+    html += '<div class="phone-headline">' + escapeHtml(headline) + '</div>';
+    html += '<div class="phone-card"><div class="phone-card-row"><span class="phone-card-label">' + escapeHtml(c1Label) + '</span><span class="phone-card-value">' + escapeHtml(c1Value) + '</span></div></div>';
+    html += '<div class="phone-card"><div class="phone-team-row"><div class="phone-avatar-stack"><div class="phone-avatar"></div><div class="phone-avatar"></div><div class="phone-avatar"></div><div class="phone-avatar"></div></div><div style="color: white; font-size: 12px;"><div style="opacity: 0.7;">' + escapeHtml(c2Label) + '</div><div style="font-weight: 600;">' + escapeHtml(c2Value) + '</div></div></div></div>';
+    html += '<div class="phone-card" style="margin-top: auto;"><div style="color: white; font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px;">' + escapeHtml(c3Label) + '</div><div style="color: white; font-family: \'Fraunces\', serif; font-size: 14px; line-height: 1.3;">' + escapeHtml(c3Value) + '</div></div>';
     html += '</div></div></div>';
 
-    html += '<div class="phone-stat-bubble bubble-top"><div class="bubble-label">Family Owned</div><div class="bubble-value">Team First</div></div>';
-    html += '<div class="phone-stat-bubble bubble-bottom"><div class="bubble-label">Hiring In</div><div class="bubble-value">5 States</div></div>';
+    html += '<div class="phone-stat-bubble bubble-top"><div class="bubble-label">' + escapeHtml(btLabel) + '</div><div class="bubble-value">' + escapeHtml(btValue) + '</div></div>';
+    html += '<div class="phone-stat-bubble bubble-bottom"><div class="bubble-label">' + escapeHtml(bbLabel) + '</div><div class="bubble-value">' + escapeHtml(bbValue) + '</div></div>';
     html += '</div>';
     return html;
   }

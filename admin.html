@@ -507,6 +507,34 @@ h2.section-title {
       textField('home.hero.secondaryCtaHref', 'Secondary Button URL') +
       '</div></div>';
 
+    // Phone mockup fields
+    html += '<div class="field-group">' +
+      '<h3>📱 Phone Mockup Text</h3>' +
+      '<p style="color:var(--muted);font-size:13px;margin-bottom:16px;">This is the text shown on the floating cell phone graphic. Only visible if no Hero Image is uploaded above.</p>' +
+      textField('home.hero.phoneMockup.eyebrow', 'Eyebrow (top small text)', 'e.g. Team Edgelink') +
+      textField('home.hero.phoneMockup.headline', 'Headline (large text)', 'e.g. One family. Five states.') +
+      '<div class="field-row">' +
+      textField('home.hero.phoneMockup.card1Label', 'Card 1 Label', 'e.g. Active Stores') +
+      textField('home.hero.phoneMockup.card1Value', 'Card 1 Value', 'e.g. 35') +
+      '</div>' +
+      '<div class="field-row">' +
+      textField('home.hero.phoneMockup.card2Label', 'Card 2 Label', 'e.g. Team') +
+      textField('home.hero.phoneMockup.card2Value', 'Card 2 Value', 'e.g. 200+ Members') +
+      '</div>' +
+      '<div class="field-row">' +
+      textField('home.hero.phoneMockup.card3Label', 'Card 3 Label', 'e.g. Our Mission') +
+      textField('home.hero.phoneMockup.card3Value', 'Card 3 Value', 'e.g. Connect communities. Build careers.') +
+      '</div>' +
+      '<div class="field-row">' +
+      textField('home.hero.phoneMockup.bubbleTopLabel', 'Top Bubble Label', 'Small text on top floating bubble') +
+      textField('home.hero.phoneMockup.bubbleTopValue', 'Top Bubble Value', 'Large text on top floating bubble') +
+      '</div>' +
+      '<div class="field-row">' +
+      textField('home.hero.phoneMockup.bubbleBottomLabel', 'Bottom Bubble Label', 'Small text on bottom floating bubble') +
+      textField('home.hero.phoneMockup.bubbleBottomValue', 'Bottom Bubble Value', 'Large text on bottom floating bubble') +
+      '</div>' +
+      '</div>';
+
     return html;
   }
 
@@ -678,7 +706,33 @@ h2.section-title {
       '<div class="field-row">' +
       textField('careers.hero.secondaryCtaLabel', 'Secondary Button Label') +
       textField('careers.hero.secondaryCtaHref', 'Secondary Button URL') +
-      '</div></div>';
+      '</div></div>' +
+      '<div class="field-group">' +
+      '<h3>📱 Phone Mockup Text</h3>' +
+      '<p style="color:var(--muted);font-size:13px;margin-bottom:16px;">Text shown on the floating cell phone graphic on the careers page. Only visible if no Hero Image is uploaded above.</p>' +
+      textField('careers.hero.phoneMockup.eyebrow', 'Eyebrow (top small text)', 'e.g. Now Hiring') +
+      textField('careers.hero.phoneMockup.headline', 'Headline (large text)', 'e.g. Your career starts here.') +
+      '<div class="field-row">' +
+      textField('careers.hero.phoneMockup.card1Label', 'Card 1 Label', 'e.g. Open Roles') +
+      textField('careers.hero.phoneMockup.card1Value', 'Card 1 Value', 'e.g. Across 5 states') +
+      '</div>' +
+      '<div class="field-row">' +
+      textField('careers.hero.phoneMockup.card2Label', 'Card 2 Label', 'e.g. Application Status') +
+      textField('careers.hero.phoneMockup.card2Value', 'Card 2 Value', 'e.g. Submitted - Under Review') +
+      '</div>' +
+      '<div class="field-row">' +
+      textField('careers.hero.phoneMockup.card3Label', 'Card 3 Label', 'e.g. Promotion Path') +
+      textField('careers.hero.phoneMockup.card3Value', 'Card 3 Value', 'e.g. RSR -> Coach -> Manager') +
+      '</div>' +
+      '<div class="field-row">' +
+      textField('careers.hero.phoneMockup.bubbleTopLabel', 'Top Bubble Label') +
+      textField('careers.hero.phoneMockup.bubbleTopValue', 'Top Bubble Value') +
+      '</div>' +
+      '<div class="field-row">' +
+      textField('careers.hero.phoneMockup.bubbleBottomLabel', 'Bottom Bubble Label') +
+      textField('careers.hero.phoneMockup.bubbleBottomValue', 'Bottom Bubble Value') +
+      '</div>' +
+      '</div>';
   }
 
   function renderCareersWhyPanel() {
