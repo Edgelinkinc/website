@@ -411,11 +411,23 @@ h2.section-title {
   function selectField(path, label, options, hint) {
     var val = getPath(state.content, path);
     if (val === undefined || val === null) val = '';
+    // Friendly labels for known string options
+    var friendlyLabels = {
+      'under_construction': '🚧 Under Construction (hidden from public)',
+      'live': '✅ Live (visible to everyone)'
+    };
     var html = '<div class="field"><label>' + esc(label) + '</label>' +
       '<select data-path="' + path + '" data-type="' + (typeof options[0] === 'boolean' ? 'boolean' : 'string') + '">';
     for (var i = 0; i < options.length; i++) {
       var optVal = String(options[i]);
-      var optLabel = typeof options[i] === 'boolean' ? (options[i] ? 'Active (visible on site)' : 'Inactive (hidden)') : options[i];
+      var optLabel;
+      if (typeof options[i] === 'boolean') {
+        optLabel = options[i] ? 'Active (visible on site)' : 'Inactive (hidden)';
+      } else if (friendlyLabels[optVal]) {
+        optLabel = friendlyLabels[optVal];
+      } else {
+        optLabel = options[i];
+      }
       var sel = String(val) === optVal ? ' selected' : '';
       html += '<option value="' + escAttr(optVal) + '"' + sel + '>' + esc(optLabel) + '</option>';
     }
@@ -873,12 +885,21 @@ h2.section-title {
     var html = '<h2 class="section-title">👥 Meet the Team Page</h2>' +
       '<p class="section-help">Manage who appears on your <strong>team.html</strong> page. Add leadership, coaches, store managers, and anyone you want to feature. Upload photos via the camera button or paste a URL.</p>';
 
+    // STATUS TOGGLE at top
+    html += '<div class="field-group" style="border:2px solid var(--gold); background:#FFFBEB;">' +
+      '<h3 style="display:flex;align-items:center;gap:8px;">🚧 Page Status</h3>' +
+      '<p style="color:var(--muted);font-size:13px;margin-bottom:12px;">Hide this page from public visitors while you collect photos and bios. Toggle to <strong>Live</strong> when ready to launch.</p>' +
+      selectField('team.status', 'Current Status', ['under_construction', 'live'], 'under_construction = shows a "Coming Soon" page. live = shows the full team grid.') +
+      textareaField('team.comingSoonMessage', 'Coming Soon Message', 'What visitors see when status is Under Construction') +
+      '</div>';
+
     html += '<div class="help-card" style="margin-bottom: 20px;">' +
       '<strong>Tips:</strong><br>' +
       '• Set a <strong>Category</strong> for each person — site auto-groups them into filter buttons<br>' +
       '• Members with no photo show their initials in a colored circle (looks fine until you have photos)<br>' +
       '• Recommended photo: square (1:1), ~600x600px, head and shoulders<br>' +
-      '• Use the camera button to upload photos via your GitHub token' +
+      '• Use the camera button to upload photos via your GitHub token<br>' +
+      '• You can build out the full team while status is <strong>Under Construction</strong>, then flip to <strong>Live</strong> to publish' +
       '</div>';
 
     html += '<div class="field-group">' +
