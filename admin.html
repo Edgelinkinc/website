@@ -235,6 +235,7 @@ h2.section-title {
     <button class="tab" data-panel="home-callout">Home: Careers Callout</button>
     <button class="tab" data-panel="home-contact">Home: Contact Form</button>
     <button class="tab" data-panel="home-news">Home: News</button>
+    <button class="tab" data-panel="team">👥 Team</button>
     <button class="tab" data-panel="careers-hero">Careers: Hero</button>
     <button class="tab" data-panel="careers-why">Careers: Why Edgelink</button>
     <button class="tab" data-panel="careers-growth">Careers: Growth Path</button>
@@ -372,6 +373,7 @@ h2.section-title {
       case 'home-callout':   html = renderHomeCalloutPanel(); break;
       case 'home-contact':   html = renderHomeContactPanel(); break;
       case 'home-news':      html = renderHomeNewsPanel(); break;
+      case 'team':           html = renderTeamPanel(); break;
       case 'careers-hero':         html = renderCareersHeroPanel(); break;
       case 'careers-why':          html = renderCareersWhyPanel(); break;
       case 'careers-growth':       html = renderCareersGrowthPanel(); break;
@@ -867,6 +869,73 @@ h2.section-title {
       '</div>';
   }
 
+  function renderTeamPanel() {
+    var html = '<h2 class="section-title">👥 Meet the Team Page</h2>' +
+      '<p class="section-help">Manage who appears on your <strong>team.html</strong> page. Add leadership, coaches, store managers, and anyone you want to feature. Upload photos via the camera button or paste a URL.</p>';
+
+    html += '<div class="help-card" style="margin-bottom: 20px;">' +
+      '<strong>Tips:</strong><br>' +
+      '• Set a <strong>Category</strong> for each person — site auto-groups them into filter buttons<br>' +
+      '• Members with no photo show their initials in a colored circle (looks fine until you have photos)<br>' +
+      '• Recommended photo: square (1:1), ~600x600px, head and shoulders<br>' +
+      '• Use the camera button to upload photos via your GitHub token' +
+      '</div>';
+
+    html += '<div class="field-group">' +
+      '<h3>Page Header</h3>' +
+      textField('team.hero.eyebrow', 'Eyebrow') +
+      textareaField('team.hero.headline', 'Headline', 'Use <em>...</em> for the italic accent') +
+      textareaField('team.hero.lead', 'Lead paragraph') +
+      '</div>';
+
+    html += '<div class="field-group">' +
+      '<h3>Categories</h3>' +
+      '<p style="color:var(--muted);font-size:13px;margin-bottom:12px;">One category per line. These become filter buttons on the team page. Order here = display order. Categories not used by anyone are hidden automatically.</p>';
+    var cats = getPath(state.content, 'team.categories') || [];
+    html += '<div class="field"><textarea data-path-list="team.categories" style="min-height:120px;">' + esc(cats.join('\n')) + '</textarea></div>' +
+      '</div>';
+
+    var members = getPath(state.content, 'team.members') || [];
+
+    html += '<div class="field-group"><h3>Team Members (' + members.length + ')</h3>';
+
+    for (var i = 0; i < members.length; i++) {
+      var person = members[i];
+      html += '<div class="list-item">';
+      html += '<div class="list-item-header">';
+      html += '<span class="list-item-label">#' + (i + 1) + ' &middot; ' + esc(person.name || 'New Member') + (person.category ? ' &middot; ' + esc(person.category) : '') + '</span>';
+      html += '<div class="list-actions">';
+      if (i > 0) html += '<button class="icon-btn" data-action="move-up" data-list="team.members" data-idx="' + i + '" title="Move up">↑</button>';
+      if (i < members.length - 1) html += '<button class="icon-btn" data-action="move-down" data-list="team.members" data-idx="' + i + '" title="Move down">↓</button>';
+      html += '<button class="icon-btn" data-action="duplicate" data-list="team.members" data-idx="' + i + '" title="Duplicate">⎘</button>';
+      html += '<button class="icon-btn danger" data-action="delete" data-list="team.members" data-idx="' + i + '" title="Delete">✕</button>';
+      html += '</div></div>';
+
+      html += '<div class="field-row">' +
+        textField('team.members[' + i + '].name', 'Full Name', 'e.g. Cheryl Birchfield') +
+        textField('team.members[' + i + '].title', 'Job Title', 'e.g. HR Manager') +
+        '</div>';
+
+      html += '<div class="field-row">' +
+        textField('team.members[' + i + '].category', 'Category', 'e.g. Leadership, Coaches, Store Managers — used for the filter buttons') +
+        textField('team.members[' + i + '].location', 'Location (optional)', 'e.g. Warwick, RI') +
+        '</div>';
+
+      html += imageField('team.members[' + i + '].photoUrl', 'Photo', 'Square photo (1:1 ratio) recommended. Falls back to initials if blank.');
+
+      html += textareaField('team.members[' + i + '].bio', 'Bio (optional)', 'A short paragraph about this person');
+
+      html += textField('team.members[' + i + '].email', 'Email (optional)', 'e.g. cheryl@edgelinkinc.net — shown as a clickable link');
+
+      html += '</div>';
+    }
+
+    html += '<button class="add-btn" data-action="add-member" data-list="team.members">+ Add Team Member</button>';
+    html += '</div>';
+
+    return html;
+  }
+
   function renderHomeNewsPanel() {
     var html = '<h2 class="section-title">Home: News & Announcements</h2>' +
       '<p class="section-help">Shows the 3 most recent items on the home page. Items are sorted by date automatically.</p>' +
@@ -1296,6 +1365,16 @@ h2.section-title {
             applyUrl: '',
             imageUrl: ''
           });
+        } else if (action === 'add-member') {
+          list.push({
+            name: 'New Team Member',
+            title: '',
+            category: 'Team Members',
+            location: '',
+            bio: '',
+            photoUrl: '',
+            email: ''
+          });
         } else if (action === 'duplicate') {
           var orig = list[idx];
           var dup = JSON.parse(JSON.stringify(orig));
@@ -1360,6 +1439,7 @@ h2.section-title {
     var urls = [
       { loc: siteUrl + '/', changefreq: 'weekly', priority: '1.0' },
       { loc: siteUrl + '/careers.html', changefreq: 'weekly', priority: '0.9' },
+      { loc: siteUrl + '/team.html', changefreq: 'monthly', priority: '0.7' },
       { loc: siteUrl + '/privacy.html', changefreq: 'yearly', priority: '0.3' },
       { loc: siteUrl + '/terms.html', changefreq: 'yearly', priority: '0.3' }
     ];

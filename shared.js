@@ -607,6 +607,113 @@ var EDGELINK = (function() {
     return html;
   }
 
+  // ===== TEAM PAGE =====
+  function renderTeam(team) {
+    if (!team || team.enabled === false) return '';
+    var members = (team.members || []).slice();
+    if (!members.length) {
+      return '<div class="section-inner"><div class="team-empty">' +
+        '<strong>The team page is coming soon.</strong>' +
+        'Add team members in the admin panel to populate this page.' +
+        '</div></div>';
+    }
+
+    var hero = team.hero || {};
+    var html = '<div class="section-inner">';
+    html += renderSectionHeader(hero.eyebrow, hero.headline, hero.lead);
+
+    // Build category filter
+    var catCounts = {};
+    for (var i = 0; i < members.length; i++) {
+      var c = members[i].category || 'Team';
+      catCounts[c] = (catCounts[c] || 0) + 1;
+    }
+    var orderedCats = (team.categories || []).filter(function(c) { return catCounts[c]; });
+    // Add any categories not in the predefined list
+    var allCats = Object.keys(catCounts).sort();
+    for (var ac = 0; ac < allCats.length; ac++) {
+      if (orderedCats.indexOf(allCats[ac]) === -1) orderedCats.push(allCats[ac]);
+    }
+
+    if (orderedCats.length > 1) {
+      html += '<div class="team-filter" id="team-filter">';
+      html += '<button class="team-filter-btn active" data-cat="ALL">All <span class="team-filter-count">(' + members.length + ')</span></button>';
+      for (var oc = 0; oc < orderedCats.length; oc++) {
+        html += '<button class="team-filter-btn" data-cat="' + escapeAttr(orderedCats[oc]) + '">' + escapeHtml(orderedCats[oc]) + ' <span class="team-filter-count">(' + catCounts[orderedCats[oc]] + ')</span></button>';
+      }
+      html += '</div>';
+    }
+
+    html += '<div class="team-grid" id="team-grid">';
+    for (var m = 0; m < members.length; m++) {
+      html += renderMemberCard(members[m]);
+    }
+    html += '</div>';
+
+    html += '</div>';
+    return html;
+  }
+
+  function renderMemberCard(member) {
+    var name = member.name || 'Unnamed';
+    var title = member.title || '';
+    var category = member.category || '';
+    var location = member.location || '';
+    var bio = member.bio || '';
+    var photo = member.photoUrl || '';
+    var email = member.email || '';
+
+    var html = '<article class="team-card" data-cat="' + escapeAttr(category) + '">';
+
+    // Photo or avatar with initials
+    html += '<div class="team-photo">';
+    if (photo && photo.length > 0) {
+      html += '<img src="' + escapeAttr(photo) + '" alt="' + escapeAttr(name) + '">';
+    } else {
+      html += '<div class="team-avatar">' + escapeHtml(getInitials(name)) + '</div>';
+    }
+    html += '</div>';
+
+    html += '<div class="team-body">';
+    html += '<h3 class="team-name">' + escapeHtml(name) + '</h3>';
+    if (title) html += '<div class="team-title">' + escapeHtml(title) + '</div>';
+    if (location) {
+      html += '<div class="team-location"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>' + escapeHtml(location) + '</div>';
+    }
+    if (bio) html += '<p class="team-bio">' + escapeHtml(bio) + '</p>';
+    if (email) html += '<a class="team-email" href="mailto:' + escapeAttr(email) + '">' + escapeHtml(email) + '</a>';
+    html += '</div>';
+
+    html += '</article>';
+    return html;
+  }
+
+  function getInitials(name) {
+    if (!name) return '?';
+    var parts = name.trim().split(/\s+/);
+    if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+    return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+  }
+
+  function attachTeamFilter() {
+    var filter = document.getElementById('team-filter');
+    var grid = document.getElementById('team-grid');
+    if (!filter || !grid) return;
+    var btns = filter.querySelectorAll('.team-filter-btn');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].addEventListener('click', function(e) {
+        var cat = e.currentTarget.getAttribute('data-cat');
+        for (var k = 0; k < btns.length; k++) btns[k].classList.remove('active');
+        e.currentTarget.classList.add('active');
+        var cards = grid.querySelectorAll('.team-card');
+        for (var c = 0; c < cards.length; c++) {
+          var cardCat = cards[c].getAttribute('data-cat');
+          cards[c].style.display = (cat === 'ALL' || cardCat === cat) ? '' : 'none';
+        }
+      });
+    }
+  }
+
   // ===== OPEN POSITIONS / JOBS =====
   function renderOpenPositions(openPositions) {
     if (!openPositions || openPositions.enabled === false) return '';
@@ -1033,6 +1140,8 @@ var EDGELINK = (function() {
     renderFAQ: renderFAQ,
     renderOpenPositions: renderOpenPositions,
     attachJobsFilter: attachJobsFilter,
+    renderTeam: renderTeam,
+    attachTeamFilter: attachTeamFilter,
     attachScrollReveal: attachScrollReveal,
     injectSeoTags: injectSeoTags,
     renderFooter: renderFooter,

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meet the Team — Edgelink Inc.</title>
+<meta name="description" content="Meet the team behind Edgelink Inc. — the family-owned wireless retail company across Arkansas, Connecticut, Massachusetts, Rhode Island, and Tennessee.">
+<link rel="canonical" href="https://edgelinkinc.net/team.html">
+
+<!-- OpenGraph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Edgelink Inc.">
+<meta property="og:title" content="Meet the Team — Edgelink Inc.">
+<meta property="og:description" content="Real people, real stories. Get to know the team behind Edgelink Inc.">
+<meta property="og:url" content="https://edgelinkinc.net/team.html">
+<meta property="og:image" content="https://edgelinkinc.net/images/1778610698486-edgelink_logo-4-10-26.png">
+<meta property="og:image:secure_url" content="https://edgelinkinc.net/images/1778610698486-edgelink_logo-4-10-26.png">
+<meta property="og:image:alt" content="The Edgelink Team">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Meet the Team — Edgelink Inc.">
+<meta name="twitter:description" content="Real people, real stories. Meet the family behind Edgelink.">
+<meta name="twitter:image" content="https://edgelinkinc.net/images/1778610698486-edgelink_logo-4-10-26.png">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 L28 16 L16 30 L4 16 Z' fill='%235F249F'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .team-page-hero {
+    padding: 140px 40px 60px;
+    background: linear-gradient(135deg, var(--lavender-soft) 0%, var(--white) 100%);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .team-page-hero::before {
+    content: ''; position: absolute; top: 20%; right: -100px;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(226, 0, 116, 0.08) 0%, transparent 70%);
+    border-radius: 50%; pointer-events: none;
+  }
+  .team-page-hero::after {
+    content: ''; position: absolute; bottom: -50px; left: -100px;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(251, 191, 36, 0.12) 0%, transparent 70%);
+    border-radius: 50%; pointer-events: none;
+  }
+  .team-page-hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 500; line-height: 1.05;
+    margin: 12px 0 14px;
+    color: var(--plum);
+    letter-spacing: -0.02em;
+    position: relative; z-index: 2;
+  }
+  .team-page-hero h1 em {
+    font-style: italic;
+    background: var(--gradient-warm);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .team-page-hero p {
+    color: var(--gray-text);
+    font-size: 17px;
+    max-width: 580px;
+    margin: 0 auto;
+    line-height: 1.65;
+    position: relative; z-index: 2;
+  }
+  .team-page-hero .hero-eyebrow {
+    justify-content: center;
+    position: relative; z-index: 2;
+  }
+  @media (max-width: 900px) {
+    .team-page-hero { padding: 120px 24px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav" id="site-nav"></nav>
+
+<main id="page-content">
+  <div class="loading">Loading…</div>
+</main>
+
+<footer id="site-footer"></footer>
+
+<script src="shared.js"></script>
+<script>
+(function() {
+  'use strict';
+  var useDraft = window.location.search.indexOf('preview=1') !== -1;
+  EDGELINK.loadContent(useDraft, function(err, content) {
+    if (err) {
+      document.getElementById('page-content').innerHTML =
+        '<div class="loading" style="flex-direction: column; gap: 16px;">' +
+        '<div>Could not load content.json</div>' +
+        '<div style="font-size: 13px; color: #999;">' + (err.message || 'Error') + '</div>' +
+        '</div>';
+      return;
+    }
+    renderPage(content);
+  });
+
+  function renderPage(content) {
+    EDGELINK.injectSeoTags(content, {
+      title: 'Meet the Team — ' + (content.branding && content.branding.companyName ? content.branding.companyName : 'Edgelink') + ' Inc.',
+      description: 'Meet the team behind Edgelink Inc. — real people, real stories.',
+      url: ((content.seo && content.seo.siteUrl) || '') + '/team.html',
+      type: 'website'
+    });
+
+    document.getElementById('site-nav').innerHTML = EDGELINK.renderNav(content);
+
+    var team = content.team || {};
+    var hero = team.hero || {};
+    var html = '';
+
+    // Page hero
+    html += '<section class="team-page-hero">';
+    if (hero.eyebrow) {
+      html += '<div class="hero-eyebrow"><span class="dot"></span>' + EDGELINK.escapeHtml(hero.eyebrow) + '</div>';
+    }
+    if (hero.headline) {
+      html += '<h1>' + hero.headline + '</h1>';
+    }
+    if (hero.lead) {
+      html += '<p>' + EDGELINK.escapeHtml(hero.lead) + '</p>';
+    }
+    html += '</section>';
+
+    // Team grid section
+    html += '<section class="team-section">';
+    html += EDGELINK.renderTeam(team);
+    html += '</section>';
+
+    document.getElementById('page-content').innerHTML = html;
+    document.getElementById('site-footer').innerHTML = EDGELINK.renderFooter(content);
+
+    EDGELINK.attachTeamFilter();
+    EDGELINK.attachScrollReveal();
+  }
+})();
+</script>
+
+</body>
+</html>

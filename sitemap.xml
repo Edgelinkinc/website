@@ -11,6 +11,11 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://edgelinkinc.net/team.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://edgelinkinc.net/job.html?id=rsr-bald-hill-warwick-ri</loc>
     <lastmod>2026-05-11</lastmod>
     <changefreq>daily</changefreq>
