@@ -143,11 +143,11 @@
           "stores": [
             {
               "name": "Colonel Glenn",
-              "address": "6420 Colonel Glenn Rd Ste 3 Little Rock AR "
+              "address": ""
             },
             {
               "name": "Radio Geyer",
-              "address": "8717 Geyer Springs Rd Ste 140 Little Rock AR "
+              "address": " "
             }
           ]
         },
@@ -163,17 +163,50 @@
         {
           "abbr": "MA",
           "name": "Massachusetts",
-          "stores": []
+          "stores": [
+            "",
+            "New item",
+            "New item",
+            "New item",
+            "New item",
+            "New item",
+            "New item",
+            "New item",
+            "New item",
+            "New item",
+            "New item"
+          ]
         },
         {
           "abbr": "RI",
           "name": "Rhode Island",
-          "stores": []
+          "stores": [
+            "",
+            "New item",
+            "New item",
+            "New item",
+            "New item",
+            "New item",
+            "New item",
+            "New item",
+            "New item",
+            "New item",
+            "New item"
+          ]
         },
         {
           "abbr": "TN",
           "name": "Tennessee",
-          "stores": []
+          "stores": [
+            "",
+            "New item",
+            "New item",
+            "New item",
+            "New item",
+            "New item",
+            "New item",
+            "New item"
+          ]
         }
       ]
     },
