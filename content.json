@@ -48,7 +48,7 @@
       "subhead": "From New England to the South, Edgelink Inc. is a team-first retail family bringing reliable wireless service and real careers to every neighborhood we serve.",
       "stats": [
         {
-          "value": "35+",
+          "value": "35",
           "label": "Locations"
         },
         {
@@ -56,7 +56,7 @@
           "label": "States"
         },
         {
-          "value": "200+",
+          "value": "100+",
           "label": "Team Members"
         }
       ],
@@ -76,7 +76,7 @@
         "label": "States Served"
       },
       {
-        "value": "200+",
+        "value": "100+",
         "label": "Team Members"
       },
       {
@@ -340,7 +340,7 @@
       ],
       "contactInfo": {
         "email": "hr@edgelinkinc.com",
-        "phoneLabel": "",
+        "phoneLabel": "423-747-0429",
         "addressLabel": "719 Bald Hill Rd., Warwick, RI 02886"
       }
     },
@@ -415,14 +415,14 @@
           "description": "Take on training duties, mentor new reps, and earn more responsibility and pay."
         },
         {
-          "title": "Coach",
-          "subtitle": "Lead a group of reps",
-          "description": "Drive performance across multiple reps. Coaching payouts on top of base."
-        },
-        {
           "title": "Store Manager",
           "subtitle": "Run your own store",
           "description": "Full P&L responsibility, team building, and manager bonus eligibility."
+        },
+        {
+          "title": "Coach",
+          "subtitle": "Lead a group of reps",
+          "description": "Drive performance across multiple reps. Coaching payouts on top of base."
         }
       ]
     },
@@ -694,7 +694,7 @@
         ]
       }
     ],
-    "copyright": "© 2026 Edgelink Inc. All rights reserved.",
+    "copyright": "© 2025 Edgelink Inc. All rights reserved.",
     "legal": "Privacy · Terms · Accessibility"
   }
 }
