@@ -6,7 +6,7 @@
   },
   "seo": {
     "siteUrl": "https://edgelinkinc.com",
-    "defaultDescription": "Edgelink Inc. is a team-first wireless retail family bringing reliable Metro by T-Mobile service and real careers to neighborhoods across Arkansas, Connecticut, Massachusetts, Rhode Island, and Tennessee.",
+    "defaultDescription": "Edgelink Inc.",
     "defaultImageUrl": "",
     "twitterHandle": "",
     "organizationType": "Organization"
@@ -576,7 +576,7 @@
         {
           "id": "rsr-bald-hill-warwick-ri",
           "title": "Retail Sales Representative",
-          "employmentType": "FULL_TIME",
+          "employmentType": "PART_TIME",
           "datePosted": "2026-05-11",
           "validThrough": "2026-08-11",
           "active": true,
