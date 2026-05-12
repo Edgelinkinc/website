@@ -328,7 +328,7 @@
       "eyebrow": "Get in Touch",
       "headline": "We'd love to <em>hear from you</em>.",
       "lead": "Questions, feedback, or career inquiries — drop us a message and we'll get back to you.",
-      "formspreeEndpoint": "",
+      "formspreeEndpoint": "https://formspree.io/f/xlgzzvkg",
       "submitButtonLabel": "Send Message",
       "successMessage": "Thanks! We got your message and will reply soon.",
       "subjects": [
