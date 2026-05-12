@@ -69,7 +69,8 @@
         "card1Value": "34",
         "card2Label": "Team",
         "card2Value": "100+ Team Members",
-        "bubbleBottomValue": "Join The Team Today!"
+        "bubbleBottomValue": "Join Our Team Today!",
+        "bubbleBottomLabel": "Hiring Now"
       }
     },
     "stats": [
@@ -145,7 +146,7 @@
         {
           "label": "One Team",
           "title": "We win together.",
-          "description": "No silos, no politics. Across five states and 35+ stores, we operate as one family."
+          "description": "We Operate as one TEAM!!!!"
         }
       ]
     },
@@ -346,8 +347,8 @@
       ],
       "contactInfo": {
         "email": "hr@edgelinkinc.com",
-        "phoneLabel": "423-747-0429",
-        "addressLabel": "719 Bald Hill Rd., Warwick, RI 02886"
+        "phoneLabel": "",
+        "addressLabel": ""
       }
     },
     "news": {
