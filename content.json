@@ -621,7 +621,50 @@
             "Real career path — 100% promote from within"
           ],
           "applyUrl": "https://recruiting.myapps.paychex.com/appone/MainInfoReq.asp?R_ID=7106492",
-          "imageUrl": ""
+          "imageUrl": "images/1778615978044-oip.jpg"
+        },
+        {
+          "id": "new-job-1778615578067",
+          "title": "Retail Sales Representative",
+          "employmentType": "PART_TIME",
+          "active": true,
+          "state": "TN",
+          "storeName": "Magnolia",
+          "storeAddress": "2132 E Magnolia Ave Knoxville TN 37917",
+          "city": "Knoxville ",
+          "region": "RI",
+          "postalCode": "37917",
+          "country": "US",
+          "payMin": "11",
+          "payMax": 22,
+          "payUnit": "HOUR",
+          "payCurrency": "USD",
+          "datePosted": "2026-05-12",
+          "validThrough": "2026-08-12",
+          "description": "Join Edgelink Inc. as a Retail Sales Representative at our Magnolia store in Knoxville, TN. You'll connect with customers, help them find the right Metro by T-Mobile plans and devices, and grow your career with a team that promotes from within.",
+          "responsibilities": [
+            "Greet customers, identify their needs, and recommend the right plans and devices",
+            "Process activations, upgrades, and accessory sales",
+            "Maintain store cleanliness and product displays",
+            "Meet individual and team sales targets",
+            "Provide excellent bilingual customer service (where applicable)"
+          ],
+          "requirements": [
+            "Strong communication and customer service skills",
+            "Reliability and a positive attitude",
+            "Flexible availability including evenings and weekends",
+            "High school diploma or equivalent",
+            "Bilingual (Spanish) a plus, not required"
+          ],
+          "benefits": [
+            "Base pay + Weekly Incentives",
+            "Spiff and bonus opportunities",
+            "Paid training",
+            "Employee discount on Metro by T-Mobile service",
+            "Real career path — 100% promote from within"
+          ],
+          "applyUrl": "https://recruiting.myapps.paychex.com/appone/MainInfoReq.asp?R_ID=7106551",
+          "imageUrl": "images/1778615943265-oip.jpg"
         }
       ]
     }
