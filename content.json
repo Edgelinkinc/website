@@ -749,7 +749,7 @@
   },
   "team": {
     "enabled": true,
-    "status": "live",
+    "status": "under_construction",
     "comingSoonMessage": "We're putting the finishing touches on our team page. Check back soon to meet the family behind Edgelink!",
     "hero": {
       "eyebrow": "Meet the Family",
