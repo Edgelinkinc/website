@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loading… — Edgelink Inc.</title>
+<meta name="description" content="Open position at Edgelink Inc.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 L28 16 L16 30 L4 16 Z' fill='%235F249F'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .job-page {
+    padding: 160px 40px 80px;
+    max-width: 920px;
+    margin: 0 auto;
+  }
+  .job-page-back {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--purple-mid); text-decoration: none;
+    font-size: 13px; font-weight: 600;
+    margin-bottom: 32px;
+    transition: color 0.2s;
+  }
+  .job-page-back:hover { color: var(--magenta); }
+  .job-page-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 24px; margin-bottom: 24px; flex-wrap: wrap;
+  }
+  .job-page h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(32px, 4.5vw, 48px);
+    font-weight: 500; line-height: 1.05;
+    background: var(--gradient-warm);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .job-page-store {
+    font-size: 15px; color: var(--magenta);
+    font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .job-page-state {
+    flex-shrink: 0;
+    font-family: 'Fraunces', serif;
+    font-size: 36px; font-weight: 600;
+    background: var(--gradient-warm);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding: 12px 20px;
+    border: 2px solid var(--purple-tint);
+    border-radius: 14px;
+    line-height: 1;
+  }
+  .job-page-meta {
+    display: flex; gap: 20px; flex-wrap: wrap;
+    margin: 24px 0 40px;
+    padding: 20px 24px;
+    background: var(--lavender-soft);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+  }
+  .job-page-meta-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 14px; color: var(--gray-text);
+  }
+  .job-page-meta-item svg {
+    width: 18px; height: 18px; color: var(--purple-mid);
+  }
+  .job-page-meta-item strong { color: var(--plum); font-weight: 600; }
+  .job-page-photo {
+    width: 100%; aspect-ratio: 16/8; object-fit: cover;
+    border-radius: 18px; margin-bottom: 32px;
+    box-shadow: var(--shadow-lg);
+  }
+  .job-page-content {
+    color: var(--ink); font-size: 16px; line-height: 1.7;
+  }
+  .job-page-content h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 24px; color: var(--plum);
+    margin-top: 36px; margin-bottom: 16px;
+  }
+  .job-page-content p {
+    margin-bottom: 16px; white-space: pre-line;
+  }
+  .job-page-content ul {
+    padding-left: 0; list-style: none;
+    display: grid; gap: 10px;
+    margin-bottom: 16px;
+  }
+  .job-page-content li {
+    padding-left: 32px;
+    position: relative;
+  }
+  .job-page-content li::before {
+    content: '✓';
+    position: absolute;
+    left: 0; top: 0;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--gradient-warm);
+    color: white;
+    font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .job-apply-card {
+    margin-top: 48px;
+    background: linear-gradient(135deg, var(--plum) 0%, var(--purple-deep) 60%, var(--purple-mid) 100%);
+    border-radius: 24px;
+    padding: 48px 40px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .job-apply-card::before {
+    content: ''; position: absolute; top: -100px; right: -100px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(226, 0, 116, 0.4) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .job-apply-card-inner { position: relative; z-index: 2; }
+  .job-apply-card h2 {
+    font-family: 'Fraunces', serif; font-size: 32px;
+    font-weight: 500; margin-bottom: 12px;
+  }
+  .job-apply-card p {
+    font-size: 16px; color: rgba(255,255,255,0.85);
+    margin-bottom: 28px; max-width: 540px;
+  }
+  .job-apply-card .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 16px 32px; border-radius: 999px;
+    background: white; color: var(--plum);
+    font-size: 15px; font-weight: 600;
+    text-decoration: none;
+    transition: all 0.25s;
+  }
+  .job-apply-card .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+  }
+  .job-not-found {
+    text-align: center; padding: 80px 24px;
+    background: var(--lavender-soft);
+    border-radius: 20px;
+    margin-top: 40px;
+  }
+  .job-not-found h2 {
+    font-family: 'Fraunces', serif; font-size: 28px;
+    color: var(--plum); margin-bottom: 12px;
+  }
+  .job-not-found p { color: var(--gray-text); margin-bottom: 24px; }
+  @media (max-width: 700px) {
+    .job-page { padding: 120px 24px 60px; }
+    .job-page-header { gap: 16px; }
+    .job-page-state { font-size: 28px; padding: 10px 16px; }
+    .job-apply-card { padding: 32px 24px; }
+    .job-apply-card h2 { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav" id="site-nav"></nav>
+
+<main id="page-content">
+  <div class="loading">Loading…</div>
+</main>
+
+<footer id="site-footer"></footer>
+
+<script src="shared.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  // Get job ID from URL: job.html?id=rsr-bald-hill-warwick-ri
+  function getJobId() {
+    var params = window.location.search.substring(1).split('&');
+    for (var i = 0; i < params.length; i++) {
+      var kv = params[i].split('=');
+      if (kv[0] === 'id') return decodeURIComponent(kv[1] || '');
+    }
+    return '';
+  }
+
+  var useDraft = window.location.search.indexOf('preview=1') !== -1;
+
+  EDGELINK.loadContent(useDraft, function(err, content) {
+    if (err) {
+      document.getElementById('page-content').innerHTML =
+        '<div class="loading" style="flex-direction: column; gap: 16px;">' +
+        '<div>Could not load content.json</div>' +
+        '<div style="font-size: 13px; color: #999;">' + (err.message || 'Error') + '</div>' +
+        '</div>';
+      return;
+    }
+    renderPage(content);
+  });
+
+  function renderPage(content) {
+    document.getElementById('site-nav').innerHTML = EDGELINK.renderNav(content);
+    document.getElementById('site-footer').innerHTML = EDGELINK.renderFooter(content);
+
+    var jobId = getJobId();
+    var jobs = (content.careers && content.careers.openPositions && content.careers.openPositions.items) || [];
+    var job = null;
+    for (var i = 0; i < jobs.length; i++) {
+      if (jobs[i].id === jobId) { job = jobs[i]; break; }
+    }
+
+    if (!job || job.active === false) {
+      renderNotFound(content);
+      return;
+    }
+
+    var siteUrl = (content.seo && content.seo.siteUrl) || 'https://edgelinkinc.net';
+    var pageUrl = siteUrl + '/job.html?id=' + encodeURIComponent(job.id);
+
+    // SEO tags for this job
+    EDGELINK.injectSeoTags(content, {
+      title: job.title + ' — ' + (job.storeName || job.city || '') + ' | Edgelink',
+      description: extractFirstSentence(job.description) || (job.title + ' position at Edgelink in ' + (job.city || job.state || '')),
+      url: pageUrl,
+      imageUrl: job.imageUrl || (content.seo && content.seo.defaultImageUrl),
+      type: 'article'
+    });
+
+    // Inject JobPosting Schema.org JSON-LD for Google for Jobs
+    injectJobPostingSchema(job, content);
+
+    // Render the job page HTML
+    var html = '<div class="job-page">';
+
+    html += '<a href="careers.html#openings" class="job-page-back">← All Open Positions</a>';
+
+    html += '<div class="job-page-header">';
+    html += '<div style="flex:1;">';
+    html += '<h1>' + esc(job.title) + '</h1>';
+    html += '<div class="job-page-store">' + esc(job.storeName || job.city || '') + (job.state ? ' &middot; ' + esc(job.state) : '') + '</div>';
+    html += '</div>';
+    if (job.state) html += '<div class="job-page-state">' + esc(job.state) + '</div>';
+    html += '</div>';
+
+    // Meta strip
+    html += '<div class="job-page-meta">';
+    var typeLabel = formatEmploymentType(job.employmentType);
+    if (typeLabel) {
+      html += '<div class="job-page-meta-item">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>' +
+        '<strong>' + esc(typeLabel) + '</strong></div>';
+    }
+    var pay = formatPayRange(job);
+    if (pay) {
+      html += '<div class="job-page-meta-item">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>' +
+        '<strong>' + esc(pay) + '</strong></div>';
+    }
+    if (job.storeAddress) {
+      html += '<div class="job-page-meta-item">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>' +
+        esc(job.storeAddress) + '</div>';
+    }
+    if (job.datePosted) {
+      html += '<div class="job-page-meta-item">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' +
+        'Posted ' + esc(job.datePosted) + '</div>';
+    }
+    html += '</div>';
+
+    if (job.imageUrl) {
+      html += '<img src="' + esc(job.imageUrl) + '" alt="' + esc(job.title) + '" class="job-page-photo">';
+    }
+
+    html += '<div class="job-page-content">';
+
+    if (job.description) {
+      html += '<h2>About the Role</h2>';
+      html += '<p>' + esc(job.description) + '</p>';
+    }
+
+    if (job.responsibilities && job.responsibilities.length > 0) {
+      html += '<h2>What You\'ll Do</h2><ul>';
+      for (var r = 0; r < job.responsibilities.length; r++) {
+        html += '<li>' + esc(job.responsibilities[r]) + '</li>';
+      }
+      html += '</ul>';
+    }
+
+    if (job.requirements && job.requirements.length > 0) {
+      html += '<h2>What We\'re Looking For</h2><ul>';
+      for (var rq = 0; rq < job.requirements.length; rq++) {
+        html += '<li>' + esc(job.requirements[rq]) + '</li>';
+      }
+      html += '</ul>';
+    }
+
+    if (job.benefits && job.benefits.length > 0) {
+      html += '<h2>What You Get</h2><ul>';
+      for (var b = 0; b < job.benefits.length; b++) {
+        html += '<li>' + esc(job.benefits[b]) + '</li>';
+      }
+      html += '</ul>';
+    }
+
+    html += '</div>'; // job-page-content
+
+    // Apply CTA
+    var applyHref = job.applyUrl && job.applyUrl.length > 0 ? job.applyUrl : 'mailto:hr@edgelinkinc.net?subject=Application: ' + encodeURIComponent(job.title);
+    var isExternal = applyHref.indexOf('http') === 0;
+    html += '<div class="job-apply-card"><div class="job-apply-card-inner">';
+    html += '<h2>Ready to apply?</h2>';
+    html += '<p>Click below to apply for this position. The application takes about 10 minutes through our Paychex Flex portal.</p>';
+    html += '<a href="' + esc(applyHref) + '" class="btn"' + (isExternal ? ' target="_blank" rel="noopener"' : '') + '>Apply for this Position →</a>';
+    html += '</div></div>';
+
+    html += '</div>'; // job-page
+
+    document.getElementById('page-content').innerHTML = html;
+    EDGELINK.attachScrollReveal();
+  }
+
+  function renderNotFound(content) {
+    EDGELINK.injectSeoTags(content, {
+      title: 'Position Not Found — Edgelink',
+      description: 'This position is no longer available.',
+      url: (content.seo && content.seo.siteUrl) || ''
+    });
+    var html = '<div class="job-page">';
+    html += '<a href="careers.html" class="job-page-back">← Back to Careers</a>';
+    html += '<div class="job-not-found">';
+    html += '<h2>Position no longer available</h2>';
+    html += '<p>This job posting may have been filled or removed. Check our current openings for similar roles.</p>';
+    html += '<a href="careers.html#openings" class="btn btn-primary">View All Openings →</a>';
+    html += '</div></div>';
+    document.getElementById('page-content').innerHTML = html;
+  }
+
+  function injectJobPostingSchema(job, content) {
+    var siteUrl = (content.seo && content.seo.siteUrl) || 'https://edgelinkinc.net';
+    var brand = content.branding || {};
+    var orgName = (brand.companyName || 'Edgelink') + ' Inc.';
+
+    var schema = {
+      '@context': 'https://schema.org',
+      '@type': 'JobPosting',
+      'title': job.title,
+      'description': formatDescriptionForSchema(job),
+      'datePosted': job.datePosted,
+      'employmentType': job.employmentType || 'FULL_TIME',
+      'identifier': {
+        '@type': 'PropertyValue',
+        'name': orgName,
+        'value': job.id
+      },
+      'hiringOrganization': {
+        '@type': 'Organization',
+        'name': orgName,
+        'sameAs': siteUrl,
+        'logo': siteUrl + '/favicon.svg'
+      },
+      'jobLocation': {
+        '@type': 'Place',
+        'address': {
+          '@type': 'PostalAddress',
+          'streetAddress': extractStreetAddress(job.storeAddress),
+          'addressLocality': job.city || '',
+          'addressRegion': job.region || job.state || '',
+          'postalCode': job.postalCode || '',
+          'addressCountry': job.country || 'US'
+        }
+      }
+    };
+
+    if (job.validThrough) {
+      schema.validThrough = job.validThrough + 'T23:59:59';
+    }
+
+    if (job.payMin || job.payMax) {
+      var unit = (job.payUnit || 'HOUR').toUpperCase();
+      schema.baseSalary = {
+        '@type': 'MonetaryAmount',
+        'currency': job.payCurrency || 'USD',
+        'value': {
+          '@type': 'QuantitativeValue',
+          'minValue': job.payMin || job.payMax,
+          'maxValue': job.payMax || job.payMin,
+          'unitText': unit
+        }
+      };
+    }
+
+    if (job.applyUrl && job.applyUrl.length > 0) {
+      schema.directApply = false;
+    }
+
+    // Remove any existing JobPosting schema
+    var existing = document.querySelector('script[type="application/ld+json"][data-edgelink-job]');
+    if (existing) existing.remove();
+
+    var script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.setAttribute('data-edgelink-job', 'true');
+    script.textContent = JSON.stringify(schema);
+    document.head.appendChild(script);
+  }
+
+  function formatDescriptionForSchema(job) {
+    // Google wants HTML description — combine description + lists
+    var html = '<p>' + esc(job.description || '') + '</p>';
+    if (job.responsibilities && job.responsibilities.length) {
+      html += '<p><strong>Responsibilities:</strong></p><ul>';
+      for (var i = 0; i < job.responsibilities.length; i++) {
+        html += '<li>' + esc(job.responsibilities[i]) + '</li>';
+      }
+      html += '</ul>';
+    }
+    if (job.requirements && job.requirements.length) {
+      html += '<p><strong>Requirements:</strong></p><ul>';
+      for (var j = 0; j < job.requirements.length; j++) {
+        html += '<li>' + esc(job.requirements[j]) + '</li>';
+      }
+      html += '</ul>';
+    }
+    if (job.benefits && job.benefits.length) {
+      html += '<p><strong>Benefits:</strong></p><ul>';
+      for (var k = 0; k < job.benefits.length; k++) {
+        html += '<li>' + esc(job.benefits[k]) + '</li>';
+      }
+      html += '</ul>';
+    }
+    return html;
+  }
+
+  function extractStreetAddress(fullAddress) {
+    if (!fullAddress) return '';
+    // Get everything before the first comma
+    var comma = fullAddress.indexOf(',');
+    return comma > -1 ? fullAddress.substring(0, comma).trim() : fullAddress;
+  }
+
+  function extractFirstSentence(text) {
+    if (!text) return '';
+    var match = text.match(/^.+?[.!?](\s|$)/);
+    if (match) return match[0].trim();
+    return text.substring(0, 160);
+  }
+
+  function formatEmploymentType(t) {
+    if (!t) return '';
+    var map = {
+      'FULL_TIME': 'Full-time',
+      'PART_TIME': 'Part-time',
+      'CONTRACTOR': 'Contractor',
+      'TEMPORARY': 'Temporary',
+      'INTERN': 'Internship',
+      'OTHER': 'Other'
+    };
+    return map[t] || t;
+  }
+
+  function formatPayRange(job) {
+    if (!job.payMin && !job.payMax) return '';
+    var unit = (job.payUnit || 'HOUR').toLowerCase();
+    var unitLabel = unit === 'hour' ? '/hr' : (unit === 'year' ? '/yr' : (unit === 'week' ? '/wk' : (unit === 'day' ? '/day' : '/' + unit)));
+    var currency = (job.payCurrency === 'USD' || !job.payCurrency) ? '$' : job.payCurrency;
+    if (job.payMin && job.payMax && job.payMin !== job.payMax) {
+      return currency + job.payMin + '-' + job.payMax + unitLabel;
+    }
+    return currency + (job.payMin || job.payMax) + unitLabel;
+  }
+
+  function esc(s) {
+    if (s === null || s === undefined) return '';
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+})();
+</script>
+
+</body>
+</html>

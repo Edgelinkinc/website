@@ -975,16 +975,24 @@ h2.section-title {
       '<h3>Schema / Structured Data</h3>' +
       selectField('seo.organizationType', 'Organization Type', ['Organization', 'Corporation', 'LocalBusiness', 'Store'], 'Used by Google to understand your business type') +
       '</div>' +
+      '<div class="field-group">' +
+      '<h3>🗺 Sitemap Generator</h3>' +
+      '<p style="color:var(--muted);font-size:13px;margin-bottom:16px;">Regenerate sitemap.xml whenever you add or remove jobs. Includes all active job pages so Google can find them.</p>' +
+      '<button class="btn btn-magenta" id="btn-generate-sitemap">⬇ Generate sitemap.xml</button>' +
+      '<div id="sitemap-result" style="margin-top:12px;font-size:13px;"></div>' +
+      '</div>' +
       '<div class="help-card" style="margin-top: 20px;">' +
       '<strong>Already included automatically:</strong><br>' +
-      '✓ Sitemap.xml at <code>edgelinkinc.com/sitemap.xml</code><br>' +
-      '✓ Robots.txt at <code>edgelinkinc.com/robots.txt</code> (admin panel hidden from crawlers)<br>' +
       '✓ OpenGraph + Twitter Card meta tags on all pages<br>' +
-      '✓ Schema.org JSON-LD structured data<br>' +
+      '✓ Schema.org JSON-LD structured data for the organization<br>' +
+      '✓ JobPosting schema on each job page (for Google for Jobs)<br>' +
+      '✓ Robots.txt allows crawlers, hides admin<br>' +
       '✓ Privacy Policy + Terms of Use pages<br><br>' +
-      '<strong>Recommended next steps:</strong><br>' +
-      '• <a href="https://search.google.com/search-console" target="_blank" style="color:#FFB4D9;text-decoration:underline;">Submit your site to Google Search Console</a><br>' +
-      '• <a href="https://www.bing.com/webmasters" target="_blank" style="color:#FFB4D9;text-decoration:underline;">Submit your site to Bing Webmaster Tools</a>' +
+      '<strong>To submit to Google for Jobs:</strong><br>' +
+      '1. Make sure your jobs are Active in the <strong>⭐ Open Jobs</strong> tab<br>' +
+      '2. Generate sitemap.xml above, upload it to GitHub<br>' +
+      '3. In <a href="https://search.google.com/search-console" target="_blank" style="color:#FFB4D9;text-decoration:underline;">Google Search Console</a>, resubmit sitemap<br>' +
+      '4. Use <a href="https://search.google.com/test/rich-results" target="_blank" style="color:#FFB4D9;text-decoration:underline;">Rich Results Test</a> on a job URL to confirm JobPosting structured data is detected' +
       '</div>';
   }
 
@@ -1282,6 +1290,76 @@ h2.section-title {
 
     // Settings panel handlers
     bindSettingsHandlers();
+
+    // Sitemap generator (SEO panel)
+    var sitemapBtn = document.getElementById('btn-generate-sitemap');
+    if (sitemapBtn) {
+      sitemapBtn.addEventListener('click', generateSitemap);
+    }
+  }
+
+  function generateSitemap() {
+    var siteUrl = (state.content.seo && state.content.seo.siteUrl) || 'https://edgelinkinc.net';
+    siteUrl = siteUrl.replace(/\/$/, ''); // strip trailing slash
+
+    var today = new Date().toISOString().slice(0, 10);
+    var urls = [
+      { loc: siteUrl + '/', changefreq: 'weekly', priority: '1.0' },
+      { loc: siteUrl + '/careers.html', changefreq: 'weekly', priority: '0.9' },
+      { loc: siteUrl + '/privacy.html', changefreq: 'yearly', priority: '0.3' },
+      { loc: siteUrl + '/terms.html', changefreq: 'yearly', priority: '0.3' }
+    ];
+
+    // Add active job pages
+    var jobs = (state.content.careers && state.content.careers.openPositions && state.content.careers.openPositions.items) || [];
+    var activeJobCount = 0;
+    for (var i = 0; i < jobs.length; i++) {
+      if (jobs[i].active !== false && jobs[i].id) {
+        urls.push({
+          loc: siteUrl + '/job.html?id=' + encodeURIComponent(jobs[i].id),
+          changefreq: 'daily',
+          priority: '0.8',
+          lastmod: jobs[i].datePosted || today
+        });
+        activeJobCount++;
+      }
+    }
+
+    var xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+    for (var j = 0; j < urls.length; j++) {
+      xml += '  <url>\n';
+      xml += '    <loc>' + urls[j].loc + '</loc>\n';
+      if (urls[j].lastmod) xml += '    <lastmod>' + urls[j].lastmod + '</lastmod>\n';
+      xml += '    <changefreq>' + urls[j].changefreq + '</changefreq>\n';
+      xml += '    <priority>' + urls[j].priority + '</priority>\n';
+      xml += '  </url>\n';
+    }
+    xml += '</urlset>\n';
+
+    // Download the file
+    try {
+      var blob = new Blob([xml], { type: 'application/xml;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'sitemap.xml';
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function() {
+        if (a.parentNode) a.parentNode.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 250);
+
+      var resultEl = document.getElementById('sitemap-result');
+      resultEl.innerHTML = '<span style="color:var(--green);font-weight:600;">✓ sitemap.xml downloaded</span> &middot; ' +
+        urls.length + ' total URLs (' + activeJobCount + ' active job' + (activeJobCount === 1 ? '' : 's') + ')<br>' +
+        '<span style="color:var(--muted);font-size:12px;">Upload it to your GitHub repo (replace the existing sitemap.xml) to publish.</span>';
+    } catch (err) {
+      var resultEl2 = document.getElementById('sitemap-result');
+      resultEl2.innerHTML = '<span style="color:var(--red);">Download failed: ' + esc(err.message || err) + '</span>';
+    }
   }
 
   function triggerImageUpload(targetPath) {

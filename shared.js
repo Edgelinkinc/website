@@ -628,8 +628,9 @@ var EDGELINK = (function() {
     if (summary) html += '<p class="job-summary">' + escapeHtml(summary) + '</p>';
 
     html += '<div class="job-actions">';
-    var applyHref = job.applyUrl && job.applyUrl.length > 0 ? job.applyUrl : 'mailto:hr@edgelinkinc.com?subject=Application: ' + encodeURIComponent(job.title);
+    var applyHref = job.applyUrl && job.applyUrl.length > 0 ? job.applyUrl : 'mailto:hr@edgelinkinc.net?subject=Application: ' + encodeURIComponent(job.title);
     var isExternal = applyHref.indexOf('http') === 0;
+    html += '<a href="job.html?id=' + escapeAttr(job.id) + '" class="job-details-btn">View Details</a>';
     html += '<a href="' + escapeAttr(applyHref) + '" class="job-apply-btn"' + (isExternal ? ' target="_blank" rel="noopener"' : '') + '>Apply Now →</a>';
     html += '</div>';
 
