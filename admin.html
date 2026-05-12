@@ -1225,14 +1225,33 @@ h2.section-title {
 
   document.getElementById('btn-export').addEventListener('click', function() {
     var json = JSON.stringify(state.content, null, 2);
-    var blob = new Blob([json], { type: 'application/json' });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = 'content.json';
-    a.click();
-    URL.revokeObjectURL(url);
-    showStatus('content.json downloaded. Upload to your GitHub repo to publish.', 'success');
+    try {
+      var blob = new Blob([json], { type: 'application/json;charset=utf-8' });
+
+      // IE/legacy Edge path
+      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveOrOpenBlob(blob, 'content.json');
+        showStatus('content.json downloaded. Upload to your GitHub repo to publish.', 'success');
+        return;
+      }
+
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'content.json';
+      a.style.display = 'none';
+      document.body.appendChild(a);   // required by some browsers
+      a.click();
+      // Delay cleanup so the browser has time to start the download
+      setTimeout(function() {
+        if (a.parentNode) a.parentNode.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 250);
+
+      showStatus('content.json downloaded. Upload to your GitHub repo to publish.', 'success');
+    } catch (err) {
+      showStatus('Download failed: ' + (err.message || err), 'error');
+    }
   });
 
   // ===== UTILITIES =====
