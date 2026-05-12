@@ -83,6 +83,127 @@ nav.site-nav {
   background: var(--purple-deep); transform: translateY(-1px); box-shadow: var(--shadow-md);
 }
 
+/* ===== MOBILE NAV (HAMBURGER + DRAWER) ===== */
+.nav-hamburger {
+  display: none;
+  background: none; border: none; cursor: pointer;
+  padding: 10px;
+  width: 44px; height: 44px;
+  z-index: 102; position: relative;
+  align-items: center; justify-content: center;
+}
+.nav-hamburger span {
+  display: block;
+  width: 24px; height: 2px;
+  background: var(--plum);
+  margin: 5px 0;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+.nav-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(45, 0, 71, 0.55);
+  z-index: 150;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.nav-mobile-drawer {
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: 88%; max-width: 380px;
+  background: var(--white);
+  z-index: 200;
+  padding: 24px 24px 32px;
+  transform: translateX(100%);
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: -10px 0 40px rgba(74, 27, 92, 0.18);
+  display: flex; flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.nav-drawer-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-bottom: 24px; margin-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.nav-drawer-close {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  color: var(--plum);
+  transition: all 0.2s;
+}
+.nav-drawer-close:hover {
+  background: var(--lavender-soft);
+  border-color: var(--purple-soft);
+  color: var(--magenta);
+}
+.nav-drawer-close svg { width: 18px; height: 18px; }
+.nav-drawer-links {
+  display: flex; flex-direction: column;
+  flex: 1;
+}
+.nav-drawer-links a:not(.nav-cta) {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 16px;
+  color: var(--plum);
+  text-decoration: none;
+  font-size: 17px; font-weight: 500;
+  border-radius: 12px;
+  margin-bottom: 4px;
+  transition: all 0.2s;
+}
+.nav-drawer-links a:not(.nav-cta):hover,
+.nav-drawer-links a:not(.nav-cta):focus {
+  background: var(--lavender-soft);
+  color: var(--purple-mid);
+}
+.nav-drawer-links a:not(.nav-cta)::after {
+  content: '→';
+  color: var(--purple-soft);
+  font-size: 18px;
+  opacity: 0.6;
+  transition: transform 0.2s;
+}
+.nav-drawer-links a:not(.nav-cta):hover::after {
+  transform: translateX(4px);
+  opacity: 1;
+  color: var(--magenta);
+}
+.nav-drawer-cta {
+  margin-top: 20px;
+  padding: 16px 24px !important;
+  background: var(--gradient-warm) !important;
+  color: var(--white) !important;
+  text-align: center;
+  border-radius: 999px !important;
+  font-size: 15px !important; font-weight: 600 !important;
+  box-shadow: 0 6px 24px rgba(226, 0, 116, 0.25);
+  text-decoration: none;
+  display: block;
+}
+
+/* Menu open state */
+body.nav-menu-open { overflow: hidden; }
+body.nav-menu-open .nav-mobile-drawer { transform: translateX(0); }
+body.nav-menu-open .nav-backdrop { opacity: 1; pointer-events: auto; }
+body.nav-menu-open .nav-hamburger span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+body.nav-menu-open .nav-hamburger span:nth-child(2) { opacity: 0; }
+body.nav-menu-open .nav-hamburger span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Desktop: hide drawer/hamburger entirely */
+@media (min-width: 901px) {
+  .nav-hamburger, .nav-backdrop, .nav-mobile-drawer { display: none !important; }
+}
+
 /* ===== BUTTONS ===== */
 .btn {
   display: inline-flex; align-items: center; gap: 8px;
@@ -1187,6 +1308,7 @@ footer {
 /* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
   .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
   .hero { padding: 120px 24px 80px; }
   .hero-inner { grid-template-columns: 1fr; gap: 80px; }
   .phone-stage { max-width: 320px; margin: 0 auto; }

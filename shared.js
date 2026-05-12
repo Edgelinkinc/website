@@ -86,6 +86,8 @@ var EDGELINK = (function() {
     html += '<div class="logo-mark">' + logoSvg() + '</div>';
     html += '<span class="logo-text">' + escapeHtml(brand.companyName || 'Edgelink') + '</span>';
     html += '</a>';
+
+    // Desktop nav links
     html += '<div class="nav-links">';
     for (var i = 0; i < links.length; i++) {
       html += '<a href="' + escapeAttr(links[i].href) + '">' + escapeHtml(links[i].label) + '</a>';
@@ -93,7 +95,41 @@ var EDGELINK = (function() {
     if (nav.ctaLabel) {
       html += '<a href="' + escapeAttr(nav.ctaHref || '#') + '" class="nav-cta">' + escapeHtml(nav.ctaLabel) + '</a>';
     }
-    html += '</div></div>';
+    html += '</div>';
+
+    // Mobile hamburger button
+    html += '<button class="nav-hamburger" id="nav-hamburger-btn" aria-label="Open menu" aria-expanded="false">';
+    html += '<span></span><span></span><span></span>';
+    html += '</button>';
+
+    html += '</div>'; // nav-inner
+
+    // Backdrop (for closing on outside click)
+    html += '<div class="nav-backdrop" id="nav-backdrop"></div>';
+
+    // Mobile drawer
+    html += '<div class="nav-mobile-drawer" id="nav-mobile-drawer" role="dialog" aria-label="Site menu">';
+    html += '<div class="nav-drawer-header">';
+    html += '<a href="index.html" class="logo">';
+    html += '<div class="logo-mark">' + logoSvg() + '</div>';
+    html += '<span class="logo-text">' + escapeHtml(brand.companyName || 'Edgelink') + '</span>';
+    html += '</a>';
+    html += '<button class="nav-drawer-close" id="nav-drawer-close-btn" aria-label="Close menu">';
+    html += '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    html += '</button>';
+    html += '</div>';
+
+    html += '<div class="nav-drawer-links">';
+    for (var j = 0; j < links.length; j++) {
+      html += '<a href="' + escapeAttr(links[j].href) + '">' + escapeHtml(links[j].label) + '</a>';
+    }
+    if (nav.ctaLabel) {
+      html += '<a href="' + escapeAttr(nav.ctaHref || '#') + '" class="nav-drawer-cta">' + escapeHtml(nav.ctaLabel) + '</a>';
+    }
+    html += '</div>';
+
+    html += '</div>'; // mobile drawer
+
     return html;
   }
 
@@ -904,6 +940,62 @@ var EDGELINK = (function() {
     script.setAttribute('data-edgelink-schema', 'org');
     script.textContent = JSON.stringify(schema);
     document.head.appendChild(script);
+  }
+
+  // ===== INITIALIZE MOBILE NAV (delegation — works for nav rendered at any time) =====
+  function initMobileNav() {
+    function closestSafe(el, selector) {
+      if (!el || !el.nodeType || el.nodeType !== 1) return null;
+      if (!el.closest) return null;
+      return el.closest(selector);
+    }
+
+    document.addEventListener('click', function(e) {
+      // Toggle hamburger
+      if (closestSafe(e.target, '#nav-hamburger-btn')) {
+        e.preventDefault();
+        var isOpen = document.body.classList.toggle('nav-menu-open');
+        var btn = document.getElementById('nav-hamburger-btn');
+        if (btn) btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        return;
+      }
+      // Close on backdrop click
+      if (closestSafe(e.target, '#nav-backdrop')) {
+        document.body.classList.remove('nav-menu-open');
+        var btn2 = document.getElementById('nav-hamburger-btn');
+        if (btn2) btn2.setAttribute('aria-expanded', 'false');
+        return;
+      }
+      // Close on X button
+      if (closestSafe(e.target, '#nav-drawer-close-btn')) {
+        document.body.classList.remove('nav-menu-open');
+        var btn3 = document.getElementById('nav-hamburger-btn');
+        if (btn3) btn3.setAttribute('aria-expanded', 'false');
+        return;
+      }
+      // Close when a drawer link is clicked (let navigation proceed)
+      if (closestSafe(e.target, '.nav-mobile-drawer a')) {
+        document.body.classList.remove('nav-menu-open');
+        var btn4 = document.getElementById('nav-hamburger-btn');
+        if (btn4) btn4.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+      if ((e.key === 'Escape' || e.keyCode === 27) && document.body.classList.contains('nav-menu-open')) {
+        document.body.classList.remove('nav-menu-open');
+        var btn = document.getElementById('nav-hamburger-btn');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  // Run init once when this module loads
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMobileNav);
+  } else {
+    initMobileNav();
   }
 
   // ===== PUBLIC API =====
