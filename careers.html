@@ -108,6 +108,12 @@
       html += '</div></section>';
     }
 
+    if (careers.openPositions && careers.openPositions.enabled !== false) {
+      html += '<section class="jobs-section" id="openings">';
+      html += EDGELINK.renderOpenPositions(careers.openPositions);
+      html += '</section>';
+    }
+
     if (careers.faq && careers.faq.enabled !== false && careers.faq.items && careers.faq.items.length) {
       html += '<section class="faq-section about" id="faq">';
       html += EDGELINK.renderFAQ(careers.faq);
@@ -122,6 +128,7 @@
 
     document.getElementById('page-content').innerHTML = html;
     document.getElementById('site-footer').innerHTML = EDGELINK.renderFooter(content);
+    EDGELINK.attachJobsFilter();
     EDGELINK.attachScrollReveal();
   }
 

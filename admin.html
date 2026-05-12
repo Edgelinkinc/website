@@ -243,6 +243,7 @@ h2.section-title {
     <button class="tab" data-panel="careers-testimonials">Careers: Testimonials</button>
     <button class="tab" data-panel="careers-states">Careers: Hiring States</button>
     <button class="tab" data-panel="careers-faq">Careers: FAQ</button>
+    <button class="tab" data-panel="careers-jobs">⭐ Careers: Open Jobs</button>
     <button class="tab" data-panel="careers-apply">Careers: Apply CTA</button>
     <button class="tab" data-panel="social">Social Media</button>
     <button class="tab" data-panel="seo">SEO</button>
@@ -379,6 +380,7 @@ h2.section-title {
       case 'careers-testimonials': html = renderCareersTestimonialsPanel(); break;
       case 'careers-states':       html = renderCareersStatesPanel(); break;
       case 'careers-faq':          html = renderCareersFaqPanel(); break;
+      case 'careers-jobs':         html = renderCareersJobsPanel(); break;
       case 'careers-apply':        html = renderCareersApplyPanel(); break;
       case 'social':               html = renderSocialPanel(); break;
       case 'seo':                  html = renderSeoPanel(); break;
@@ -405,12 +407,15 @@ h2.section-title {
   }
 
   function selectField(path, label, options, hint) {
-    var val = getPath(state.content, path) || '';
+    var val = getPath(state.content, path);
+    if (val === undefined || val === null) val = '';
     var html = '<div class="field"><label>' + esc(label) + '</label>' +
-      '<select data-path="' + path + '">';
+      '<select data-path="' + path + '" data-type="' + (typeof options[0] === 'boolean' ? 'boolean' : 'string') + '">';
     for (var i = 0; i < options.length; i++) {
-      var sel = options[i] === val ? ' selected' : '';
-      html += '<option value="' + escAttr(options[i]) + '"' + sel + '>' + esc(options[i]) + '</option>';
+      var optVal = String(options[i]);
+      var optLabel = typeof options[i] === 'boolean' ? (options[i] ? 'Active (visible on site)' : 'Inactive (hidden)') : options[i];
+      var sel = String(val) === optVal ? ' selected' : '';
+      html += '<option value="' + escAttr(optVal) + '"' + sel + '>' + esc(optLabel) + '</option>';
     }
     html += '</select>' + (hint ? '<div class="field-hint">' + esc(hint) + '</div>' : '') + '</div>';
     return html;
@@ -851,6 +856,111 @@ h2.section-title {
     return html;
   }
 
+  function renderCareersJobsPanel() {
+    var html = '<h2 class="section-title">⭐ Careers: Open Jobs</h2>' +
+      '<p class="section-help">Manage your open positions. Each job appears on the careers page and (in next update) will be eligible for Google for Jobs free listings.</p>';
+
+    html += '<div class="help-card" style="margin-bottom: 20px;">' +
+      '<strong>How this works:</strong><br>' +
+      '• Add a job, fill in the details, mark it <strong>Active</strong> = appears on careers page<br>' +
+      '• Set <strong>Active = false</strong> to take it down without deleting<br>' +
+      '• The Apply URL should be the AppOne link for that location, or leave blank to default to email HR<br>' +
+      '• <strong>Tip:</strong> clone an existing job by copying it — most fields will be the same' +
+      '</div>';
+
+    html += '<div class="field-group">' +
+      '<h3>Section Header</h3>' +
+      textField('careers.openPositions.eyebrow', 'Eyebrow') +
+      textareaField('careers.openPositions.headline', 'Headline') +
+      textareaField('careers.openPositions.lead', 'Lead paragraph') +
+      textareaField('careers.openPositions.noJobsMessage', 'Message when no jobs are posted') +
+      '</div>';
+
+    var jobs = getPath(state.content, 'careers.openPositions.items') || [];
+
+    html += '<div class="field-group"><h3>Job Listings (' + jobs.length + ')</h3>';
+
+    for (var i = 0; i < jobs.length; i++) {
+      var job = jobs[i];
+      var activeLabel = job.active === false ? ' (INACTIVE)' : '';
+      var activeColor = job.active === false ? 'color: #dc2626;' : 'color: var(--green);';
+      html += '<div class="list-item">';
+      html += '<div class="list-item-header">';
+      html += '<span class="list-item-label" style="' + activeColor + '">#' + (i + 1) + ' &middot; ' + esc(job.title || 'Untitled') + ' &middot; ' + esc(job.state || '?') + activeLabel + '</span>';
+      html += '<div class="list-actions">';
+      if (i > 0) html += '<button class="icon-btn" data-action="move-up" data-list="careers.openPositions.items" data-idx="' + i + '" title="Move up">↑</button>';
+      if (i < jobs.length - 1) html += '<button class="icon-btn" data-action="move-down" data-list="careers.openPositions.items" data-idx="' + i + '" title="Move down">↓</button>';
+      html += '<button class="icon-btn" data-action="duplicate" data-list="careers.openPositions.items" data-idx="' + i + '" title="Duplicate">⎘</button>';
+      html += '<button class="icon-btn danger" data-action="delete" data-list="careers.openPositions.items" data-idx="' + i + '" title="Delete">✕</button>';
+      html += '</div></div>';
+
+      // CORE
+      html += '<div class="field-row">' +
+        textField('careers.openPositions.items[' + i + '].title', 'Job Title', 'e.g. Retail Sales Representative') +
+        selectField('careers.openPositions.items[' + i + '].employmentType', 'Employment Type', ['FULL_TIME','PART_TIME','CONTRACTOR','TEMPORARY','INTERN','OTHER']) +
+        '</div>';
+
+      html += '<div class="field-row">' +
+        selectField('careers.openPositions.items[' + i + '].active', 'Status', [true, false]) +
+        textField('careers.openPositions.items[' + i + '].id', 'Job ID (URL slug)', 'e.g. rsr-bald-hill-warwick-ri — used in the page URL') +
+        '</div>';
+
+      // LOCATION
+      html += '<div class="field-row">' +
+        selectField('careers.openPositions.items[' + i + '].state', 'State', ['AR','CT','MA','RI','TN','OTHER']) +
+        textField('careers.openPositions.items[' + i + '].storeName', 'Store Name (optional)', 'e.g. Bald Hill, Providence Place Mall') +
+        '</div>';
+
+      html += '<div class="field-row">' +
+        textField('careers.openPositions.items[' + i + '].city', 'City') +
+        textField('careers.openPositions.items[' + i + '].postalCode', 'Postal Code') +
+        '</div>';
+
+      html += textField('careers.openPositions.items[' + i + '].storeAddress', 'Full Store Address (street + city + state + zip)', 'Required for Google for Jobs');
+
+      // PAY
+      html += '<div class="field-row-3">' +
+        textField('careers.openPositions.items[' + i + '].payMin', 'Pay Min', 'e.g. 13') +
+        textField('careers.openPositions.items[' + i + '].payMax', 'Pay Max', 'e.g. 22') +
+        selectField('careers.openPositions.items[' + i + '].payUnit', 'Unit', ['HOUR','DAY','WEEK','MONTH','YEAR']) +
+        '</div>';
+
+      // DATES
+      html += '<div class="field-row">' +
+        textField('careers.openPositions.items[' + i + '].datePosted', 'Date Posted', 'YYYY-MM-DD') +
+        textField('careers.openPositions.items[' + i + '].validThrough', 'Valid Through', 'YYYY-MM-DD — required by Google. Posting auto-hides after this date.') +
+        '</div>';
+
+      // DESCRIPTION
+      html += textareaField('careers.openPositions.items[' + i + '].description', 'Job Description', 'A few sentences about the role. First sentence shows as the summary on the careers page.');
+
+      // RESPONSIBILITIES / REQUIREMENTS / BENEFITS — each is a string array
+      var resps = job.responsibilities || [];
+      html += '<div class="field"><label>Responsibilities (one per line)</label>' +
+        '<textarea data-path-list="careers.openPositions.items[' + i + '].responsibilities" style="min-height:100px;">' + esc(resps.join('\n')) + '</textarea></div>';
+
+      var reqs = job.requirements || [];
+      html += '<div class="field"><label>Requirements (one per line)</label>' +
+        '<textarea data-path-list="careers.openPositions.items[' + i + '].requirements" style="min-height:100px;">' + esc(reqs.join('\n')) + '</textarea></div>';
+
+      var bens = job.benefits || [];
+      html += '<div class="field"><label>Benefits (one per line)</label>' +
+        '<textarea data-path-list="careers.openPositions.items[' + i + '].benefits" style="min-height:100px;">' + esc(bens.join('\n')) + '</textarea></div>';
+
+      // APPLY URL + IMAGE
+      html += textField('careers.openPositions.items[' + i + '].applyUrl', 'Apply URL', 'AppOne / Paychex Flex apply link for this position. Leave blank to default to mailto:hr@edgelinkinc.com');
+      html += imageField('careers.openPositions.items[' + i + '].imageUrl', 'Photo (optional)', 'Photo of the store or team. Boosts Google for Jobs visibility.');
+
+      html += '</div>'; // list-item
+    }
+
+    // Add new job button
+    html += '<button class="add-btn" data-action="add-job" data-list="careers.openPositions.items">+ Add New Job Posting</button>';
+    html += '</div>';
+
+    return html;
+  }
+
   function renderSeoPanel() {
     return '<h2 class="section-title">SEO Settings</h2>' +
       '<p class="section-help">Search engine and social sharing settings. These control how your site appears in Google results and when shared on Facebook, LinkedIn, etc.</p>' +
@@ -1069,7 +1179,13 @@ h2.section-title {
     for (var i = 0; i < inputs.length; i++) {
       inputs[i].addEventListener('input', function(e) {
         var path = e.target.getAttribute('data-path');
-        setPath(state.content, path, e.target.value);
+        var val = e.target.value;
+        // Type coercion for selects with boolean values
+        var typ = e.target.getAttribute('data-type');
+        if (typ === 'boolean') {
+          val = (val === 'true');
+        }
+        setPath(state.content, path, val);
       });
     }
 
@@ -1087,6 +1203,43 @@ h2.section-title {
         if (action === 'add') {
           var sample = list.length > 0 ? list[list.length - 1] : null;
           list.push(buildNewItem(sample));
+        } else if (action === 'add-job') {
+          // Build a fresh job template
+          var today = new Date().toISOString().slice(0, 10);
+          var validThrough = new Date();
+          validThrough.setMonth(validThrough.getMonth() + 3);
+          var validStr = validThrough.toISOString().slice(0, 10);
+          list.push({
+            id: 'new-job-' + Date.now(),
+            title: 'New Job Posting',
+            employmentType: 'FULL_TIME',
+            active: true,
+            state: 'RI',
+            storeName: '',
+            storeAddress: '',
+            city: '',
+            region: 'RI',
+            postalCode: '',
+            country: 'US',
+            payMin: 13,
+            payMax: 22,
+            payUnit: 'HOUR',
+            payCurrency: 'USD',
+            datePosted: today,
+            validThrough: validStr,
+            description: '',
+            responsibilities: [],
+            requirements: [],
+            benefits: [],
+            applyUrl: '',
+            imageUrl: ''
+          });
+        } else if (action === 'duplicate') {
+          var orig = list[idx];
+          var dup = JSON.parse(JSON.stringify(orig));
+          dup.id = (dup.id || 'job') + '-copy-' + Date.now();
+          dup.title = (dup.title || 'Job') + ' (Copy)';
+          list.splice(idx + 1, 0, dup);
         } else if (action === 'delete') {
           if (confirm('Delete this item?')) {
             list.splice(idx, 1);
@@ -1105,6 +1258,16 @@ h2.section-title {
           }
         }
         renderCurrentPanel();
+      });
+    }
+
+    // Textarea-as-list (one item per line) — used for responsibilities/requirements/benefits
+    var listAreas = document.querySelectorAll('[data-path-list]');
+    for (var la = 0; la < listAreas.length; la++) {
+      listAreas[la].addEventListener('input', function(e) {
+        var path = e.target.getAttribute('data-path-list');
+        var lines = e.target.value.split('\n').map(function(s) { return s.trim(); }).filter(function(s) { return s.length > 0; });
+        setPath(state.content, path, lines);
       });
     }
 

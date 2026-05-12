@@ -557,6 +557,155 @@ var EDGELINK = (function() {
     return html;
   }
 
+  // ===== OPEN POSITIONS / JOBS =====
+  function renderOpenPositions(openPositions) {
+    if (!openPositions || openPositions.enabled === false) return '';
+    var allJobs = (openPositions.items || []).filter(function(j) { return j.active !== false; });
+
+    var html = '<div class="section-inner">';
+    html += renderSectionHeader(openPositions.eyebrow, openPositions.headline, openPositions.lead);
+
+    if (allJobs.length === 0) {
+      html += '<div class="jobs-list"><div class="jobs-empty">';
+      html += '<strong>No openings posted right now</strong>';
+      html += escapeHtml(openPositions.noJobsMessage || 'Check back soon — we are always growing.');
+      html += '</div></div>';
+      html += '</div>';
+      return html;
+    }
+
+    // Build state filter — count jobs per state
+    var stateCounts = {};
+    for (var i = 0; i < allJobs.length; i++) {
+      var st = allJobs[i].state || 'OTHER';
+      stateCounts[st] = (stateCounts[st] || 0) + 1;
+    }
+    var states = Object.keys(stateCounts).sort();
+
+    html += '<div class="jobs-filter" id="jobs-filter">';
+    html += '<button class="jobs-filter-btn active" data-state="ALL">All <span class="jobs-filter-count">(' + allJobs.length + ')</span></button>';
+    for (var s = 0; s < states.length; s++) {
+      html += '<button class="jobs-filter-btn" data-state="' + escapeAttr(states[s]) + '">' + escapeHtml(states[s]) + ' <span class="jobs-filter-count">(' + stateCounts[states[s]] + ')</span></button>';
+    }
+    html += '</div>';
+
+    html += '<div class="jobs-list" id="jobs-list">';
+    for (var j = 0; j < allJobs.length; j++) {
+      html += renderJobCard(allJobs[j]);
+    }
+    html += '</div>';
+    html += '</div>';
+    return html;
+  }
+
+  function renderJobCard(job) {
+    var payRange = formatPayRange(job);
+    var typeLabel = formatEmploymentType(job.employmentType);
+
+    var html = '<article class="job-card" data-state="' + escapeAttr(job.state || '') + '">';
+
+    html += '<div class="job-header">';
+    html += '<div style="flex:1;">';
+    html += '<h3 class="job-title">' + escapeHtml(job.title) + '</h3>';
+    html += '<div class="job-store">' + escapeHtml(job.storeName || job.city || '') + (job.state ? ' &middot; ' + escapeHtml(job.state) : '') + '</div>';
+    html += '</div>';
+    if (job.state) html += '<div class="job-state-badge">' + escapeHtml(job.state) + '</div>';
+    html += '</div>';
+
+    html += '<div class="job-meta-row">';
+    if (typeLabel) {
+      html += '<div class="job-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>' + escapeHtml(typeLabel) + '</div>';
+    }
+    if (payRange) {
+      html += '<div class="job-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><strong>' + escapeHtml(payRange) + '</strong></div>';
+    }
+    if (job.datePosted) {
+      html += '<div class="job-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Posted ' + escapeHtml(relativeDate(job.datePosted)) + '</div>';
+    }
+    html += '</div>';
+
+    var summary = (job.description || '').split('\n')[0];
+    if (summary) html += '<p class="job-summary">' + escapeHtml(summary) + '</p>';
+
+    html += '<div class="job-actions">';
+    var applyHref = job.applyUrl && job.applyUrl.length > 0 ? job.applyUrl : 'mailto:hr@edgelinkinc.com?subject=Application: ' + encodeURIComponent(job.title);
+    var isExternal = applyHref.indexOf('http') === 0;
+    html += '<a href="' + escapeAttr(applyHref) + '" class="job-apply-btn"' + (isExternal ? ' target="_blank" rel="noopener"' : '') + '>Apply Now →</a>';
+    html += '</div>';
+
+    html += '</article>';
+    return html;
+  }
+
+  function formatEmploymentType(t) {
+    if (!t) return '';
+    var map = {
+      'FULL_TIME': 'Full-time',
+      'PART_TIME': 'Part-time',
+      'CONTRACTOR': 'Contractor',
+      'TEMPORARY': 'Temporary',
+      'INTERN': 'Internship',
+      'VOLUNTEER': 'Volunteer',
+      'PER_DIEM': 'Per diem',
+      'OTHER': 'Other'
+    };
+    return map[t] || t;
+  }
+
+  function formatPayRange(job) {
+    if (!job.payMin && !job.payMax) return '';
+    var unit = (job.payUnit || 'HOUR').toLowerCase();
+    var unitLabel = unit === 'hour' ? '/hr' : (unit === 'year' ? '/yr' : (unit === 'week' ? '/wk' : (unit === 'day' ? '/day' : '/' + unit)));
+    var currency = job.payCurrency === 'USD' ? '$' : (job.payCurrency || '$');
+    if (job.payMin && job.payMax && job.payMin !== job.payMax) {
+      return currency + job.payMin + '-' + job.payMax + unitLabel;
+    }
+    return currency + (job.payMin || job.payMax) + unitLabel;
+  }
+
+  function relativeDate(dateStr) {
+    if (!dateStr) return '';
+    var parts = dateStr.split('-');
+    if (parts.length !== 3) return dateStr;
+    var posted = new Date(parseInt(parts[0],10), parseInt(parts[1],10)-1, parseInt(parts[2],10));
+    var diffMs = Date.now() - posted.getTime();
+    var diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    if (diffDays < 0) return 'just now';
+    if (diffDays === 0) return 'today';
+    if (diffDays === 1) return 'yesterday';
+    if (diffDays < 7) return diffDays + ' days ago';
+    if (diffDays < 14) return '1 week ago';
+    if (diffDays < 30) return Math.floor(diffDays / 7) + ' weeks ago';
+    if (diffDays < 60) return '1 month ago';
+    return Math.floor(diffDays / 30) + ' months ago';
+  }
+
+  function attachJobsFilter() {
+    var filter = document.getElementById('jobs-filter');
+    var list = document.getElementById('jobs-list');
+    if (!filter || !list) return;
+
+    var btns = filter.querySelectorAll('.jobs-filter-btn');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].addEventListener('click', function(e) {
+        var state = e.currentTarget.getAttribute('data-state');
+        // Update active button
+        for (var k = 0; k < btns.length; k++) btns[k].classList.remove('active');
+        e.currentTarget.classList.add('active');
+        // Filter cards
+        var cards = list.querySelectorAll('.job-card');
+        for (var c = 0; c < cards.length; c++) {
+          var cardState = cards[c].getAttribute('data-state');
+          if (state === 'ALL' || cardState === state) {
+            cards[c].style.display = '';
+          } else {
+            cards[c].style.display = 'none';
+          }
+        }
+      });
+    }
+  }
+
   // ===== NEWS / ANNOUNCEMENTS =====
   function renderNews(news) {
     if (!news || news.enabled === false) return '';
@@ -775,6 +924,8 @@ var EDGELINK = (function() {
     attachContactFormHandler: attachContactFormHandler,
     renderNews: renderNews,
     renderFAQ: renderFAQ,
+    renderOpenPositions: renderOpenPositions,
+    attachJobsFilter: attachJobsFilter,
     attachScrollReveal: attachScrollReveal,
     injectSeoTags: injectSeoTags,
     renderFooter: renderFooter,
